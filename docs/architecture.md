@@ -362,6 +362,13 @@ implementation details need no separate approval.
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
 
+**D01 resolved — 18 September 2026:** Python 3.13, uv, Pydantic v2, pytest, Ruff
+and Pyright. Authorized by the user's explicit T00 approval in this branch.
+Configuration: `pyproject.toml`, `.python-version`; exact dependencies: `uv.lock`.
+Affects T00 and consumers of its shared contracts. Development-only jsonschema
+and typing stubs support schema checks. Generated exports live in `schemas/v1/`
+as directed in the same approval; Python models remain in `src/binfocheck/domain/`.
+
 Live calls also follow [AGENTS.md](../AGENTS.md#safety-and-live-calls). Never count an
 undisclosed substitute as live acceptance.
 
