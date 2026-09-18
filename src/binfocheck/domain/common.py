@@ -14,6 +14,9 @@ from pydantic import (
     model_validator,
 )
 
+# Validation-only revision within the pre-merge v1 wire format; see Architecture §8.
+CONTRACT_VALIDATION_VERSION = "1.1"
+
 Id = Annotated[str, Field(min_length=1, pattern=r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")]
 NonEmpty = Annotated[str, Field(min_length=1)]
 Digest = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]

@@ -1,4 +1,5 @@
 from datetime import datetime
+from math import fsum, isclose
 from typing import Annotated, Literal, Self
 
 from pydantic import Field, JsonValue, field_validator, model_validator
@@ -36,7 +37,13 @@ class DecisionResult(Contract):
     result_kind: Literal["decision"] = "decision"
     allowed_labels: Annotated[tuple[NonEmpty, ...], Field(min_length=1)]
     label: NonEmpty
-    probabilities: Available[dict[str, Score]]
+    probabilities: Available[dict[str, Score]] = Field(
+        description=(
+            "Choice probabilities, not independent confidence scores. When available, all labels "
+            "must be present and their probabilities must sum to 1 within absolute tolerance 1e-6. "
+            "Incomplete distributions retain captured values without normalization."
+        )
+    )
 
     @model_validator(mode="after")
     def valid_labels(self) -> Self:
@@ -51,6 +58,10 @@ class DecisionResult(Contract):
                 self.probabilities.data
             ) != set(self.allowed_labels):
                 raise ValueError("available_probabilities_require_all_labels")
+            if self.probabilities.availability == "available" and not isclose(
+                fsum(self.probabilities.data.values()), 1.0, rel_tol=0.0, abs_tol=1e-6
+            ):
+                raise ValueError("available_probabilities_must_sum_to_one")
         return self
 
 

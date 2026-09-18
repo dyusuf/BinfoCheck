@@ -143,6 +143,12 @@ or future-only fields. Do not start T11A or downstream tasks.
 - Remaining T00 work/blockers: none. T11A is not started. No persistent backend
   or downstream behavior was implemented. Commits, branch publication and PR
   creation were explicitly authorized by the user; the PR has not been merged.
+- Pre-merge review: contract validation revision `1.1` strengthens citation capture
+  integrity, answer/article provenance, nonblank successful answers, and complete
+  probability distributions (Architecture Section 8). Adds 42 focused cases in
+  `tests/contracts/test_review_integrity.py`; all seven required local commands pass,
+  including 176 tests. The v1 wire shape
+  is unchanged; generated schemas include the probability constraint description.
 
 ### T11A — Shared record and artifact storage
 

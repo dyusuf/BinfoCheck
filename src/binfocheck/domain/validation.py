@@ -119,6 +119,18 @@ class LinkedRecords:
             decision = self.require(id, DecisionRecord, record.id)
             self.same_run(record, decision)
 
+    def text_lineage(self, text: TextRecord, owner: str) -> tuple[TextRecord, ...]:
+        """Resolve representations back to their original text without altering them."""
+        lineage: list[TextRecord] = []
+        seen: set[str] = set()
+        while True:
+            self.check(text.id not in seen, "text_lineage_cycle", owner, text.id)
+            seen.add(text.id)
+            lineage.append(text)
+            if text.source_text_id is None:
+                return tuple(lineage)
+            text = self.require(text.source_text_id, TextRecord, owner)
+
     def validate(self) -> None:
         for record in self.records.values():
             self.validate_record(record)
@@ -147,8 +159,7 @@ class LinkedRecords:
 
         if isinstance(r, TextRecord):
             self.require(r.artifact_id, ArtifactRef, r.id)
-            if r.source_text_id:
-                self.require(r.source_text_id, TextRecord, r.id)
+            self.text_lineage(r, r.id)
         elif isinstance(r, Observation):
             request = self.require(r.request_id, CaptureRequest, r.id)
             self.check(
@@ -165,7 +176,15 @@ class LinkedRecords:
             if r.raw_artifact_id:
                 self.require(r.raw_artifact_id, ArtifactRef, r.id)
             if r.answer_text_id:
-                self.require(r.answer_text_id, TextRecord, r.id)
+                answer = self.require(r.answer_text_id, TextRecord, r.id)
+                lineage = self.text_lineage(answer, r.id)
+                self.check(
+                    lineage[-1].artifact_id == r.raw_artifact_id,
+                    "answer_artifact_provenance_mismatch",
+                    r.id,
+                )
+                if r.status == "succeeded":
+                    self.check(bool(answer.text.strip()), "successful_answer_empty", r.id)
             for id in (r.source_reference_ids.data or ()) + (r.citation_reference_ids.data or ()):
                 ref = self.require(id, SourceReference, r.id)
                 self.check(ref.observation_id == r.id, "reference_observation_mismatch", r.id)
@@ -230,12 +249,23 @@ class LinkedRecords:
                 )
             self.decisions(r, r.decision_ids)
         elif isinstance(r, CitationAssociation):
+            observation = self.require(r.observation_id, Observation, r.id)
+            captured = observation.citation_reference_ids
+            if r.status == "no":
+                self.check(
+                    captured.availability == "available",
+                    "citation_no_requires_complete_capture",
+                    r.id,
+                )
             for id in r.reference_ids:
                 ref = self.require(id, SourceReference, r.id)
                 self.check(
                     ref.observation_id == r.observation_id, "reference_observation_mismatch", r.id
                 )
-            observation = self.require(r.observation_id, Observation, r.id)
+                if r.status == "yes":
+                    self.check(ref.reference_kind == "citation", "not_a_citation_reference", r.id)
+                if ref.reference_kind == "citation":
+                    self.check(id in (captured.data or ()), "citation_not_captured", r.id, id)
             for span in r.evidence_spans:
                 self.check(
                     span.text_id == observation.answer_text_id, "citation_text_mismatch", r.id
@@ -243,9 +273,21 @@ class LinkedRecords:
         elif isinstance(r, ArticleVersion):
             if r.raw_artifact_id:
                 self.require(r.raw_artifact_id, ArtifactRef, r.id)
-            for id in (r.raw_text_id, r.cleaned_text_id):
-                if id:
-                    self.require(id, TextRecord, r.id)
+            if r.raw_text_id:
+                raw = self.require(r.raw_text_id, TextRecord, r.id)
+                self.check(
+                    raw.artifact_id == r.raw_artifact_id and raw.source_text_id is None,
+                    "article_raw_provenance_mismatch",
+                    r.id,
+                )
+            if r.cleaned_text_id:
+                cleaned = self.require(r.cleaned_text_id, TextRecord, r.id)
+                lineage = self.text_lineage(cleaned, r.id)
+                self.check(
+                    lineage[-1].id == r.raw_text_id,
+                    "article_cleaned_lineage_mismatch",
+                    r.id,
+                )
             for span in r.heading_spans:
                 self.check(span.text_id == r.cleaned_text_id, "article_heading_text_mismatch", r.id)
             if r.previous_version_id:
