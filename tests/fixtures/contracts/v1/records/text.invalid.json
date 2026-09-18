@@ -1,0 +1,9 @@
+{
+  "kind": "text",
+  "id": "text-answer",
+  "schema_version": "1",
+  "text": "Äpfel 🍎 sind rot. Äpfel 🍎 sind rot.",
+  "artifact_id": "artifact-1",
+  "source_text_id": "text-answer",
+  "transformation": null
+}

@@ -1,0 +1,21 @@
+{
+  "kind": "article_version",
+  "id": "article-1",
+  "schema_version": "1",
+  "created_at": "2026-09-18T12:00:00Z",
+  "url": "https://www.diabinfo.de/synthetic-fixture",
+  "raw_artifact_id": null,
+  "raw_text_id": null,
+  "cleaned_text_id": null,
+  "title": null,
+  "heading_spans": [],
+  "fetched_at": null,
+  "content_sha256": null,
+  "parser_version": {
+    "name": "synthetic",
+    "version": "fixture-v1"
+  },
+  "status": "failed",
+  "reason": "Synthetic unavailable page",
+  "previous_version_id": null
+}

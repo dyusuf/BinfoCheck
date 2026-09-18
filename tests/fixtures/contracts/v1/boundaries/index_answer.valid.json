@@ -1,0 +1,69 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "observation_id": "obs-1",
+    "answer_text_id": "text-answer",
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    }
+  },
+  "response": {
+    "status": "succeeded",
+    "value": [
+      {
+        "kind": "text_unit",
+        "id": "unit-1",
+        "schema_version": "1",
+        "created_at": "2026-09-18T12:00:00Z",
+        "analysis_run_id": "run-1",
+        "input_ids": [
+          "obs-1"
+        ],
+        "observation_id": "obs-1",
+        "unit_kind": "sentence",
+        "order": 0,
+        "parent_unit_id": null,
+        "heading_unit_id": null,
+        "span": {
+          "text_id": "text-answer",
+          "start": 0,
+          "end": 17,
+          "exact_text": "Äpfel 🍎 sind rot.",
+          "source_unit_id": null
+        }
+      },
+      {
+        "kind": "text_unit",
+        "id": "unit-2",
+        "schema_version": "1",
+        "created_at": "2026-09-18T12:00:00Z",
+        "analysis_run_id": "run-1",
+        "input_ids": [
+          "obs-1"
+        ],
+        "observation_id": "obs-1",
+        "unit_kind": "sentence",
+        "order": 1,
+        "parent_unit_id": null,
+        "heading_unit_id": null,
+        "span": {
+          "text_id": "text-answer",
+          "start": 18,
+          "end": 35,
+          "exact_text": "Äpfel 🍎 sind rot.",
+          "source_unit_id": null
+        }
+      }
+    ],
+    "error": null,
+    "reason": null
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "observation",
+  "id": "obs-1",
+  "schema_version": "1",
+  "created_at": "2026-09-18T12:00:00Z",
+  "request_id": "request-1",
+  "query_id": "query-1",
+  "product": "google_ai_mode",
+  "provider": "dataforseo",
+  "requested_settings": {
+    "version": {
+      "name": "synthetic",
+      "version": "fixture-v1"
+    },
+    "values": {
+      "language": "de",
+      "location": "DE",
+      "device": "desktop"
+    }
+  },
+  "reported_settings": {
+    "availability": "unavailable",
+    "data": null,
+    "reason": "Not captured in synthetic fixture"
+  },
+  "status": "succeeded",
+  "raw_artifact_id": "artifact-1",
+  "answer_text_id": "text-answer",
+  "source_reference_ids": {
+    "availability": "available",
+    "data": [
+      "ref-1",
+      "ref-2"
+    ],
+    "reason": null
+  },
+  "citation_reference_ids": {
+    "availability": "available",
+    "data": [
+      "ref-1"
+    ],
+    "reason": null
+  },
+  "fanout_queries": {
+    "availability": "unavailable",
+    "data": null,
+    "reason": "Not captured in synthetic fixture"
+  },
+  "normalization_version": {
+    "name": "synthetic",
+    "version": "fixture-v1"
+  },
+  "provider_request_id": null,
+  "error": null
+}

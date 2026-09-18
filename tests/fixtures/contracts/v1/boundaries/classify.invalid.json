@@ -1,0 +1,35 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "claim_id": "claim-1",
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    },
+    "citation_association_id": "citation-1",
+    "retrieval_batch_ids": [],
+    "alternative_inspection_ids": [],
+    "unexpected_field": true
+  },
+  "response": {
+    "status": "succeeded",
+    "value": null,
+    "error": null,
+    "reason": null
+  },
+  "request_error": {
+    "type": "extra_forbidden",
+    "contains": null
+  },
+  "response_error": {
+    "type": "value_error",
+    "contains": "success_requires_value_without_error"
+  }
+}

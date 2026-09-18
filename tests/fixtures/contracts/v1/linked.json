@@ -1,0 +1,718 @@
+{
+  "records": [
+    {
+      "kind": "artifact",
+      "id": "artifact-1",
+      "schema_version": "1",
+      "storage_key": "synthetic/answer.txt",
+      "sha256": "679d947c11af2ca5b4f9b2b02277c7f0cc3150f856e9bffb91fb30e404cbeb70",
+      "media_type": "text/plain; charset=utf-8",
+      "access": "shareable_fixture",
+      "redacted_transport_fields": []
+    },
+    {
+      "kind": "artifact",
+      "id": "artifact-generation",
+      "schema_version": "1",
+      "storage_key": "synthetic/generation.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "media_type": "application/json",
+      "access": "shareable_fixture",
+      "redacted_transport_fields": []
+    },
+    {
+      "kind": "text",
+      "id": "text-answer",
+      "schema_version": "1",
+      "text": "Äpfel 🍎 sind rot. Äpfel 🍎 sind rot.",
+      "artifact_id": "artifact-1",
+      "source_text_id": null,
+      "transformation": null
+    },
+    {
+      "kind": "text",
+      "id": "text-article",
+      "schema_version": "1",
+      "text": "Äpfel 🍎 sind rot. Äpfel 🍎 sind rot.",
+      "artifact_id": "artifact-1",
+      "source_text_id": null,
+      "transformation": null
+    },
+    {
+      "kind": "text",
+      "id": "text-excerpt",
+      "schema_version": "1",
+      "text": "Äpfel 🍎 sind rot. Äpfel 🍎 sind rot.",
+      "artifact_id": "artifact-1",
+      "source_text_id": null,
+      "transformation": null
+    },
+    {
+      "kind": "capture_request",
+      "id": "request-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "query_id": "query-1",
+      "query": "Welche Farbe haben die Äpfel?",
+      "product": "google_ai_mode",
+      "provider": "dataforseo",
+      "requested_settings": {
+        "version": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "values": {
+          "language": "de",
+          "location": "DE",
+          "device": "desktop"
+        }
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "obs-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "request_id": "request-1",
+      "query_id": "query-1",
+      "product": "google_ai_mode",
+      "provider": "dataforseo",
+      "requested_settings": {
+        "version": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "values": {
+          "language": "de",
+          "location": "DE",
+          "device": "desktop"
+        }
+      },
+      "reported_settings": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "status": "succeeded",
+      "raw_artifact_id": "artifact-1",
+      "answer_text_id": "text-answer",
+      "source_reference_ids": {
+        "availability": "available",
+        "data": [
+          "ref-1",
+          "ref-2"
+        ],
+        "reason": null
+      },
+      "citation_reference_ids": {
+        "availability": "available",
+        "data": [
+          "ref-1"
+        ],
+        "reason": null
+      },
+      "fanout_queries": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "normalization_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "provider_request_id": null,
+      "error": null
+    },
+    {
+      "kind": "source_reference",
+      "id": "ref-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "observation_id": "obs-1",
+      "url": "https://www.diabinfo.de/synthetic-fixture",
+      "metadata_artifact_id": "artifact-1",
+      "metadata_location": "/synthetic/references/0",
+      "reference_kind": "citation",
+      "excerpt": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "citation_span": {
+        "text_id": "text-answer",
+        "start": 8,
+        "end": 17,
+        "exact_text": "sind rot.",
+        "source_unit_id": null
+      },
+      "duplicate_group": null
+    },
+    {
+      "kind": "source_reference",
+      "id": "ref-2",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "observation_id": "obs-1",
+      "url": "https://example.org/synthetic-fixture",
+      "metadata_artifact_id": "artifact-1",
+      "metadata_location": "/synthetic/references/1",
+      "reference_kind": "search_result",
+      "excerpt": {
+        "availability": "available",
+        "data": {
+          "text_id": "text-excerpt",
+          "start": 8,
+          "end": 17,
+          "exact_text": "sind rot.",
+          "source_unit_id": null
+        },
+        "reason": null
+      },
+      "citation_span": null,
+      "duplicate_group": null
+    },
+    {
+      "kind": "text_unit",
+      "id": "unit-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "obs-1"
+      ],
+      "observation_id": "obs-1",
+      "unit_kind": "sentence",
+      "order": 0,
+      "parent_unit_id": null,
+      "heading_unit_id": null,
+      "span": {
+        "text_id": "text-answer",
+        "start": 0,
+        "end": 17,
+        "exact_text": "Äpfel 🍎 sind rot.",
+        "source_unit_id": null
+      }
+    },
+    {
+      "kind": "text_unit",
+      "id": "unit-2",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "obs-1"
+      ],
+      "observation_id": "obs-1",
+      "unit_kind": "sentence",
+      "order": 1,
+      "parent_unit_id": null,
+      "heading_unit_id": null,
+      "span": {
+        "text_id": "text-answer",
+        "start": 18,
+        "end": 35,
+        "exact_text": "Äpfel 🍎 sind rot.",
+        "source_unit_id": null
+      }
+    },
+    {
+      "kind": "claim",
+      "id": "claim-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "obs-1",
+        "unit-2"
+      ],
+      "observation_id": "obs-1",
+      "normalized_claim": "Die Äpfel sind rot.",
+      "language": "de",
+      "original_span": {
+        "text_id": "text-answer",
+        "start": 26,
+        "end": 35,
+        "exact_text": "sind rot.",
+        "source_unit_id": "unit-2"
+      },
+      "context_unit_ids": [
+        "unit-1",
+        "unit-2"
+      ],
+      "decision_ids": [
+        "decision-1"
+      ],
+      "claim_group_id": "group-1"
+    },
+    {
+      "kind": "extraction_issue",
+      "id": "issue-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "obs-1"
+      ],
+      "observation_id": "obs-1",
+      "issue": "unresolved",
+      "reason": "Synthetic unresolved wording",
+      "proposed_claim": null,
+      "original_span": null,
+      "context_unit_ids": [
+        "unit-1"
+      ],
+      "decision_ids": []
+    },
+    {
+      "kind": "citation_association",
+      "id": "citation-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "claim-1",
+        "ref-1"
+      ],
+      "observation_id": "obs-1",
+      "claim_id": "claim-1",
+      "reference_ids": [
+        "ref-1"
+      ],
+      "status": "yes",
+      "scope_assessable": true,
+      "rule_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "evidence_spans": [
+        {
+          "text_id": "text-answer",
+          "start": 26,
+          "end": 35,
+          "exact_text": "sind rot.",
+          "source_unit_id": "unit-2"
+        }
+      ],
+      "reason": "Synthetic explicit association; no support assessment"
+    },
+    {
+      "kind": "article_version",
+      "id": "article-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "url": "https://www.diabinfo.de/synthetic-fixture",
+      "raw_artifact_id": "artifact-1",
+      "raw_text_id": "text-article",
+      "cleaned_text_id": "text-article",
+      "title": "Synthetisches Beispiel",
+      "heading_spans": [],
+      "fetched_at": "2026-09-18T12:00:00Z",
+      "content_sha256": "679d947c11af2ca5b4f9b2b02277c7f0cc3150f856e9bffb91fb30e404cbeb70",
+      "parser_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "status": "usable",
+      "reason": null,
+      "previous_version_id": null
+    },
+    {
+      "kind": "passage",
+      "id": "passage-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "article_version_id": "article-1",
+      "order": 0,
+      "span": {
+        "text_id": "text-article",
+        "start": 8,
+        "end": 17,
+        "exact_text": "sind rot.",
+        "source_unit_id": null
+      },
+      "heading_spans": [],
+      "parent_passage_id": null,
+      "construction_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      }
+    },
+    {
+      "kind": "corpus_manifest",
+      "id": "corpus-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "article_version_ids": [
+        "article-1"
+      ],
+      "passage_ids": [
+        "passage-1"
+      ],
+      "construction_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "status": "incomplete",
+      "reason": "Synthetic single-page contract example, not the five-page pilot"
+    },
+    {
+      "kind": "retrieval_batch",
+      "id": "batch-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "claim-1",
+        "corpus-1"
+      ],
+      "claim_id": "claim-1",
+      "corpus_manifest_id": "corpus-1",
+      "index": {
+        "id": "index-1",
+        "corpus_manifest_id": "corpus-1",
+        "version": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "embedding_model": "synthetic-no-model",
+        "embedding_dimensions": 3,
+        "lexical_settings": {
+          "version": {
+            "name": "synthetic",
+            "version": "fixture-v1"
+          },
+          "values": {
+            "language": "de",
+            "location": "DE",
+            "device": "desktop"
+          }
+        }
+      },
+      "candidate_pair_ids": [
+        "pair-1"
+      ],
+      "completion": "complete",
+      "truncation_reason": null,
+      "settings": {
+        "version": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "values": {
+          "language": "de",
+          "location": "DE",
+          "device": "desktop"
+        }
+      }
+    },
+    {
+      "kind": "candidate_pair",
+      "id": "pair-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "claim-1",
+        "passage-1"
+      ],
+      "claim_id": "claim-1",
+      "retrieval_batch_id": "batch-1",
+      "corpus_manifest_id": "corpus-1",
+      "index_id": "index-1",
+      "passage_id": "passage-1",
+      "path_ranks": [
+        {
+          "path": "semantic",
+          "rank": 1,
+          "score": 0.8
+        },
+        {
+          "path": "lexical",
+          "rank": 2,
+          "score": 12.5
+        }
+      ],
+      "fused_rank": 1,
+      "context_passage_ids": [
+        "passage-1"
+      ],
+      "verification_decision_id": "decision-1",
+      "correspondence_decision_id": "decision-1"
+    },
+    {
+      "kind": "decision_record",
+      "id": "decision-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "obs-1",
+        "unit-2"
+      ],
+      "task_type": "synthetic_decision",
+      "input_artifact_ids": [
+        "artifact-1"
+      ],
+      "requested_model_id": "synthetic-no-model",
+      "returned_model_id": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "prompt_version": null,
+      "rubric_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "config_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "status": "succeeded",
+      "result": {
+        "result_kind": "decision",
+        "allowed_labels": [
+          "match",
+          "uncertain"
+        ],
+        "label": "match",
+        "probabilities": {
+          "availability": "available",
+          "data": {
+            "match": 0.8,
+            "uncertain": 0.2
+          },
+          "reason": null
+        }
+      },
+      "usage": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "started_at": "2026-09-18T12:00:00Z",
+      "finished_at": "2026-09-18T12:00:00Z",
+      "error": null,
+      "provider_request_id": null
+    },
+    {
+      "kind": "decision_record",
+      "id": "generation-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "obs-1",
+        "unit-2"
+      ],
+      "task_type": "synthetic_generation",
+      "input_artifact_ids": [
+        "artifact-1"
+      ],
+      "requested_model_id": "synthetic-no-model",
+      "returned_model_id": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "prompt_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "rubric_version": null,
+      "config_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "status": "succeeded",
+      "result": {
+        "result_kind": "generation",
+        "output_schema": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "structured_output": {},
+        "output_artifact_id": "artifact-generation"
+      },
+      "usage": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "started_at": "2026-09-18T12:00:00Z",
+      "finished_at": "2026-09-18T12:00:00Z",
+      "error": null,
+      "provider_request_id": null
+    },
+    {
+      "kind": "alternative_inspection",
+      "id": "alternative-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "claim-1",
+        "ref-2"
+      ],
+      "observation_id": "obs-1",
+      "claim_id": "claim-1",
+      "source_reference_id": "ref-2",
+      "excerpt_text_id": "text-excerpt",
+      "state": "inspected",
+      "correspondence": "match",
+      "decision_id": "decision-1",
+      "coverage": "assessable",
+      "coverage_reason": "Synthetic excerpt only",
+      "duplicate_group": null
+    },
+    {
+      "kind": "finding",
+      "id": "finding-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "claim-1",
+        "citation-1"
+      ],
+      "observation_id": "obs-1",
+      "claim_id": "claim-1",
+      "citation_association_id": "citation-1",
+      "status": "categorized",
+      "category": 1,
+      "candidate_pair_ids": [],
+      "decision_ids": [],
+      "alternative_inspection_ids": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not needed for this synthetic citation-only finding"
+      },
+      "provisional_scores": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "No model score for citation presence"
+      },
+      "reason_codes": [
+        "citation_present"
+      ],
+      "supersedes_finding_id": null
+    },
+    {
+      "kind": "run_manifest",
+      "id": "run-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "input_ids": [
+        "obs-1",
+        "corpus-1"
+      ],
+      "observation_ids": [
+        "obs-1"
+      ],
+      "corpus_manifest_id": "corpus-1",
+      "purpose": "diagnostic",
+      "mode": "reanalysis",
+      "capture_settings": {
+        "version": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "values": {
+          "language": "de",
+          "location": "DE",
+          "device": "desktop"
+        }
+      },
+      "configuration": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "model_ids": [
+        "synthetic-no-model"
+      ],
+      "prompt_versions": [
+        {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        }
+      ],
+      "rubric_versions": [
+        {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        }
+      ],
+      "budget": {
+        "request_limit": 0,
+        "cost_limit": 0,
+        "currency": "USD",
+        "timeout_seconds": 1,
+        "concurrency": 1,
+        "retry_limit": 0
+      },
+      "status": "succeeded"
+    },
+    {
+      "kind": "step_attempt",
+      "id": "attempt-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "claim-1"
+      ],
+      "step": "synthetic_contract",
+      "work_key": "fixture-work-1",
+      "attempt_number": 1,
+      "status": "succeeded",
+      "output_ids": [
+        "finding-1"
+      ],
+      "started_at": "2026-09-18T12:00:00Z",
+      "finished_at": "2026-09-18T12:00:00Z",
+      "provider_request_id": null,
+      "usage": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "error": null,
+      "outcome_uncertain": false
+    },
+    {
+      "kind": "review",
+      "id": "review-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "finding-1"
+      ],
+      "finding_id": "finding-1",
+      "reviewer_id": "synthetic-reviewer",
+      "decision": "confirmed",
+      "note": "Synthetic review; not a quality assessment.",
+      "correction": null,
+      "supersedes_review_id": null
+    },
+    {
+      "kind": "review",
+      "id": "review-2",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:01:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "finding-1"
+      ],
+      "finding_id": "finding-1",
+      "reviewer_id": "synthetic-reviewer",
+      "decision": "corrected",
+      "note": "Synthetic correction retains the prior event.",
+      "correction": {
+        "status": "not_enough_evidence",
+        "category": null
+      },
+      "supersedes_review_id": "review-1"
+    }
+  ]
+}

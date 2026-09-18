@@ -1,0 +1,10 @@
+{
+  "kind": "artifact",
+  "id": "artifact-1",
+  "schema_version": "1",
+  "storage_key": "synthetic/answer.txt",
+  "sha256": "not-a-hash",
+  "media_type": "text/plain; charset=utf-8",
+  "access": "shareable_fixture",
+  "redacted_transport_fields": []
+}

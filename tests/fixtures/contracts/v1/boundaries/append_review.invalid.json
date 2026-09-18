@@ -1,0 +1,33 @@
+{
+  "request": {
+    "kind": "review",
+    "id": "review-1",
+    "schema_version": "1",
+    "created_at": "2026-09-18T12:00:00Z",
+    "analysis_run_id": "run-1",
+    "input_ids": [
+      "finding-1"
+    ],
+    "finding_id": "finding-1",
+    "reviewer_id": "synthetic-reviewer",
+    "decision": "confirmed",
+    "note": "Synthetic review; not a quality assessment.",
+    "correction": null,
+    "supersedes_review_id": null,
+    "unexpected_field": true
+  },
+  "response": {
+    "status": "succeeded",
+    "value": null,
+    "error": null,
+    "reason": null
+  },
+  "request_error": {
+    "type": "extra_forbidden",
+    "contains": null
+  },
+  "response_error": {
+    "type": "value_error",
+    "contains": "success_requires_value_without_error"
+  }
+}

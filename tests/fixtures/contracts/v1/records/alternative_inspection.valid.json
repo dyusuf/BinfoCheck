@@ -1,0 +1,21 @@
+{
+  "kind": "alternative_inspection",
+  "id": "alternative-1",
+  "schema_version": "1",
+  "created_at": "2026-09-18T12:00:00Z",
+  "analysis_run_id": "run-1",
+  "input_ids": [
+    "claim-1",
+    "ref-2"
+  ],
+  "observation_id": "obs-1",
+  "claim_id": "claim-1",
+  "source_reference_id": "ref-2",
+  "excerpt_text_id": "text-excerpt",
+  "state": "inspected",
+  "correspondence": "match",
+  "decision_id": "decision-1",
+  "coverage": "assessable",
+  "coverage_reason": "Synthetic excerpt only",
+  "duplicate_group": null
+}

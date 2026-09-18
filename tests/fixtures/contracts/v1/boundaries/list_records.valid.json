@@ -1,0 +1,47 @@
+{
+  "request": {
+    "record_kind": "claim",
+    "analysis_run_id": "run-1",
+    "limit": 10,
+    "cursor": null
+  },
+  "response": {
+    "status": "succeeded",
+    "value": {
+      "records": [
+        {
+          "kind": "claim",
+          "id": "claim-1",
+          "schema_version": "1",
+          "created_at": "2026-09-18T12:00:00Z",
+          "analysis_run_id": "run-1",
+          "input_ids": [
+            "obs-1",
+            "unit-2"
+          ],
+          "observation_id": "obs-1",
+          "normalized_claim": "Die Äpfel sind rot.",
+          "language": "de",
+          "original_span": {
+            "text_id": "text-answer",
+            "start": 26,
+            "end": 35,
+            "exact_text": "sind rot.",
+            "source_unit_id": "unit-2"
+          },
+          "context_unit_ids": [
+            "unit-1",
+            "unit-2"
+          ],
+          "decision_ids": [
+            "decision-1"
+          ],
+          "claim_group_id": "group-1"
+        }
+      ],
+      "next_cursor": null
+    },
+    "error": null,
+    "reason": null
+  }
+}

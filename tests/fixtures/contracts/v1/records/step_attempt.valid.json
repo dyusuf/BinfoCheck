@@ -1,0 +1,27 @@
+{
+  "kind": "step_attempt",
+  "id": "attempt-1",
+  "schema_version": "1",
+  "created_at": "2026-09-18T12:00:00Z",
+  "analysis_run_id": "run-1",
+  "input_ids": [
+    "claim-1"
+  ],
+  "step": "synthetic_contract",
+  "work_key": "fixture-work-1",
+  "attempt_number": 1,
+  "status": "succeeded",
+  "output_ids": [
+    "finding-1"
+  ],
+  "started_at": "2026-09-18T12:00:00Z",
+  "finished_at": "2026-09-18T12:00:00Z",
+  "provider_request_id": null,
+  "usage": {
+    "availability": "unavailable",
+    "data": null,
+    "reason": "Not captured in synthetic fixture"
+  },
+  "error": null,
+  "outcome_uncertain": false
+}

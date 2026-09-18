@@ -1,0 +1,45 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "task_type": "synthetic_decision",
+    "input_ids": [
+      "obs-1"
+    ],
+    "input_artifact_ids": [
+      "artifact-1"
+    ],
+    "requested_model_id": "synthetic-no-model",
+    "prompt_version": null,
+    "rubric_version": {
+      "name": "synthetic",
+      "version": "fixture-v1"
+    },
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    },
+    "allowed_labels": [
+      "match",
+      "uncertain"
+    ],
+    "probabilities_required": true
+  },
+  "response": {
+    "status": "failed",
+    "value": null,
+    "error": {
+      "code": "fixture_unavailable",
+      "message": "Synthetic unavailable input",
+      "retryable": false,
+      "provider_request_id": null
+    },
+    "reason": null
+  }
+}
