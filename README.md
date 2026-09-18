@@ -35,6 +35,15 @@ git diff --check
 Tests block socket connections and need no credentials or providers. Ruff and
 Pyright are configured in `pyproject.toml`; Pyright uses strict checking.
 
+## Continuous integration
+
+`.github/workflows/ci.yml` runs these checks on pushes to `main` and pull requests
+targeting `main`. It uses Ubuntu 24.04, Python from `.python-version` (3.13.7),
+uv 0.8.23 and `uv sync --locked --dev`. Setup downloads tools/dependencies; the
+quality checks then run offline without provider/model credentials or paid calls.
+Actions are pinned to commit hashes and the workflow has read-only repository
+permissions. T00 acceptance requires its first passing GitHub Actions run.
+
 ## Contracts
 
 Python models live in `src/binfocheck/domain/`. Records use schema version `1`.

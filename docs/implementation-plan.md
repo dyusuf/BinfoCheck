@@ -132,7 +132,13 @@ or future-only fields. Do not start T11A or downstream tasks.
   detected; protocols and scripted doubles type-check. History remains separate.
 - Offline: passed. Live/deployed: not applicable to T00, not run. All artifacts are
   synthetic; no provider/model requests were made, so live usage/cost is zero.
-- Remaining T00 work: add the CI workflow and obtain its first passing run as
+- CI follow-up: `.github/workflows/ci.yml` now defines the required push/PR-to-main
+  checks using pinned actions, Python 3.13.7 and uv 0.8.23 with locked dependencies.
+  README documents the workflow. No provider/model credentials or calls are needed.
+  All seven local commands were rerun successfully (134 tests); workflow YAML,
+  triggers, permissions, action pins and command list were validated locally.
+  Hosted CI has not run; publishing the branch requires explicit user authorization.
+- Remaining T00 work: publish the branch and obtain its first passing CI run as
   required by the updated task card on `origin/main`. T11A is not started.
   No persistent backend or downstream behavior was implemented. Commits
   were subsequently authorized by the user; no push was performed.
