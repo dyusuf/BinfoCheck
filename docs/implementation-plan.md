@@ -1,6 +1,6 @@
 # BinfoCheck — Implementation Plan
 
-**Version:** 1.3 · 18 September 2026  
+**Version:** 1.4 · 19 September 2026  
 **Status:** All tasks not started. This plan is not implementation evidence.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
@@ -62,25 +62,45 @@ Each card lists dependencies, tools, owned files, required checks and a stop bou
 All listed checks are acceptance requirements; a blocked live check permits reporting
 offline progress, not full acceptance.
 
-### T00 — Shared contracts, examples and scaffold
+### T00 — Shared contracts, examples, scaffold and CI
 
-**Build:** repository scope/design documents. **Integrate:** none. **Decisions:** D01.  
-**Tools / files:** Python schema/test tooling; `domain/`, project configuration,
-`tests/fixtures/contracts/v1/`.
+**Build:** repository scope/design documents. **Integrate:** GitHub Actions CI. **Decisions:** D01.  
+**D01 resolved for T00:** Python 3.13; uv; Pydantic v2; pytest; Ruff; Pyright.  
+**Tools / files:** Python schema/test tooling; `domain/`, `schemas/v1/`,
+`tests/fixtures/contracts/v1/`, project configuration, README, and
+`.github/workflows/ci.yml`.
 
 Implement Architecture Section 3's records/interfaces, including storage interfaces
-and doubles—not a backend. Export schemas from types. Establish documented setup,
-offline test and any configured lint/type-check commands.
+and doubles—not a backend. Export JSON Schemas from the Python domain types into
+`schemas/v1/`. Establish reproducible setup, offline tests, linting, formatting,
+type checking, schema-drift checks, and a minimal GitHub Actions workflow.
+
+CI must run on pushes and pull requests to `main`, use Python 3.13 and the locked uv
+environment, and require no provider/model credentials or live/paid calls.
 
 **Checks:**
 1. Every boundary has valid, invalid-with-error and applicable unavailable-data
    examples. A linked observation → claim → finding → review resolves all IDs.
+   Storage interfaces/doubles exist, but persistent storage remains T11A.
 2. Serialization preserves IDs, nulls, enums and availability; invalid spans/statuses
-   fail rather than being repaired. Schema exports agree with types.
-3. `Äpfel 🍎 sind rot.` sliced `[8:17]` yields `sind rot.`. Missing citations differ
-   from an assessable empty list. Documented setup/tests run reproducibly.
+   and invalid linked-record relationships fail rather than being repaired. Schema
+   exports agree with the Python types. `Äpfel 🍎 sind rot.` sliced `[8:17]`
+   yields `sind rot.`; repeated text is disambiguated by location.
+3. These local checks pass:
+   - `uv sync --locked --dev`
+   - `uv run --offline --locked pytest`
+   - `uv run --offline --locked ruff check .`
+   - `uv run --offline --locked ruff format --check .`
+   - `uv run --offline --locked pyright`
+   - `uv run --offline --locked python -m binfocheck.domain.export_schemas --check`
+   - `git diff --check`
 
-**Stop:** provider calls, model prompts, storage deployment, UI or future-only fields.
+   GitHub Actions runs the same offline quality checks on push/PR to `main`; the first
+   CI run must pass before T00 is accepted.
+
+**Stop:** provider calls, Jev/hosted-LLM calls, claim extraction, citation mapping,
+corpus ingestion, retrieval, evidence classification, persistent storage, API, UI,
+or future-only fields. Do not start T11A or downstream tasks.
 
 ### T11A — Shared record and artifact storage
 
