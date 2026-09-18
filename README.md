@@ -1,27 +1,59 @@
 # BinfoCheck
 
-BinfoCheck measures citations and content overlap with diabinfo.de. It does not
-establish AI provenance or provide medical advice. This repository currently
-implements **T00: shared contracts, synthetic examples and tooling**.
+**Auditable measurement of citations and uncited content overlap in AI-generated search results.**
 
-## Setup
+BinfoCheck is being developed to help publishers answer a practical question:
 
-Use uv (verified with 0.8.23). `.python-version` pins CPython 3.13.7; the package
-targets Python 3.13. Install uv before running:
+> **When does AI search cite our website, and when do its answers match our content without citing us?**
+
+The system captures AI-search answers, extracts factual claims, records visible citations, and compares uncited claims with a monitored website's published content. It then distinguishes common/shared information from more distinctive overlap while preserving the evidence behind every finding.
+
+A content match does **not** prove that an AI system used that website as its source. BinfoCheck reports evidence of overlap, not certainty about provenance, and it does not provide medical advice.
+
+**First pilot:** German-language Google AI Mode answers compared with a selected collection of [diabinfo.de](https://www.diabinfo.de/) pages. The design keeps the monitored website configurable; broad multi-site support is outside the first MVP.
+
+## How it works
+
+```text
+AI-search observation
+        ↓
+claim extraction
+        ↓
+citation check
+        ↓
+website retrieval + matching
+        ↓
+distinctiveness assessment
+        ↓
+evidence classification
+        ↓
+editorial review
+```
+
+BinfoCheck currently uses four evidence levels:
+
+| Level | Meaning |
+| --- | --- |
+| **Cited website match** | The relevant AI content visibly cites the monitored website. |
+| **Uncited generic match** | The claim matches the website, but the information is common elsewhere. |
+| **Uncited distinctive match** | The match is more specific or unusual, but plausible alternative sources remain. |
+| **Uncited highly distinctive match** | The match contains an unusual combination of details with few visible alternative explanations. |
+
+The system can also return **no match**, **citation unclear**, or **not enough evidence**.
+
+## Current status
+
+The MVP is in development. The current engineering milestone, **T00**, establishes shared data contracts, synthetic fixtures, validation, and repository tooling for the later pipeline components.
+
+## Development
+
+The project uses Python 3.13 and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 uv sync --locked --dev
 ```
 
-Initial setup may download Python and locked dependencies. Pyright's Node runtime
-is included through its `nodejs` extra so checks do not bootstrap Node from the
-network. Pydantic v2 is the runtime dependency; pytest, Ruff, Pyright, jsonschema
-and its typing stubs are development dependencies. jsonschema checks exported
-schemas and structural fixture compatibility.
-
-## Offline checks
-
-Run from the repository root after setup:
+Run the offline checks:
 
 ```bash
 uv run --offline --locked pytest
@@ -32,72 +64,24 @@ uv run --offline --locked python -m binfocheck.domain.export_schemas --check
 git diff --check
 ```
 
-Tests block socket connections and need no credentials or providers. Ruff and
-Pyright are configured in `pyproject.toml`; Pyright uses strict checking.
+Tests run without provider credentials or paid API calls. CI runs the same quality checks for pushes to `main` and pull requests targeting `main`.
 
-## Continuous integration
+## Documentation
 
-`.github/workflows/ci.yml` runs these checks on pushes to `main` and pull requests
-targeting `main`. It uses Ubuntu 24.04, Python from `.python-version` (3.13.7),
-uv 0.8.23 and `uv sync --locked --dev`. Setup downloads tools/dependencies; the
-quality checks then run offline without provider/model credentials or paid calls.
-Actions are pinned to commit hashes and the workflow has read-only repository
-permissions. T00 acceptance requires its first passing GitHub Actions run.
+| Document | Purpose |
+| --- | --- |
+| [`docs/mvp.md`](docs/mvp.md) | Product scope and MVP completion criteria |
+| [`docs/architecture.md`](docs/architecture.md) | Components, contracts, and technical design |
+| [`docs/implementation-plan.md`](docs/implementation-plan.md) | Bounded engineering tasks |
+| [`docs/beyond-mvp.md`](docs/beyond-mvp.md) | Deferred benchmarking and product extensions |
+| [`AGENTS.md`](AGENTS.md) | Repository instructions for coding agents |
 
-## Contracts
+## Current implementation
 
-Python models live in `src/binfocheck/domain/`. Records use schema version `1`.
-Import concrete types from their domain modules; `Record`, `RecordSet` and
-`validate_links` are also exported by `binfocheck.domain`.
+Shared domain models live in `src/binfocheck/domain/`. Versioned JSON Schemas are generated into `schemas/v1/`, and synthetic contract fixtures live under `tests/fixtures/contracts/v1/`.
 
-Use `model_validate_json` (or `RECORD_ADAPTER.validate_json` for a record union)
-at JSON boundaries. Python construction is strict: pass actual enum members,
-UTC datetimes and tuples, rather than expecting coercion. Models reject unknown
-fields. Serialization uses `model_dump_json`, retaining nulls and defaults.
+Detailed record semantics, provenance rules, and component boundaries are documented in [`docs/architecture.md`](docs/architecture.md).
 
-Local Pydantic validation checks record shape and state consistency. Separately,
-`validate_links(RecordSet(...))` checks a complete bundle's references, run and
-observation membership, exact source spans, and history. It raises `LinkError`
-with a stable error code and owning record ID. It does not locate quotes, select
-context, route citations, judge evidence or execute pipeline stages.
+## License
 
-Offsets count Unicode code points in unchanged saved text, with an exclusive end.
-Repeated wording is identified by explicit offsets and, where supplied, the source
-unit. Available-empty, incomplete and unavailable data are distinct. Model usage
-can remain unknown; unknown is never converted to zero. Decision and generation
-outputs have distinct discriminated result shapes within `DecisionRecord`.
-
-Finding replacements and review corrections use new IDs and explicit supersession
-links. Prior records remain present. A finding history has one terminal selection
-per claim/run. Reviews remain separate events and cannot rewrite a finding.
-
-Query, reviewer, provider-request, model, configuration/version, duplicate-group,
-claim-group, storage-key and work-key identifiers name external entities or labels;
-they are not local record references. Index metadata is embedded and checked
-against its corpus and retrieval batch. Captures and corpus versions are inputs;
-analysis-derived records carry `analysis_run_id`.
-
-## Schemas and examples
-
-`schemas/v1/` contains generated JSON Schemas. Regenerate after an authorized
-contract change:
-
-```bash
-uv run --offline --locked python -m binfocheck.domain.export_schemas
-```
-
-The check compares complete deterministic exports and detects missing, changed or
-extra JSON files. Schemas derive from Python types; never edit them by hand.
-Custom semantic validators and cross-record relationships are enforced by Python,
-not fully expressible in JSON Schema. Schema validation alone is insufficient.
-
-`tests/fixtures/contracts/v1/` contains only labeled synthetic examples. The
-manifests enumerate every record and boundary's valid/invalid/missing-data coverage.
-`linked.json` is a complete linked graph, not a persistence format. Its model/rubric
-labels are placeholders; no prompts or business rubrics are implemented.
-
-Component interfaces and storage interfaces are protocols. `tests/doubles/`
-contains scripted responses that check fixture requests and record calls; it has
-no database, file storage or write semantics. T11A owns persistent storage and
-durability. Provider/model integrations and all downstream behavior remain outside
-T00.
+See [`LICENSE`](LICENSE).
