@@ -1,7 +1,7 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** All tasks not started. This plan is not implementation evidence.
+**Status:** T00 offline_passed; CI acceptance pending. All other tasks not started.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -101,6 +101,41 @@ environment, and require no provider/model credentials or live/paid calls.
 **Stop:** provider calls, Jev/hosted-LLM calls, claim extraction, citation mapping,
 corpus ingestion, retrieval, evidence classification, persistent storage, API, UI,
 or future-only fields. Do not start T11A or downstream tasks.
+
+**T00 handoff — 18 September 2026 / Codex / offline_passed (CI pending after rebase)**
+
+- Authorization: user's explicit T00 approval, including `schemas/v1/`, storage
+  interfaces/doubles only, and the six contract clarifications. D01 is resolved in
+  Architecture Section 8; D02 and all downstream decisions remain untouched.
+- Scope/versions: Architecture Sections 3, 7 and 8; schema `1`; synthetic fixtures
+  `tests/fixtures/contracts/v1/`, including `obs-1`, `claim-1`, `finding-1`,
+  `review-1` and `review-2`. Model/prompt/rubric labels are synthetic placeholders.
+- Files: `src/binfocheck/domain/` records, protocols, linked validation and exporter;
+  package initializers; `schemas/v1/` (64 generated schemas); `tests/contracts/`,
+  `tests/doubles/`, `tests/fixtures/contracts/v1/`, `tests/conftest.py`; `README.md`,
+  `.gitignore`, `.python-version`, `pyproject.toml`, `uv.lock`; D01 and this handoff.
+- Dependencies: Python 3.13.7, uv 0.8.23; exact package versions in `uv.lock`.
+  Build dependencies installed; the added GitHub Actions CI gate remains pending. Pyright's Node
+  runtime is installed with development dependencies for offline checks.
+- Required commands actually run and passed: `uv sync --locked --dev`;
+  `uv run --offline --locked pytest` (134 passed);
+  `uv run --offline --locked ruff check .`;
+  `uv run --offline --locked ruff format --check .`;
+  `uv run --offline --locked pyright` (zero errors/warnings);
+  `uv run --offline --locked python -m binfocheck.domain.export_schemas --check`;
+  `git diff --check`. Setup also ran `uv lock`; formatting/import fixes and schema
+  generation ran before the final checks.
+- Acceptance: all 10 original user criteria passed; the added CI gate remains pending.
+  All 20 record types and 21 operations
+  have fixture coverage; linked IDs resolve; round trips retain meaning; malformed
+  states/spans/relationships fail; Unicode/repeated locations pass; schema drift is
+  detected; protocols and scripted doubles type-check. History remains separate.
+- Offline: passed. Live/deployed: not applicable to T00, not run. All artifacts are
+  synthetic; no provider/model requests were made, so live usage/cost is zero.
+- Remaining T00 work: add the CI workflow and obtain its first passing run as
+  required by the updated task card on `origin/main`. T11A is not started.
+  No persistent backend or downstream behavior was implemented. Commits
+  were subsequently authorized by the user; no push was performed.
 
 ### T11A — Shared record and artifact storage
 
