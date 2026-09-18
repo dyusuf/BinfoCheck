@@ -1,5 +1,10 @@
 # BinfoCheck
 
+| | | | |
+| --- | --- | --- | --- |
+| **License** | [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE) | **Python** | [![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](.python-version) |
+| **Build** | [![CI](https://github.com/dyusuf/BinfoCheck/actions/workflows/ci.yml/badge.svg)](https://github.com/dyusuf/BinfoCheck/actions/workflows/ci.yml) | **Status** | MVP in development |
+
 **Auditable measurement of citations and uncited content overlap in AI-generated search results.**
 
 BinfoCheck helps publishers investigate a practical question:
@@ -10,11 +15,11 @@ BinfoCheck helps publishers investigate a practical question:
 
 BinfoCheck captures AI-search answers, extracts factual claims, records visible citations, and compares uncited claims with a website's published content.
 
-It distinguishes common information from more distinctive overlap and preserves the source evidence behind each finding for human review.
+It distinguishes common information from more distinctive overlap and preserves the evidence behind each finding for human review.
 
 A content match does **not** prove that an AI system used a particular website as its source. BinfoCheck measures evidence of overlap, not provenance.
 
-**First pilot:** German Google AI Mode results compared with selected [diabinfo.de](https://www.diabinfo.de/) content. The system is designed to keep the monitored website configurable.
+**First pilot:** German Google AI Mode results compared with selected [diabinfo.de](https://www.diabinfo.de/) content. The monitored website remains configurable.
 
 ## Workflow
 
@@ -36,16 +41,9 @@ AI-search results
 - [Beyond MVP](docs/beyond-mvp.md)
 - [Coding-agent instructions](AGENTS.md)
 
-## Development
+## Current status
 
-The project uses Python 3.13 and [uv](https://docs.astral.sh/uv/).
-
-```bash
-uv sync --locked --dev
-uv run --offline --locked pytest
-```
-
-The MVP is currently under development. The active implementation milestone establishes the shared contracts and infrastructure used by the later measurement pipeline.
+The MVP is under development. The current implementation establishes the shared contracts and infrastructure required by the later measurement pipeline.
 
 ## License
 
