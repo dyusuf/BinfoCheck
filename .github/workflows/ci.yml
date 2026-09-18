@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Offline quality checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: "0.8.23"
+          enable-cache: false
+
+      - name: Install pinned Python
+        run: uv python install
+
+      - name: Install locked dependencies
+        run: uv sync --locked --dev
+
+      - name: Run offline tests
+        run: uv run --offline --locked pytest
+
+      - name: Lint
+        run: uv run --offline --locked ruff check .
+
+      - name: Check formatting
+        run: uv run --offline --locked ruff format --check .
+
+      - name: Check types
+        run: uv run --offline --locked pyright
+
+      - name: Check schema drift
+        run: uv run --offline --locked python -m binfocheck.domain.export_schemas --check
+
+      - name: Check whitespace
+        run: git diff --check

@@ -1,0 +1,22 @@
+{
+  "kind": "citation_association",
+  "id": "citation-1",
+  "schema_version": "1",
+  "created_at": "2026-09-18T12:00:00Z",
+  "analysis_run_id": "run-1",
+  "input_ids": [
+    "claim-1",
+    "ref-1"
+  ],
+  "observation_id": "obs-1",
+  "claim_id": "claim-1",
+  "reference_ids": [],
+  "status": "unclear",
+  "scope_assessable": false,
+  "rule_version": {
+    "name": "synthetic",
+    "version": "fixture-v1"
+  },
+  "evidence_spans": [],
+  "reason": "Citation data unavailable"
+}

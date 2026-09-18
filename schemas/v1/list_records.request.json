@@ -1,0 +1,52 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "analysis_run_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Analysis Run Id"
+    },
+    "cursor": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cursor"
+    },
+    "limit": {
+      "default": 100,
+      "maximum": 1000,
+      "minimum": 1,
+      "title": "Limit",
+      "type": "integer"
+    },
+    "record_kind": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Record Kind"
+    }
+  },
+  "title": "ListRequest",
+  "type": "object"
+}

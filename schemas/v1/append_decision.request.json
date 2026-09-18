@@ -1,0 +1,523 @@
+{
+  "$defs": {
+    "Availability": {
+      "enum": [
+        "available",
+        "incomplete",
+        "unavailable"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "Available_Usage_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Usage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[Usage]",
+      "type": "object"
+    },
+    "Available_dict_str__Annotated_float__FieldInfo_annotation_NoneType__required_True__metadata__Ge_ge_0___Le_le_1____PydanticGeneralMetadata_allow_inf_nan_False______": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[dict[str, Annotated[float, FieldInfo(annotation=NoneType, required=True, metadata=[Ge(ge=0), Le(le=1), _PydanticGeneralMetadata(allow_inf_nan=False)])]]]",
+      "type": "object"
+    },
+    "Available_str_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[str]",
+      "type": "object"
+    },
+    "DecisionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_labels": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Labels",
+          "type": "array"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "probabilities": {
+          "$ref": "#/$defs/Available_dict_str__Annotated_float__FieldInfo_annotation_NoneType__required_True__metadata__Ge_ge_0___Le_le_1____PydanticGeneralMetadata_allow_inf_nan_False______",
+          "description": "Choice probabilities, not independent confidence scores. When available, all labels must be present and their probabilities must sum to 1 within absolute tolerance 1e-6. Incomplete distributions retain captured values without normalization."
+        },
+        "result_kind": {
+          "const": "decision",
+          "default": "decision",
+          "title": "Result Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "allowed_labels",
+        "label",
+        "probabilities"
+      ],
+      "title": "DecisionResult",
+      "type": "object"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Request Id"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "GenerationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "output_artifact_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Output Artifact Id",
+          "type": "string"
+        },
+        "output_schema": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "result_kind": {
+          "const": "generation",
+          "default": "generation",
+          "title": "Result Kind",
+          "type": "string"
+        },
+        "structured_output": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Structured Output",
+          "type": "object"
+        }
+      },
+      "required": [
+        "output_schema",
+        "structured_output",
+        "output_artifact_id"
+      ],
+      "title": "GenerationResult",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cost"
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Currency"
+        },
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Output Tokens"
+        },
+        "requests": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Requests"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "requests",
+        "cost",
+        "currency"
+      ],
+      "title": "Usage",
+      "type": "object"
+    },
+    "VersionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "VersionRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_run_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Analysis Run Id",
+      "type": "string"
+    },
+    "config_version": {
+      "$ref": "#/$defs/VersionRef"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorDetail"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "input_artifact_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Input Artifact Ids",
+      "type": "array"
+    },
+    "input_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Input Ids",
+      "type": "array"
+    },
+    "kind": {
+      "const": "decision_record",
+      "default": "decision_record",
+      "title": "Kind",
+      "type": "string"
+    },
+    "prompt_version": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VersionRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "provider_request_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Provider Request Id"
+    },
+    "requested_model_id": {
+      "minLength": 1,
+      "title": "Requested Model Id",
+      "type": "string"
+    },
+    "result": {
+      "anyOf": [
+        {
+          "discriminator": {
+            "mapping": {
+              "decision": "#/$defs/DecisionResult",
+              "generation": "#/$defs/GenerationResult"
+            },
+            "propertyName": "result_kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DecisionResult"
+            },
+            {
+              "$ref": "#/$defs/GenerationResult"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Result"
+    },
+    "returned_model_id": {
+      "$ref": "#/$defs/Available_str_"
+    },
+    "rubric_version": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VersionRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "succeeded",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "task_type": {
+      "minLength": 1,
+      "title": "Task Type",
+      "type": "string"
+    },
+    "usage": {
+      "$ref": "#/$defs/Available_Usage_"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "analysis_run_id",
+    "input_ids",
+    "task_type",
+    "input_artifact_ids",
+    "requested_model_id",
+    "returned_model_id",
+    "prompt_version",
+    "rubric_version",
+    "config_version",
+    "status",
+    "result",
+    "usage",
+    "started_at",
+    "finished_at",
+    "error",
+    "provider_request_id"
+  ],
+  "title": "DecisionRecord",
+  "type": "object"
+}

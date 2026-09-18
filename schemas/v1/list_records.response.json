@@ -1,0 +1,3203 @@
+{
+  "$defs": {
+    "AlternativeInspection": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "claim_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "correspondence": {
+          "$ref": "#/$defs/CorrespondenceStatus"
+        },
+        "coverage": {
+          "enum": [
+            "assessable",
+            "insufficient"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "coverage_reason": {
+          "minLength": 1,
+          "title": "Coverage Reason",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Decision Id"
+        },
+        "duplicate_group": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Duplicate Group"
+        },
+        "excerpt_text_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Excerpt Text Id"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "alternative_inspection",
+          "default": "alternative_inspection",
+          "title": "Kind",
+          "type": "string"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_reference_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Source Reference Id",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "inspected",
+            "unassessed"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "observation_id",
+        "claim_id",
+        "source_reference_id",
+        "excerpt_text_id",
+        "state",
+        "correspondence",
+        "decision_id",
+        "coverage",
+        "coverage_reason",
+        "duplicate_group"
+      ],
+      "title": "AlternativeInspection",
+      "type": "object"
+    },
+    "ArticleVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "cleaned_text_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cleaned Text Id"
+        },
+        "content_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Content Sha256"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "fetched_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fetched At"
+        },
+        "heading_spans": {
+          "items": {
+            "$ref": "#/$defs/SpanRef"
+          },
+          "title": "Heading Spans",
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "article_version",
+          "default": "article_version",
+          "title": "Kind",
+          "type": "string"
+        },
+        "parser_version": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "previous_version_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Previous Version Id"
+        },
+        "raw_artifact_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Artifact Id"
+        },
+        "raw_text_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Text Id"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "usable",
+            "failed",
+            "unusable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Title"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "url",
+        "raw_artifact_id",
+        "raw_text_id",
+        "cleaned_text_id",
+        "title",
+        "heading_spans",
+        "fetched_at",
+        "content_sha256",
+        "parser_version",
+        "status",
+        "reason"
+      ],
+      "title": "ArticleVersion",
+      "type": "object"
+    },
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "enum": [
+            "shareable_fixture",
+            "restricted"
+          ],
+          "title": "Access",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "artifact",
+          "default": "artifact",
+          "title": "Kind",
+          "type": "string"
+        },
+        "media_type": {
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "redacted_transport_fields": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Redacted Transport Fields",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "storage_key": {
+          "minLength": 1,
+          "title": "Storage Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "storage_key",
+        "sha256",
+        "media_type",
+        "access"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "Availability": {
+      "enum": [
+        "available",
+        "incomplete",
+        "unavailable"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "Available_Settings_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Settings"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[Settings]",
+      "type": "object"
+    },
+    "Available_SpanRef_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SpanRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[SpanRef]",
+      "type": "object"
+    },
+    "Available_Usage_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Usage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[Usage]",
+      "type": "object"
+    },
+    "Available_dict_str__Annotated_float__FieldInfo_annotation_NoneType__required_True__metadata__Ge_ge_0___Le_le_1____PydanticGeneralMetadata_allow_inf_nan_False______": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[dict[str, Annotated[float, FieldInfo(annotation=NoneType, required=True, metadata=[Ge(ge=0), Le(le=1), _PydanticGeneralMetadata(allow_inf_nan=False)])]]]",
+      "type": "object"
+    },
+    "Available_str_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[str]",
+      "type": "object"
+    },
+    "Available_tuple_Annotated_str__FieldInfo_annotation_NoneType__required_True__metadata__MinLen_min_length_1____PydanticGeneralMetadata_pattern____A-Za-z0-9__A-Za-z0-9_____________________": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "items": {
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[tuple[Annotated[str, FieldInfo(annotation=NoneType, required=True, metadata=[MinLen(min_length=1), _PydanticGeneralMetadata(pattern='^[A-Za-z0-9][A-Za-z0-9_.:-]*$')])], ...]]",
+      "type": "object"
+    },
+    "Available_tuple_str__________": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[tuple[str, ...]]",
+      "type": "object"
+    },
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "concurrency": {
+          "exclusiveMinimum": 0,
+          "title": "Concurrency",
+          "type": "integer"
+        },
+        "cost_limit": {
+          "minimum": 0,
+          "title": "Cost Limit",
+          "type": "number"
+        },
+        "currency": {
+          "minLength": 1,
+          "title": "Currency",
+          "type": "string"
+        },
+        "request_limit": {
+          "minimum": 0,
+          "title": "Request Limit",
+          "type": "integer"
+        },
+        "retry_limit": {
+          "minimum": 0,
+          "title": "Retry Limit",
+          "type": "integer"
+        },
+        "timeout_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Timeout Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "request_limit",
+        "cost_limit",
+        "currency",
+        "timeout_seconds",
+        "concurrency",
+        "retry_limit"
+      ],
+      "title": "Budget",
+      "type": "object"
+    },
+    "CandidatePair": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "claim_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "context_passage_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Context Passage Ids",
+          "type": "array"
+        },
+        "corpus_manifest_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Corpus Manifest Id",
+          "type": "string"
+        },
+        "correspondence_decision_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Correspondence Decision Id"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "fused_rank": {
+          "exclusiveMinimum": 0,
+          "title": "Fused Rank",
+          "type": "integer"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "index_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Index Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "candidate_pair",
+          "default": "candidate_pair",
+          "title": "Kind",
+          "type": "string"
+        },
+        "passage_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Passage Id",
+          "type": "string"
+        },
+        "path_ranks": {
+          "items": {
+            "$ref": "#/$defs/PathRank"
+          },
+          "minItems": 1,
+          "title": "Path Ranks",
+          "type": "array"
+        },
+        "retrieval_batch_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Retrieval Batch Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "verification_decision_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Verification Decision Id"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "claim_id",
+        "retrieval_batch_id",
+        "corpus_manifest_id",
+        "index_id",
+        "passage_id",
+        "path_ranks",
+        "fused_rank",
+        "context_passage_ids",
+        "verification_decision_id",
+        "correspondence_decision_id"
+      ],
+      "title": "CandidatePair",
+      "type": "object"
+    },
+    "CaptureRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "capture_request",
+          "default": "capture_request",
+          "title": "Kind",
+          "type": "string"
+        },
+        "product": {
+          "const": "google_ai_mode",
+          "title": "Product",
+          "type": "string"
+        },
+        "provider": {
+          "const": "dataforseo",
+          "title": "Provider",
+          "type": "string"
+        },
+        "query": {
+          "minLength": 1,
+          "title": "Query",
+          "type": "string"
+        },
+        "query_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Query Id",
+          "type": "string"
+        },
+        "requested_settings": {
+          "$ref": "#/$defs/Settings"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "query_id",
+        "query",
+        "product",
+        "provider",
+        "requested_settings"
+      ],
+      "title": "CaptureRequest",
+      "type": "object"
+    },
+    "CitationAssociation": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "claim_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "evidence_spans": {
+          "items": {
+            "$ref": "#/$defs/SpanRef"
+          },
+          "title": "Evidence Spans",
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "citation_association",
+          "default": "citation_association",
+          "title": "Kind",
+          "type": "string"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "reference_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Reference Ids",
+          "type": "array"
+        },
+        "rule_version": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope_assessable": {
+          "title": "Scope Assessable",
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/$defs/CitationStatus"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "observation_id",
+        "claim_id",
+        "reference_ids",
+        "status",
+        "scope_assessable",
+        "rule_version",
+        "evidence_spans",
+        "reason"
+      ],
+      "title": "CitationAssociation",
+      "type": "object"
+    },
+    "CitationStatus": {
+      "enum": [
+        "yes",
+        "no",
+        "unclear"
+      ],
+      "title": "CitationStatus",
+      "type": "string"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "claim_group_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Claim Group Id",
+          "type": "string"
+        },
+        "context_unit_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Context Unit Ids",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "decision_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Decision Ids",
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "claim",
+          "default": "claim",
+          "title": "Kind",
+          "type": "string"
+        },
+        "language": {
+          "const": "de",
+          "default": "de",
+          "title": "Language",
+          "type": "string"
+        },
+        "normalized_claim": {
+          "minLength": 1,
+          "title": "Normalized Claim",
+          "type": "string"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "original_span": {
+          "$ref": "#/$defs/SpanRef"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "observation_id",
+        "normalized_claim",
+        "original_span",
+        "context_unit_ids",
+        "decision_ids",
+        "claim_group_id"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "CorpusManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "article_version_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Article Version Ids",
+          "type": "array"
+        },
+        "construction_version": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "corpus_manifest",
+          "default": "corpus_manifest",
+          "title": "Kind",
+          "type": "string"
+        },
+        "passage_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Passage Ids",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ready",
+            "incomplete",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "article_version_ids",
+        "passage_ids",
+        "construction_version",
+        "status",
+        "reason"
+      ],
+      "title": "CorpusManifest",
+      "type": "object"
+    },
+    "CorrespondenceStatus": {
+      "enum": [
+        "match",
+        "partial_match",
+        "no_match",
+        "uncertain",
+        "not_assessed"
+      ],
+      "title": "CorrespondenceStatus",
+      "type": "string"
+    },
+    "DecisionRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "config_version": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "finished_at": {
+          "format": "date-time",
+          "title": "Finished At",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_artifact_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Input Artifact Ids",
+          "type": "array"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "decision_record",
+          "default": "decision_record",
+          "title": "Kind",
+          "type": "string"
+        },
+        "prompt_version": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Provider Request Id"
+        },
+        "requested_model_id": {
+          "minLength": 1,
+          "title": "Requested Model Id",
+          "type": "string"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "decision": "#/$defs/DecisionResult",
+                  "generation": "#/$defs/GenerationResult"
+                },
+                "propertyName": "result_kind"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DecisionResult"
+                },
+                {
+                  "$ref": "#/$defs/GenerationResult"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Result"
+        },
+        "returned_model_id": {
+          "$ref": "#/$defs/Available_str_"
+        },
+        "rubric_version": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "task_type": {
+          "minLength": 1,
+          "title": "Task Type",
+          "type": "string"
+        },
+        "usage": {
+          "$ref": "#/$defs/Available_Usage_"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "task_type",
+        "input_artifact_ids",
+        "requested_model_id",
+        "returned_model_id",
+        "prompt_version",
+        "rubric_version",
+        "config_version",
+        "status",
+        "result",
+        "usage",
+        "started_at",
+        "finished_at",
+        "error",
+        "provider_request_id"
+      ],
+      "title": "DecisionRecord",
+      "type": "object"
+    },
+    "DecisionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_labels": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Labels",
+          "type": "array"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "probabilities": {
+          "$ref": "#/$defs/Available_dict_str__Annotated_float__FieldInfo_annotation_NoneType__required_True__metadata__Ge_ge_0___Le_le_1____PydanticGeneralMetadata_allow_inf_nan_False______",
+          "description": "Choice probabilities, not independent confidence scores. When available, all labels must be present and their probabilities must sum to 1 within absolute tolerance 1e-6. Incomplete distributions retain captured values without normalization."
+        },
+        "result_kind": {
+          "const": "decision",
+          "default": "decision",
+          "title": "Result Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "allowed_labels",
+        "label",
+        "probabilities"
+      ],
+      "title": "DecisionResult",
+      "type": "object"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Request Id"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "ExtractionIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "context_unit_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Context Unit Ids",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "decision_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Decision Ids",
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "issue": {
+          "enum": [
+            "invalid",
+            "unlocatable",
+            "ambiguous",
+            "unresolved",
+            "excluded",
+            "failed"
+          ],
+          "title": "Issue",
+          "type": "string"
+        },
+        "kind": {
+          "const": "extraction_issue",
+          "default": "extraction_issue",
+          "title": "Kind",
+          "type": "string"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "original_span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SpanRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "proposed_claim": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Proposed Claim"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "observation_id",
+        "issue",
+        "reason",
+        "proposed_claim",
+        "original_span",
+        "context_unit_ids",
+        "decision_ids"
+      ],
+      "title": "ExtractionIssue",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_inspection_ids": {
+          "$ref": "#/$defs/Available_tuple_Annotated_str__FieldInfo_annotation_NoneType__required_True__metadata__MinLen_min_length_1____PydanticGeneralMetadata_pattern____A-Za-z0-9__A-Za-z0-9_____________________"
+        },
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "candidate_pair_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Candidate Pair Ids",
+          "type": "array"
+        },
+        "category": {
+          "anyOf": [
+            {
+              "enum": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Category"
+        },
+        "citation_association_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Citation Association Id",
+          "type": "string"
+        },
+        "claim_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "decision_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Decision Ids",
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "finding",
+          "default": "finding",
+          "title": "Kind",
+          "type": "string"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "provisional_scores": {
+          "$ref": "#/$defs/Available_dict_str__Annotated_float__FieldInfo_annotation_NoneType__required_True__metadata__Ge_ge_0___Le_le_1____PydanticGeneralMetadata_allow_inf_nan_False______"
+        },
+        "reason_codes": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/FindingStatus"
+        },
+        "supersedes_finding_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supersedes Finding Id"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "observation_id",
+        "claim_id",
+        "citation_association_id",
+        "status",
+        "category",
+        "candidate_pair_ids",
+        "decision_ids",
+        "alternative_inspection_ids",
+        "provisional_scores",
+        "reason_codes"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "FindingStatus": {
+      "enum": [
+        "categorized",
+        "no_match_found",
+        "citation_unclear",
+        "not_enough_evidence",
+        "pending",
+        "processing_failed"
+      ],
+      "title": "FindingStatus",
+      "type": "string"
+    },
+    "GenerationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "output_artifact_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Output Artifact Id",
+          "type": "string"
+        },
+        "output_schema": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "result_kind": {
+          "const": "generation",
+          "default": "generation",
+          "title": "Result Kind",
+          "type": "string"
+        },
+        "structured_output": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Structured Output",
+          "type": "object"
+        }
+      },
+      "required": [
+        "output_schema",
+        "structured_output",
+        "output_artifact_id"
+      ],
+      "title": "GenerationResult",
+      "type": "object"
+    },
+    "IndexRef": {
+      "additionalProperties": false,
+      "properties": {
+        "corpus_manifest_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Corpus Manifest Id",
+          "type": "string"
+        },
+        "embedding_dimensions": {
+          "exclusiveMinimum": 0,
+          "title": "Embedding Dimensions",
+          "type": "integer"
+        },
+        "embedding_model": {
+          "minLength": 1,
+          "title": "Embedding Model",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "lexical_settings": {
+          "$ref": "#/$defs/Settings"
+        },
+        "version": {
+          "$ref": "#/$defs/VersionRef"
+        }
+      },
+      "required": [
+        "id",
+        "corpus_manifest_id",
+        "version",
+        "embedding_model",
+        "embedding_dimensions",
+        "lexical_settings"
+      ],
+      "title": "IndexRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Observation": {
+      "additionalProperties": false,
+      "properties": {
+        "answer_text_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Answer Text Id"
+        },
+        "citation_reference_ids": {
+          "$ref": "#/$defs/Available_tuple_Annotated_str__FieldInfo_annotation_NoneType__required_True__metadata__MinLen_min_length_1____PydanticGeneralMetadata_pattern____A-Za-z0-9__A-Za-z0-9_____________________"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "fanout_queries": {
+          "$ref": "#/$defs/Available_tuple_str__________"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "observation",
+          "default": "observation",
+          "title": "Kind",
+          "type": "string"
+        },
+        "normalization_version": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "product": {
+          "const": "google_ai_mode",
+          "title": "Product",
+          "type": "string"
+        },
+        "provider": {
+          "const": "dataforseo",
+          "title": "Provider",
+          "type": "string"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Request Id"
+        },
+        "query_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Query Id",
+          "type": "string"
+        },
+        "raw_artifact_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Artifact Id"
+        },
+        "reported_settings": {
+          "$ref": "#/$defs/Available_Settings_"
+        },
+        "request_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "requested_settings": {
+          "$ref": "#/$defs/Settings"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_reference_ids": {
+          "$ref": "#/$defs/Available_tuple_Annotated_str__FieldInfo_annotation_NoneType__required_True__metadata__MinLen_min_length_1____PydanticGeneralMetadata_pattern____A-Za-z0-9__A-Za-z0-9_____________________"
+        },
+        "status": {
+          "$ref": "#/$defs/ProcessingStatus"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "request_id",
+        "query_id",
+        "product",
+        "provider",
+        "requested_settings",
+        "reported_settings",
+        "status",
+        "raw_artifact_id",
+        "answer_text_id",
+        "source_reference_ids",
+        "citation_reference_ids",
+        "fanout_queries",
+        "normalization_version"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "Passage": {
+      "additionalProperties": false,
+      "properties": {
+        "article_version_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Article Version Id",
+          "type": "string"
+        },
+        "construction_version": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "heading_spans": {
+          "items": {
+            "$ref": "#/$defs/SpanRef"
+          },
+          "title": "Heading Spans",
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "passage",
+          "default": "passage",
+          "title": "Kind",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "parent_passage_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Passage Id"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/SpanRef"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "article_version_id",
+        "order",
+        "span",
+        "heading_spans",
+        "construction_version"
+      ],
+      "title": "Passage",
+      "type": "object"
+    },
+    "PathRank": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "enum": [
+            "semantic",
+            "lexical"
+          ],
+          "title": "Path",
+          "type": "string"
+        },
+        "rank": {
+          "exclusiveMinimum": 0,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "path",
+        "rank",
+        "score"
+      ],
+      "title": "PathRank",
+      "type": "object"
+    },
+    "ProcessingStatus": {
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "skipped"
+      ],
+      "title": "ProcessingStatus",
+      "type": "string"
+    },
+    "RecordPage": {
+      "additionalProperties": false,
+      "properties": {
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Next Cursor"
+        },
+        "records": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "alternative_inspection": "#/$defs/AlternativeInspection",
+                "article_version": "#/$defs/ArticleVersion",
+                "artifact": "#/$defs/ArtifactRef",
+                "candidate_pair": "#/$defs/CandidatePair",
+                "capture_request": "#/$defs/CaptureRequest",
+                "citation_association": "#/$defs/CitationAssociation",
+                "claim": "#/$defs/Claim",
+                "corpus_manifest": "#/$defs/CorpusManifest",
+                "decision_record": "#/$defs/DecisionRecord",
+                "extraction_issue": "#/$defs/ExtractionIssue",
+                "finding": "#/$defs/Finding",
+                "observation": "#/$defs/Observation",
+                "passage": "#/$defs/Passage",
+                "retrieval_batch": "#/$defs/RetrievalBatch",
+                "review": "#/$defs/Review",
+                "run_manifest": "#/$defs/RunManifest",
+                "source_reference": "#/$defs/SourceReference",
+                "step_attempt": "#/$defs/StepAttempt",
+                "text": "#/$defs/TextRecord",
+                "text_unit": "#/$defs/TextUnit"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ArtifactRef"
+              },
+              {
+                "$ref": "#/$defs/TextRecord"
+              },
+              {
+                "$ref": "#/$defs/CaptureRequest"
+              },
+              {
+                "$ref": "#/$defs/Observation"
+              },
+              {
+                "$ref": "#/$defs/SourceReference"
+              },
+              {
+                "$ref": "#/$defs/TextUnit"
+              },
+              {
+                "$ref": "#/$defs/Claim"
+              },
+              {
+                "$ref": "#/$defs/ExtractionIssue"
+              },
+              {
+                "$ref": "#/$defs/CitationAssociation"
+              },
+              {
+                "$ref": "#/$defs/ArticleVersion"
+              },
+              {
+                "$ref": "#/$defs/Passage"
+              },
+              {
+                "$ref": "#/$defs/CorpusManifest"
+              },
+              {
+                "$ref": "#/$defs/RetrievalBatch"
+              },
+              {
+                "$ref": "#/$defs/CandidatePair"
+              },
+              {
+                "$ref": "#/$defs/DecisionRecord"
+              },
+              {
+                "$ref": "#/$defs/AlternativeInspection"
+              },
+              {
+                "$ref": "#/$defs/Finding"
+              },
+              {
+                "$ref": "#/$defs/RunManifest"
+              },
+              {
+                "$ref": "#/$defs/StepAttempt"
+              },
+              {
+                "$ref": "#/$defs/Review"
+              }
+            ]
+          },
+          "title": "Records",
+          "type": "array"
+        }
+      },
+      "required": [
+        "records",
+        "next_cursor"
+      ],
+      "title": "RecordPage",
+      "type": "object"
+    },
+    "RetrievalBatch": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "candidate_pair_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Candidate Pair Ids",
+          "type": "array"
+        },
+        "claim_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "completion": {
+          "enum": [
+            "complete",
+            "incomplete",
+            "failed"
+          ],
+          "title": "Completion",
+          "type": "string"
+        },
+        "corpus_manifest_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Corpus Manifest Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "index": {
+          "$ref": "#/$defs/IndexRef"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "retrieval_batch",
+          "default": "retrieval_batch",
+          "title": "Kind",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "settings": {
+          "$ref": "#/$defs/Settings"
+        },
+        "truncation_reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Truncation Reason"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "claim_id",
+        "corpus_manifest_id",
+        "index",
+        "candidate_pair_ids",
+        "completion",
+        "truncation_reason",
+        "settings"
+      ],
+      "title": "RetrievalBatch",
+      "type": "object"
+    },
+    "Review": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "correction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewCorrection"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "confirmed",
+            "rejected",
+            "corrected"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "finding_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "review",
+          "default": "review",
+          "title": "Kind",
+          "type": "string"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        },
+        "reviewer_id": {
+          "minLength": 1,
+          "title": "Reviewer Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "supersedes_review_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supersedes Review Id"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "finding_id",
+        "reviewer_id",
+        "decision",
+        "note",
+        "correction"
+      ],
+      "title": "Review",
+      "type": "object"
+    },
+    "ReviewCorrection": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "anyOf": [
+            {
+              "enum": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Category"
+        },
+        "status": {
+          "$ref": "#/$defs/FindingStatus"
+        }
+      },
+      "required": [
+        "status",
+        "category"
+      ],
+      "title": "ReviewCorrection",
+      "type": "object"
+    },
+    "RunManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "budget": {
+          "$ref": "#/$defs/Budget"
+        },
+        "capture_settings": {
+          "$ref": "#/$defs/Settings"
+        },
+        "configuration": {
+          "$ref": "#/$defs/VersionRef"
+        },
+        "corpus_manifest_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Corpus Manifest Id"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "run_manifest",
+          "default": "run_manifest",
+          "title": "Kind",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "capture",
+            "reanalysis"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "model_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Model Ids",
+          "type": "array"
+        },
+        "observation_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Observation Ids",
+          "type": "array"
+        },
+        "prompt_versions": {
+          "items": {
+            "$ref": "#/$defs/VersionRef"
+          },
+          "title": "Prompt Versions",
+          "type": "array"
+        },
+        "purpose": {
+          "enum": [
+            "diagnostic",
+            "monitoring"
+          ],
+          "title": "Purpose",
+          "type": "string"
+        },
+        "rubric_versions": {
+          "items": {
+            "$ref": "#/$defs/VersionRef"
+          },
+          "title": "Rubric Versions",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ProcessingStatus"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "input_ids",
+        "observation_ids",
+        "corpus_manifest_id",
+        "purpose",
+        "mode",
+        "capture_settings",
+        "configuration",
+        "model_ids",
+        "prompt_versions",
+        "rubric_versions",
+        "budget",
+        "status"
+      ],
+      "title": "RunManifest",
+      "type": "object"
+    },
+    "Settings": {
+      "additionalProperties": false,
+      "properties": {
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Values",
+          "type": "object"
+        },
+        "version": {
+          "$ref": "#/$defs/VersionRef"
+        }
+      },
+      "required": [
+        "version",
+        "values"
+      ],
+      "title": "Settings",
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SpanRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "duplicate_group": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duplicate Group"
+        },
+        "excerpt": {
+          "$ref": "#/$defs/Available_SpanRef_"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "source_reference",
+          "default": "source_reference",
+          "title": "Kind",
+          "type": "string"
+        },
+        "metadata_artifact_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Metadata Artifact Id",
+          "type": "string"
+        },
+        "metadata_location": {
+          "minLength": 1,
+          "title": "Metadata Location",
+          "type": "string"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "reference_kind": {
+          "enum": [
+            "citation",
+            "reference",
+            "search_result"
+          ],
+          "title": "Reference Kind",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "observation_id",
+        "url",
+        "metadata_artifact_id",
+        "metadata_location",
+        "reference_kind",
+        "excerpt"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    },
+    "SpanRef": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "exact_text": {
+          "minLength": 1,
+          "title": "Exact Text",
+          "type": "string"
+        },
+        "source_unit_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Unit Id"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "text_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Text Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text_id",
+        "start",
+        "end",
+        "exact_text"
+      ],
+      "title": "SpanRef",
+      "type": "object"
+    },
+    "StepAttempt": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "attempt_number": {
+          "exclusiveMinimum": 0,
+          "title": "Attempt Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Finished At"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "step_attempt",
+          "default": "step_attempt",
+          "title": "Kind",
+          "type": "string"
+        },
+        "outcome_uncertain": {
+          "title": "Outcome Uncertain",
+          "type": "boolean"
+        },
+        "output_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Output Ids",
+          "type": "array"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Provider Request Id"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ProcessingStatus"
+        },
+        "step": {
+          "minLength": 1,
+          "title": "Step",
+          "type": "string"
+        },
+        "usage": {
+          "$ref": "#/$defs/Available_Usage_"
+        },
+        "work_key": {
+          "minLength": 1,
+          "title": "Work Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "step",
+        "work_key",
+        "attempt_number",
+        "status",
+        "output_ids",
+        "started_at",
+        "finished_at",
+        "provider_request_id",
+        "usage",
+        "error",
+        "outcome_uncertain"
+      ],
+      "title": "StepAttempt",
+      "type": "object"
+    },
+    "TextRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_text_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Text Id"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "transformation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "artifact_id"
+      ],
+      "title": "TextRecord",
+      "type": "object"
+    },
+    "TextUnit": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "heading_unit_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heading Unit Id"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_ids": {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Ids",
+          "type": "array"
+        },
+        "kind": {
+          "const": "text_unit",
+          "default": "text_unit",
+          "title": "Kind",
+          "type": "string"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "parent_unit_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Unit Id"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/SpanRef"
+        },
+        "unit_kind": {
+          "enum": [
+            "heading",
+            "paragraph",
+            "bullet",
+            "sentence"
+          ],
+          "title": "Unit Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "analysis_run_id",
+        "input_ids",
+        "observation_id",
+        "unit_kind",
+        "order",
+        "span"
+      ],
+      "title": "TextUnit",
+      "type": "object"
+    },
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cost"
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Currency"
+        },
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Output Tokens"
+        },
+        "requests": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Requests"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "requests",
+        "cost",
+        "currency"
+      ],
+      "title": "Usage",
+      "type": "object"
+    },
+    "VersionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "VersionRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorDetail"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason"
+    },
+    "status": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "skipped"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "value": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RecordPage"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "status",
+    "value",
+    "error"
+  ],
+  "title": "Outcome[RecordPage]",
+  "type": "object"
+}

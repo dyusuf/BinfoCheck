@@ -1,0 +1,32 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "observation_id": "obs-1",
+    "target_unit_ids": [
+      "unit-2"
+    ],
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    }
+  },
+  "response": {
+    "status": "succeeded",
+    "value": {
+      "observation_id": "obs-1",
+      "ordered_unit_ids": [
+        "unit-1",
+        "unit-2"
+      ]
+    },
+    "error": null,
+    "reason": null
+  }
+}

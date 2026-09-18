@@ -1,0 +1,16 @@
+{
+  "request": {
+    "id": "claim-1"
+  },
+  "response": {
+    "status": "failed",
+    "value": null,
+    "error": {
+      "code": "fixture_unavailable",
+      "message": "Synthetic unavailable input",
+      "retryable": false,
+      "provider_request_id": null
+    },
+    "reason": null
+  }
+}

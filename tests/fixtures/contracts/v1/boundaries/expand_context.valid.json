@@ -1,0 +1,28 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "candidate_pair_id": "pair-1",
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    }
+  },
+  "response": {
+    "status": "succeeded",
+    "value": {
+      "candidate_pair_id": "pair-1",
+      "ordered_passage_ids": [
+        "passage-1"
+      ]
+    },
+    "error": null,
+    "reason": null
+  }
+}

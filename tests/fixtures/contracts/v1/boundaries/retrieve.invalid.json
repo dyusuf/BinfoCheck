@@ -1,0 +1,53 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "claim_id": "claim-1",
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    },
+    "index": {
+      "id": "index-1",
+      "corpus_manifest_id": "corpus-1",
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "embedding_model": "synthetic-no-model",
+      "embedding_dimensions": 3,
+      "lexical_settings": {
+        "version": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "values": {
+          "language": "de",
+          "location": "DE",
+          "device": "desktop"
+        }
+      }
+    },
+    "unexpected_field": true
+  },
+  "response": {
+    "status": "succeeded",
+    "value": null,
+    "error": null,
+    "reason": null
+  },
+  "request_error": {
+    "type": "extra_forbidden",
+    "contains": null
+  },
+  "response_error": {
+    "type": "value_error",
+    "contains": "success_requires_value_without_error"
+  }
+}

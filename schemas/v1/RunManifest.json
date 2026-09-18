@@ -1,0 +1,240 @@
+{
+  "$defs": {
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "concurrency": {
+          "exclusiveMinimum": 0,
+          "title": "Concurrency",
+          "type": "integer"
+        },
+        "cost_limit": {
+          "minimum": 0,
+          "title": "Cost Limit",
+          "type": "number"
+        },
+        "currency": {
+          "minLength": 1,
+          "title": "Currency",
+          "type": "string"
+        },
+        "request_limit": {
+          "minimum": 0,
+          "title": "Request Limit",
+          "type": "integer"
+        },
+        "retry_limit": {
+          "minimum": 0,
+          "title": "Retry Limit",
+          "type": "integer"
+        },
+        "timeout_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Timeout Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "request_limit",
+        "cost_limit",
+        "currency",
+        "timeout_seconds",
+        "concurrency",
+        "retry_limit"
+      ],
+      "title": "Budget",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "ProcessingStatus": {
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "skipped"
+      ],
+      "title": "ProcessingStatus",
+      "type": "string"
+    },
+    "Settings": {
+      "additionalProperties": false,
+      "properties": {
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Values",
+          "type": "object"
+        },
+        "version": {
+          "$ref": "#/$defs/VersionRef"
+        }
+      },
+      "required": [
+        "version",
+        "values"
+      ],
+      "title": "Settings",
+      "type": "object"
+    },
+    "VersionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "VersionRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "budget": {
+      "$ref": "#/$defs/Budget"
+    },
+    "capture_settings": {
+      "$ref": "#/$defs/Settings"
+    },
+    "configuration": {
+      "$ref": "#/$defs/VersionRef"
+    },
+    "corpus_manifest_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Corpus Manifest Id"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "input_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Input Ids",
+      "type": "array"
+    },
+    "kind": {
+      "const": "run_manifest",
+      "default": "run_manifest",
+      "title": "Kind",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "capture",
+        "reanalysis"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "model_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Model Ids",
+      "type": "array"
+    },
+    "observation_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Observation Ids",
+      "type": "array"
+    },
+    "prompt_versions": {
+      "items": {
+        "$ref": "#/$defs/VersionRef"
+      },
+      "title": "Prompt Versions",
+      "type": "array"
+    },
+    "purpose": {
+      "enum": [
+        "diagnostic",
+        "monitoring"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "rubric_versions": {
+      "items": {
+        "$ref": "#/$defs/VersionRef"
+      },
+      "title": "Rubric Versions",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ProcessingStatus"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "input_ids",
+    "observation_ids",
+    "corpus_manifest_id",
+    "purpose",
+    "mode",
+    "capture_settings",
+    "configuration",
+    "model_ids",
+    "prompt_versions",
+    "rubric_versions",
+    "budget",
+    "status"
+  ],
+  "title": "RunManifest",
+  "type": "object"
+}

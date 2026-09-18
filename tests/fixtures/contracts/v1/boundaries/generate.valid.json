@@ -1,0 +1,87 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "task_type": "synthetic_generation",
+    "input_ids": [
+      "obs-1"
+    ],
+    "input_artifact_ids": [
+      "artifact-1"
+    ],
+    "requested_model_id": "synthetic-no-model",
+    "prompt_version": {
+      "name": "synthetic",
+      "version": "fixture-v1"
+    },
+    "rubric_version": null,
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    },
+    "output_schema": {
+      "name": "synthetic",
+      "version": "fixture-v1"
+    }
+  },
+  "response": {
+    "status": "succeeded",
+    "value": {
+      "kind": "decision_record",
+      "id": "generation-1",
+      "schema_version": "1",
+      "created_at": "2026-09-18T12:00:00Z",
+      "analysis_run_id": "run-1",
+      "input_ids": [
+        "obs-1",
+        "unit-2"
+      ],
+      "task_type": "synthetic_generation",
+      "input_artifact_ids": [
+        "artifact-1"
+      ],
+      "requested_model_id": "synthetic-no-model",
+      "returned_model_id": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "prompt_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "rubric_version": null,
+      "config_version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "status": "succeeded",
+      "result": {
+        "result_kind": "generation",
+        "output_schema": {
+          "name": "synthetic",
+          "version": "fixture-v1"
+        },
+        "structured_output": {},
+        "output_artifact_id": "artifact-generation"
+      },
+      "usage": {
+        "availability": "unavailable",
+        "data": null,
+        "reason": "Not captured in synthetic fixture"
+      },
+      "started_at": "2026-09-18T12:00:00Z",
+      "finished_at": "2026-09-18T12:00:00Z",
+      "error": null,
+      "provider_request_id": null
+    },
+    "error": null,
+    "reason": null
+  }
+}

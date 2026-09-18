@@ -362,6 +362,32 @@ implementation details need no separate approval.
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
 
+**D01 resolved — 18 September 2026:** Python 3.13, uv, Pydantic v2, pytest, Ruff
+and Pyright. Authorized by the user's explicit T00 approval in this branch.
+Configuration: `pyproject.toml`, `.python-version`; exact dependencies: `uv.lock`.
+Affects T00 and consumers of its shared contracts. Development-only jsonschema
+and typing stubs support schema checks. Generated exports live in `schemas/v1/`
+as directed in the same approval; Python models remain in `src/binfocheck/domain/`.
+
+**T00 contract validation revision 1.1 — 18 September 2026:** authorized by the
+user's pre-merge contract review. Recorded in `domain/common.py` as
+`CONTRACT_VALIDATION_VERSION`; v1 wire fields/paths remain unchanged. Affects T00
+and its future contract consumers. Linked validation now requires captured citation
+membership, actual citation kinds for positive associations, complete capture for
+definite absence, nonblank successful answers, and acyclic text/artifact lineage.
+An observed positive citation may survive incomplete capture; absence may not.
+`TextRecord.artifact_id` identifies the artifact backing that representation.
+Article raw text directly references its raw artifact and is not a transformation;
+distinct cleaned text must descend from that raw text through versioned
+transformations. Identical raw/cleaned text IDs are allowed. Answer lineage must
+terminate at text backed by the capture artifact. Validation resolves references;
+it does not parse artifacts or verify their bytes against text. The [TypeSafe choice API][2]
+explicitly defines a distribution summing to one: complete available probabilities
+must sum to 1 within absolute tolerance `1e-6`, without renormalization. Incomplete
+and unavailable data retain their meanings; incomplete distributions are not
+required to sum to one. D04 integration verification remains with T03. This is
+structural validation, not a calibration or provenance-probability claim.
+
 Live calls also follow [AGENTS.md](../AGENTS.md#safety-and-live-calls). Never count an
 undisclosed substitute as live acceptance.
 

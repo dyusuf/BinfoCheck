@@ -1,0 +1,56 @@
+{
+  "kind": "decision_record",
+  "id": "decision-1",
+  "schema_version": "1",
+  "created_at": "2026-09-18T12:00:00Z",
+  "analysis_run_id": "run-1",
+  "input_ids": [
+    "obs-1",
+    "unit-2"
+  ],
+  "task_type": "synthetic_decision",
+  "input_artifact_ids": [
+    "artifact-1"
+  ],
+  "requested_model_id": "synthetic-no-model",
+  "returned_model_id": {
+    "availability": "unavailable",
+    "data": null,
+    "reason": "Not captured in synthetic fixture"
+  },
+  "prompt_version": null,
+  "rubric_version": {
+    "name": "synthetic",
+    "version": "fixture-v1"
+  },
+  "config_version": {
+    "name": "synthetic",
+    "version": "fixture-v1"
+  },
+  "status": "succeeded",
+  "result": {
+    "result_kind": "decision",
+    "allowed_labels": [
+      "match",
+      "uncertain"
+    ],
+    "label": "match",
+    "probabilities": {
+      "availability": "available",
+      "data": {
+        "match": 0.8,
+        "uncertain": 0.2
+      },
+      "reason": null
+    }
+  },
+  "usage": {
+    "availability": "unavailable",
+    "data": null,
+    "reason": "Not captured in synthetic fixture"
+  },
+  "started_at": "2026-09-18T12:00:00Z",
+  "finished_at": "2026-09-18T12:00:00Z",
+  "error": null,
+  "provider_request_id": null
+}

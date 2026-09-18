@@ -1,0 +1,128 @@
+[
+  {
+    "name": "capture",
+    "valid": "boundaries/capture.valid.json",
+    "invalid": "boundaries/capture.invalid.json",
+    "unavailable": "boundaries/capture.unavailable.json"
+  },
+  {
+    "name": "index_answer",
+    "valid": "boundaries/index_answer.valid.json",
+    "invalid": "boundaries/index_answer.invalid.json",
+    "unavailable": "boundaries/index_answer.unavailable.json"
+  },
+  {
+    "name": "build_context",
+    "valid": "boundaries/build_context.valid.json",
+    "invalid": "boundaries/build_context.invalid.json",
+    "unavailable": "boundaries/build_context.unavailable.json"
+  },
+  {
+    "name": "extract_claims",
+    "valid": "boundaries/extract_claims.valid.json",
+    "invalid": "boundaries/extract_claims.invalid.json",
+    "unavailable": "boundaries/extract_claims.unavailable.json"
+  },
+  {
+    "name": "map_citations",
+    "valid": "boundaries/map_citations.valid.json",
+    "invalid": "boundaries/map_citations.invalid.json",
+    "unavailable": "boundaries/map_citations.unavailable.json"
+  },
+  {
+    "name": "ingest",
+    "valid": "boundaries/ingest.valid.json",
+    "invalid": "boundaries/ingest.invalid.json",
+    "unavailable": "boundaries/ingest.unavailable.json"
+  },
+  {
+    "name": "retrieve",
+    "valid": "boundaries/retrieve.valid.json",
+    "invalid": "boundaries/retrieve.invalid.json",
+    "unavailable": "boundaries/retrieve.unavailable.json"
+  },
+  {
+    "name": "expand_context",
+    "valid": "boundaries/expand_context.valid.json",
+    "invalid": "boundaries/expand_context.invalid.json",
+    "unavailable": "boundaries/expand_context.unavailable.json"
+  },
+  {
+    "name": "decide",
+    "valid": "boundaries/decide.valid.json",
+    "invalid": "boundaries/decide.invalid.json",
+    "unavailable": "boundaries/decide.unavailable.json"
+  },
+  {
+    "name": "generate",
+    "valid": "boundaries/generate.valid.json",
+    "invalid": "boundaries/generate.invalid.json",
+    "unavailable": "boundaries/generate.unavailable.json"
+  },
+  {
+    "name": "verify_candidate",
+    "valid": "boundaries/verify_candidate.valid.json",
+    "invalid": "boundaries/verify_candidate.invalid.json",
+    "unavailable": "boundaries/verify_candidate.unavailable.json"
+  },
+  {
+    "name": "judge_correspondence",
+    "valid": "boundaries/judge_correspondence.valid.json",
+    "invalid": "boundaries/judge_correspondence.invalid.json",
+    "unavailable": "boundaries/judge_correspondence.unavailable.json"
+  },
+  {
+    "name": "inspect_alternatives",
+    "valid": "boundaries/inspect_alternatives.valid.json",
+    "invalid": "boundaries/inspect_alternatives.invalid.json",
+    "unavailable": "boundaries/inspect_alternatives.unavailable.json"
+  },
+  {
+    "name": "classify",
+    "valid": "boundaries/classify.valid.json",
+    "invalid": "boundaries/classify.invalid.json",
+    "unavailable": "boundaries/classify.unavailable.json"
+  },
+  {
+    "name": "put_artifact",
+    "valid": "boundaries/put_artifact.valid.json",
+    "invalid": "boundaries/put_artifact.invalid.json",
+    "unavailable": "boundaries/put_artifact.unavailable.json"
+  },
+  {
+    "name": "get_artifact",
+    "valid": "boundaries/get_artifact.valid.json",
+    "invalid": "boundaries/get_artifact.invalid.json",
+    "unavailable": "boundaries/get_artifact.unavailable.json"
+  },
+  {
+    "name": "put_record",
+    "valid": "boundaries/put_record.valid.json",
+    "invalid": "boundaries/put_record.invalid.json",
+    "unavailable": "boundaries/put_record.unavailable.json"
+  },
+  {
+    "name": "get_record",
+    "valid": "boundaries/get_record.valid.json",
+    "invalid": "boundaries/get_record.invalid.json",
+    "unavailable": "boundaries/get_record.unavailable.json"
+  },
+  {
+    "name": "list_records",
+    "valid": "boundaries/list_records.valid.json",
+    "invalid": "boundaries/list_records.invalid.json",
+    "unavailable": "boundaries/list_records.unavailable.json"
+  },
+  {
+    "name": "append_decision",
+    "valid": "boundaries/append_decision.valid.json",
+    "invalid": "boundaries/append_decision.invalid.json",
+    "unavailable": "boundaries/append_decision.unavailable.json"
+  },
+  {
+    "name": "append_review",
+    "valid": "boundaries/append_review.valid.json",
+    "invalid": "boundaries/append_review.invalid.json",
+    "unavailable": "boundaries/append_review.unavailable.json"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "observation_id": "obs-1",
+    "context": {
+      "observation_id": "obs-1",
+      "ordered_unit_ids": [
+        "unit-1",
+        "unit-2"
+      ]
+    },
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    }
+  },
+  "response": {
+    "status": "failed",
+    "value": null,
+    "error": {
+      "code": "fixture_unavailable",
+      "message": "Synthetic unavailable input",
+      "retryable": false,
+      "provider_request_id": null
+    },
+    "reason": null
+  }
+}

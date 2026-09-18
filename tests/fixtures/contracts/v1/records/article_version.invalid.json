@@ -1,0 +1,21 @@
+{
+  "kind": "article_version",
+  "id": "article-1",
+  "schema_version": "1",
+  "created_at": "2026-09-18T12:00:00Z",
+  "url": "https://www.diabinfo.de/synthetic-fixture",
+  "raw_artifact_id": "artifact-1",
+  "raw_text_id": "text-article",
+  "cleaned_text_id": null,
+  "title": "Synthetisches Beispiel",
+  "heading_spans": [],
+  "fetched_at": "2026-09-18T12:00:00Z",
+  "content_sha256": "679d947c11af2ca5b4f9b2b02277c7f0cc3150f856e9bffb91fb30e404cbeb70",
+  "parser_version": {
+    "name": "synthetic",
+    "version": "fixture-v1"
+  },
+  "status": "usable",
+  "reason": null,
+  "previous_version_id": null
+}

@@ -1,0 +1,376 @@
+{
+  "$defs": {
+    "Availability": {
+      "enum": [
+        "available",
+        "incomplete",
+        "unavailable"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "Available_Settings_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Settings"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[Settings]",
+      "type": "object"
+    },
+    "Available_tuple_Annotated_str__FieldInfo_annotation_NoneType__required_True__metadata__MinLen_min_length_1____PydanticGeneralMetadata_pattern____A-Za-z0-9__A-Za-z0-9_____________________": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "items": {
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[tuple[Annotated[str, FieldInfo(annotation=NoneType, required=True, metadata=[MinLen(min_length=1), _PydanticGeneralMetadata(pattern='^[A-Za-z0-9][A-Za-z0-9_.:-]*$')])], ...]]",
+      "type": "object"
+    },
+    "Available_tuple_str__________": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Data"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[tuple[str, ...]]",
+      "type": "object"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Request Id"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "ProcessingStatus": {
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "skipped"
+      ],
+      "title": "ProcessingStatus",
+      "type": "string"
+    },
+    "Settings": {
+      "additionalProperties": false,
+      "properties": {
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Values",
+          "type": "object"
+        },
+        "version": {
+          "$ref": "#/$defs/VersionRef"
+        }
+      },
+      "required": [
+        "version",
+        "values"
+      ],
+      "title": "Settings",
+      "type": "object"
+    },
+    "VersionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "VersionRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "answer_text_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Answer Text Id"
+    },
+    "citation_reference_ids": {
+      "$ref": "#/$defs/Available_tuple_Annotated_str__FieldInfo_annotation_NoneType__required_True__metadata__MinLen_min_length_1____PydanticGeneralMetadata_pattern____A-Za-z0-9__A-Za-z0-9_____________________"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorDetail"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "fanout_queries": {
+      "$ref": "#/$defs/Available_tuple_str__________"
+    },
+    "id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "kind": {
+      "const": "observation",
+      "default": "observation",
+      "title": "Kind",
+      "type": "string"
+    },
+    "normalization_version": {
+      "$ref": "#/$defs/VersionRef"
+    },
+    "product": {
+      "const": "google_ai_mode",
+      "title": "Product",
+      "type": "string"
+    },
+    "provider": {
+      "const": "dataforseo",
+      "title": "Provider",
+      "type": "string"
+    },
+    "provider_request_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Provider Request Id"
+    },
+    "query_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Query Id",
+      "type": "string"
+    },
+    "raw_artifact_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Raw Artifact Id"
+    },
+    "reported_settings": {
+      "$ref": "#/$defs/Available_Settings_"
+    },
+    "request_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "requested_settings": {
+      "$ref": "#/$defs/Settings"
+    },
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_reference_ids": {
+      "$ref": "#/$defs/Available_tuple_Annotated_str__FieldInfo_annotation_NoneType__required_True__metadata__MinLen_min_length_1____PydanticGeneralMetadata_pattern____A-Za-z0-9__A-Za-z0-9_____________________"
+    },
+    "status": {
+      "$ref": "#/$defs/ProcessingStatus"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "request_id",
+    "query_id",
+    "product",
+    "provider",
+    "requested_settings",
+    "reported_settings",
+    "status",
+    "raw_artifact_id",
+    "answer_text_id",
+    "source_reference_ids",
+    "citation_reference_ids",
+    "fanout_queries",
+    "normalization_version"
+  ],
+  "title": "Observation",
+  "type": "object"
+}

@@ -1,0 +1,31 @@
+{
+  "request": {
+    "analysis_run_id": "run-1",
+    "claim_id": "claim-1",
+    "settings": {
+      "version": {
+        "name": "synthetic",
+        "version": "fixture-v1"
+      },
+      "values": {
+        "language": "de",
+        "location": "DE",
+        "device": "desktop"
+      }
+    },
+    "citation_association_id": "citation-1",
+    "retrieval_batch_ids": [],
+    "alternative_inspection_ids": []
+  },
+  "response": {
+    "status": "failed",
+    "value": null,
+    "error": {
+      "code": "fixture_unavailable",
+      "message": "Synthetic unavailable input",
+      "retryable": false,
+      "provider_request_id": null
+    },
+    "reason": null
+  }
+}

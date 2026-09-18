@@ -1,7 +1,7 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** All tasks not started. This plan is not implementation evidence.
+**Status:** T00 accepted; local and hosted CI checks passed. All other tasks not started.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -101,6 +101,54 @@ environment, and require no provider/model credentials or live/paid calls.
 **Stop:** provider calls, Jev/hosted-LLM calls, claim extraction, citation mapping,
 corpus ingestion, retrieval, evidence classification, persistent storage, API, UI,
 or future-only fields. Do not start T11A or downstream tasks.
+
+**T00 handoff — 18 September 2026 / Codex / accepted (including added CI gate)**
+
+- Authorization: user's explicit T00 approval, including `schemas/v1/`, storage
+  interfaces/doubles only, and the six contract clarifications. D01 is resolved in
+  Architecture Section 8; D02 and all downstream decisions remain untouched.
+- Scope/versions: Architecture Sections 3, 7 and 8; schema `1`; synthetic fixtures
+  `tests/fixtures/contracts/v1/`, including `obs-1`, `claim-1`, `finding-1`,
+  `review-1` and `review-2`. Model/prompt/rubric labels are synthetic placeholders.
+- Files: `src/binfocheck/domain/` records, protocols, linked validation and exporter;
+  package initializers; `schemas/v1/` (64 generated schemas); `tests/contracts/`,
+  `tests/doubles/`, `tests/fixtures/contracts/v1/`, `tests/conftest.py`; `README.md`,
+  `.gitignore`, `.python-version`, `pyproject.toml`, `uv.lock`; D01 and this handoff.
+- Dependencies: Python 3.13.7, uv 0.8.23; exact package versions in `uv.lock`.
+  Build dependencies installed; GitHub Actions CI passed. Pyright's Node runtime
+  is installed with development dependencies for offline checks.
+- Required commands actually run and passed: `uv sync --locked --dev`;
+  `uv run --offline --locked pytest` (134 passed);
+  `uv run --offline --locked ruff check .`;
+  `uv run --offline --locked ruff format --check .`;
+  `uv run --offline --locked pyright` (zero errors/warnings);
+  `uv run --offline --locked python -m binfocheck.domain.export_schemas --check`;
+  `git diff --check`. Setup also ran `uv lock`; formatting/import fixes and schema
+  generation ran before the final checks.
+- Acceptance: all 10 original user criteria and the added CI gate passed.
+  All 20 record types and 21 operations have fixture coverage; linked IDs resolve;
+  round trips retain meaning; malformed
+  states/spans/relationships fail; Unicode/repeated locations pass; schema drift is
+  detected; protocols and scripted doubles type-check. History remains separate.
+- Offline: passed. Live/deployed: not applicable to T00, not run. All artifacts are
+  synthetic; no provider/model requests were made, so live usage/cost is zero.
+- CI follow-up: `.github/workflows/ci.yml` now defines the required push/PR-to-main
+  checks using pinned actions, Python 3.13.7 and uv 0.8.23 with locked dependencies.
+  README documents the workflow. No provider/model credentials or calls are needed.
+  All seven local commands were rerun successfully (134 tests); workflow YAML,
+  triggers, permissions, action pins and command list were validated locally.
+  First hosted [CI run 35404372636](https://github.com/dyusuf/BinfoCheck/actions/runs/35404372636)
+  passed all steps for commit `0d98df593ade8f59e4ca2c9d87f2e997b6ed75d8` on
+  [PR #1](https://github.com/dyusuf/BinfoCheck/pull/1).
+- Remaining T00 work/blockers: none. T11A is not started. No persistent backend
+  or downstream behavior was implemented. Commits, branch publication and PR
+  creation were explicitly authorized by the user; the PR has not been merged.
+- Pre-merge review: contract validation revision `1.1` strengthens citation capture
+  integrity, answer/article provenance, nonblank successful answers, and complete
+  probability distributions (Architecture Section 8). Adds 42 focused cases in
+  `tests/contracts/test_review_integrity.py`; all seven required local commands pass,
+  including 176 tests. The v1 wire shape
+  is unchanged; generated schemas include the probability constraint description.
 
 ### T11A — Shared record and artifact storage
 

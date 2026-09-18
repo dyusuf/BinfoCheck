@@ -1,0 +1,48 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "end": {
+      "minimum": 0,
+      "title": "End",
+      "type": "integer"
+    },
+    "exact_text": {
+      "minLength": 1,
+      "title": "Exact Text",
+      "type": "string"
+    },
+    "source_unit_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Unit Id"
+    },
+    "start": {
+      "minimum": 0,
+      "title": "Start",
+      "type": "integer"
+    },
+    "text_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Text Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "text_id",
+    "start",
+    "end",
+    "exact_text"
+  ],
+  "title": "SpanRef",
+  "type": "object"
+}

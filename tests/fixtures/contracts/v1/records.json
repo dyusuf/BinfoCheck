@@ -1,0 +1,222 @@
+[
+  {
+    "kind": "artifact",
+    "valid": "records/artifact.valid.json",
+    "invalid": "records/artifact.invalid.json",
+    "error": {
+      "type": "string_pattern_mismatch",
+      "contains": null
+    },
+    "unavailable": null,
+    "unavailable_not_applicable": "This record requires concrete identity/content; missing results are represented by its boundary failure, not an invented record."
+  },
+  {
+    "kind": "text",
+    "valid": "records/text.valid.json",
+    "invalid": "records/text.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "transformation_requires_source_and_version"
+    },
+    "unavailable": null,
+    "unavailable_not_applicable": "This record requires concrete identity/content; missing results are represented by its boundary failure, not an invented record."
+  },
+  {
+    "kind": "capture_request",
+    "valid": "records/capture_request.valid.json",
+    "invalid": "records/capture_request.invalid.json",
+    "error": {
+      "type": "literal_error",
+      "contains": null
+    },
+    "unavailable": null,
+    "unavailable_not_applicable": "This record requires concrete identity/content; missing results are represented by its boundary failure, not an invented record."
+  },
+  {
+    "kind": "observation",
+    "valid": "records/observation.valid.json",
+    "invalid": "records/observation.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "successful_capture_requires_raw_and_answer"
+    },
+    "unavailable": "records/observation.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "source_reference",
+    "valid": "records/source_reference.valid.json",
+    "invalid": "records/source_reference.invalid.json",
+    "error": {
+      "type": "literal_error",
+      "contains": null
+    },
+    "unavailable": "records/source_reference.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "text_unit",
+    "valid": "records/text_unit.valid.json",
+    "invalid": "records/text_unit.invalid.json",
+    "error": {
+      "type": "greater_than_equal",
+      "contains": null
+    },
+    "unavailable": null,
+    "unavailable_not_applicable": "This record requires concrete identity/content; missing results are represented by its boundary failure, not an invented record."
+  },
+  {
+    "kind": "claim",
+    "valid": "records/claim.valid.json",
+    "invalid": "records/claim.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "span_end_must_exceed_start"
+    },
+    "unavailable": null,
+    "unavailable_not_applicable": "This record requires concrete identity/content; missing results are represented by its boundary failure, not an invented record."
+  },
+  {
+    "kind": "extraction_issue",
+    "valid": "records/extraction_issue.valid.json",
+    "invalid": "records/extraction_issue.invalid.json",
+    "error": {
+      "type": "literal_error",
+      "contains": null
+    },
+    "unavailable": "records/extraction_issue.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "citation_association",
+    "valid": "records/citation_association.valid.json",
+    "invalid": "records/citation_association.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "citation_yes_requires_references"
+    },
+    "unavailable": "records/citation_association.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "article_version",
+    "valid": "records/article_version.valid.json",
+    "invalid": "records/article_version.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "usable_article_requires_content_and_provenance"
+    },
+    "unavailable": "records/article_version.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "passage",
+    "valid": "records/passage.valid.json",
+    "invalid": "records/passage.invalid.json",
+    "error": {
+      "type": "greater_than_equal",
+      "contains": null
+    },
+    "unavailable": null,
+    "unavailable_not_applicable": "This record requires concrete identity/content; missing results are represented by its boundary failure, not an invented record."
+  },
+  {
+    "kind": "corpus_manifest",
+    "valid": "records/corpus_manifest.valid.json",
+    "invalid": "records/corpus_manifest.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "ready_corpus_requires_articles_and_passages"
+    },
+    "unavailable": "records/corpus_manifest.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "retrieval_batch",
+    "valid": "records/retrieval_batch.valid.json",
+    "invalid": "records/retrieval_batch.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "retrieval_completion_reason_mismatch"
+    },
+    "unavailable": "records/retrieval_batch.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "candidate_pair",
+    "valid": "records/candidate_pair.valid.json",
+    "invalid": "records/candidate_pair.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "duplicate_retrieval_path"
+    },
+    "unavailable": "records/candidate_pair.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "decision_record",
+    "valid": "records/decision_record.valid.json",
+    "invalid": "records/decision_record.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "unknown_decision_label"
+    },
+    "unavailable": "records/decision_record.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "alternative_inspection",
+    "valid": "records/alternative_inspection.valid.json",
+    "invalid": "records/alternative_inspection.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "inspection_requires_excerpt_and_decision"
+    },
+    "unavailable": "records/alternative_inspection.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "finding",
+    "valid": "records/finding.valid.json",
+    "invalid": "records/finding.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "category_requires_categorized_status_and_vice_versa"
+    },
+    "unavailable": "records/finding.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "run_manifest",
+    "valid": "records/run_manifest.valid.json",
+    "invalid": "records/run_manifest.invalid.json",
+    "error": {
+      "type": "greater_than_equal",
+      "contains": null
+    },
+    "unavailable": "records/run_manifest.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "step_attempt",
+    "valid": "records/step_attempt.valid.json",
+    "invalid": "records/step_attempt.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "attempt_failure_requires_error_only_on_failure"
+    },
+    "unavailable": "records/step_attempt.unavailable.json",
+    "unavailable_not_applicable": null
+  },
+  {
+    "kind": "review",
+    "valid": "records/review.valid.json",
+    "invalid": "records/review.invalid.json",
+    "error": {
+      "type": "value_error",
+      "contains": "corrected_review_requires_correction_only"
+    },
+    "unavailable": null,
+    "unavailable_not_applicable": "This record requires concrete identity/content; missing results are represented by its boundary failure, not an invented record."
+  }
+]

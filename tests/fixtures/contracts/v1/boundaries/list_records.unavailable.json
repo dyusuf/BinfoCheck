@@ -1,0 +1,19 @@
+{
+  "request": {
+    "record_kind": "claim",
+    "analysis_run_id": "run-1",
+    "limit": 10,
+    "cursor": null
+  },
+  "response": {
+    "status": "failed",
+    "value": null,
+    "error": {
+      "code": "fixture_unavailable",
+      "message": "Synthetic unavailable input",
+      "retryable": false,
+      "provider_request_id": null
+    },
+    "reason": null
+  }
+}

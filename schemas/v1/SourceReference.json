@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "Availability": {
+      "enum": [
+        "available",
+        "incomplete",
+        "unavailable"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "Available_SpanRef_": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "$ref": "#/$defs/Availability"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SpanRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "availability",
+        "data"
+      ],
+      "title": "Available[SpanRef]",
+      "type": "object"
+    },
+    "SpanRef": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "exact_text": {
+          "minLength": 1,
+          "title": "Exact Text",
+          "type": "string"
+        },
+        "source_unit_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Unit Id"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "text_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Text Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text_id",
+        "start",
+        "end",
+        "exact_text"
+      ],
+      "title": "SpanRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "citation_span": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SpanRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "duplicate_group": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Duplicate Group"
+    },
+    "excerpt": {
+      "$ref": "#/$defs/Available_SpanRef_"
+    },
+    "id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "kind": {
+      "const": "source_reference",
+      "default": "source_reference",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata_artifact_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Metadata Artifact Id",
+      "type": "string"
+    },
+    "metadata_location": {
+      "minLength": 1,
+      "title": "Metadata Location",
+      "type": "string"
+    },
+    "observation_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "reference_kind": {
+      "enum": [
+        "citation",
+        "reference",
+        "search_result"
+      ],
+      "title": "Reference Kind",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "url": {
+      "minLength": 1,
+      "title": "Url",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "observation_id",
+    "url",
+    "metadata_artifact_id",
+    "metadata_location",
+    "reference_kind",
+    "excerpt"
+  ],
+  "title": "SourceReference",
+  "type": "object"
+}
