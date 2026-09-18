@@ -1,0 +1,208 @@
+{
+  "$defs": {
+    "IndexRef": {
+      "additionalProperties": false,
+      "properties": {
+        "corpus_manifest_id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Corpus Manifest Id",
+          "type": "string"
+        },
+        "embedding_dimensions": {
+          "exclusiveMinimum": 0,
+          "title": "Embedding Dimensions",
+          "type": "integer"
+        },
+        "embedding_model": {
+          "minLength": 1,
+          "title": "Embedding Model",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "lexical_settings": {
+          "$ref": "#/$defs/Settings"
+        },
+        "version": {
+          "$ref": "#/$defs/VersionRef"
+        }
+      },
+      "required": [
+        "id",
+        "corpus_manifest_id",
+        "version",
+        "embedding_model",
+        "embedding_dimensions",
+        "lexical_settings"
+      ],
+      "title": "IndexRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Settings": {
+      "additionalProperties": false,
+      "properties": {
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Values",
+          "type": "object"
+        },
+        "version": {
+          "$ref": "#/$defs/VersionRef"
+        }
+      },
+      "required": [
+        "version",
+        "values"
+      ],
+      "title": "Settings",
+      "type": "object"
+    },
+    "VersionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "VersionRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_run_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Analysis Run Id",
+      "type": "string"
+    },
+    "candidate_pair_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Candidate Pair Ids",
+      "type": "array"
+    },
+    "claim_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Claim Id",
+      "type": "string"
+    },
+    "completion": {
+      "enum": [
+        "complete",
+        "incomplete",
+        "failed"
+      ],
+      "title": "Completion",
+      "type": "string"
+    },
+    "corpus_manifest_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Corpus Manifest Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "index": {
+      "$ref": "#/$defs/IndexRef"
+    },
+    "input_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Input Ids",
+      "type": "array"
+    },
+    "kind": {
+      "const": "retrieval_batch",
+      "default": "retrieval_batch",
+      "title": "Kind",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "settings": {
+      "$ref": "#/$defs/Settings"
+    },
+    "truncation_reason": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Truncation Reason"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "analysis_run_id",
+    "input_ids",
+    "claim_id",
+    "corpus_manifest_id",
+    "index",
+    "candidate_pair_ids",
+    "completion",
+    "truncation_reason",
+    "settings"
+  ],
+  "title": "RetrievalBatch",
+  "type": "object"
+}

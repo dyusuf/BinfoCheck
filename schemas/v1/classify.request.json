@@ -1,0 +1,112 @@
+{
+  "$defs": {
+    "JsonValue": {},
+    "Settings": {
+      "additionalProperties": false,
+      "properties": {
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Values",
+          "type": "object"
+        },
+        "version": {
+          "$ref": "#/$defs/VersionRef"
+        }
+      },
+      "required": [
+        "version",
+        "values"
+      ],
+      "title": "Settings",
+      "type": "object"
+    },
+    "VersionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "VersionRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "alternative_inspection_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Alternative Inspection Ids",
+      "type": "array"
+    },
+    "analysis_run_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Analysis Run Id",
+      "type": "string"
+    },
+    "citation_association_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Citation Association Id",
+      "type": "string"
+    },
+    "claim_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Claim Id",
+      "type": "string"
+    },
+    "retrieval_batch_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Retrieval Batch Ids",
+      "type": "array"
+    },
+    "settings": {
+      "$ref": "#/$defs/Settings"
+    }
+  },
+  "required": [
+    "analysis_run_id",
+    "claim_id",
+    "settings",
+    "citation_association_id",
+    "retrieval_batch_ids",
+    "alternative_inspection_ids"
+  ],
+  "title": "ClassificationRequest",
+  "type": "object"
+}

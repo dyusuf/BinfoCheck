@@ -1,0 +1,171 @@
+{
+  "$defs": {
+    "PathRank": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "enum": [
+            "semantic",
+            "lexical"
+          ],
+          "title": "Path",
+          "type": "string"
+        },
+        "rank": {
+          "exclusiveMinimum": 0,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "path",
+        "rank",
+        "score"
+      ],
+      "title": "PathRank",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_run_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Analysis Run Id",
+      "type": "string"
+    },
+    "claim_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Claim Id",
+      "type": "string"
+    },
+    "context_passage_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Context Passage Ids",
+      "type": "array"
+    },
+    "corpus_manifest_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Corpus Manifest Id",
+      "type": "string"
+    },
+    "correspondence_decision_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Correspondence Decision Id"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "fused_rank": {
+      "exclusiveMinimum": 0,
+      "title": "Fused Rank",
+      "type": "integer"
+    },
+    "id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "index_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Index Id",
+      "type": "string"
+    },
+    "input_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Input Ids",
+      "type": "array"
+    },
+    "kind": {
+      "const": "candidate_pair",
+      "default": "candidate_pair",
+      "title": "Kind",
+      "type": "string"
+    },
+    "passage_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Passage Id",
+      "type": "string"
+    },
+    "path_ranks": {
+      "items": {
+        "$ref": "#/$defs/PathRank"
+      },
+      "minItems": 1,
+      "title": "Path Ranks",
+      "type": "array"
+    },
+    "retrieval_batch_id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Retrieval Batch Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "verification_decision_id": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Verification Decision Id"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "analysis_run_id",
+    "input_ids",
+    "claim_id",
+    "retrieval_batch_id",
+    "corpus_manifest_id",
+    "index_id",
+    "passage_id",
+    "path_ranks",
+    "fused_rank",
+    "context_passage_ids",
+    "verification_decision_id",
+    "correspondence_decision_id"
+  ],
+  "title": "CandidatePair",
+  "type": "object"
+}

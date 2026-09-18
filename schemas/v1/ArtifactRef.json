@@ -1,0 +1,63 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "access": {
+      "enum": [
+        "shareable_fixture",
+        "restricted"
+      ],
+      "title": "Access",
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "kind": {
+      "const": "artifact",
+      "default": "artifact",
+      "title": "Kind",
+      "type": "string"
+    },
+    "media_type": {
+      "minLength": 1,
+      "title": "Media Type",
+      "type": "string"
+    },
+    "redacted_transport_fields": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Redacted Transport Fields",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Sha256",
+      "type": "string"
+    },
+    "storage_key": {
+      "minLength": 1,
+      "title": "Storage Key",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "storage_key",
+    "sha256",
+    "media_type",
+    "access"
+  ],
+  "title": "ArtifactRef",
+  "type": "object"
+}
