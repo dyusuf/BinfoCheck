@@ -5,7 +5,7 @@ import pytest
 
 from binfocheck.corpus.artifacts import Store
 from binfocheck.corpus.capture import SnapshotCapture
-from binfocheck.corpus.config import POLICY, ROBOTS, URLS
+from binfocheck.corpus.config import POLICY, ROBOTS, URLS, capture_policy_sha256
 from binfocheck.corpus.errors import CorpusError, require
 from binfocheck.corpus.receipts import Receipt
 from binfocheck.corpus.transport import HttpsTransport, LiveAuthorization, Response, content_decode
@@ -138,7 +138,11 @@ def test_https_requires_authorization_before_any_network() -> None:
     ],
 )
 def test_https_allowlist_before_dispatch(url: str) -> None:
-    transport = HttpsTransport(LiveAuthorization("synthetic test only", "fixture"))
+    transport = HttpsTransport(
+        LiveAuthorization(
+            "synthetic test only", "fixture", capture_policy_sha256(ROBOTS, URLS, POLICY)
+        )
+    )
     with pytest.raises(CorpusError, match="url not allowed"):
         transport.get(url, POLICY.max_page_bytes)
     assert transport.requests == 0

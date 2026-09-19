@@ -110,6 +110,8 @@ class SnapshotCapture:
                 approval is not None and approval.batch_id == batch_id and origin == "live",
                 "live_not_authorized",
             )
+            assert approval is not None
+            approval.validate_policy(ROBOTS, URLS, POLICY)
         start = CaptureStart(id=batch_id, created_at=self.now(), origin=origin)
         start_id = batch_id + ".start.v1"
         existing = self.store.records.get_record(IdRequest(id=start_id))

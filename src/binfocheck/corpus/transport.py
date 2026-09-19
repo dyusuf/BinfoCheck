@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import Protocol
 from urllib.parse import urlsplit
 
-from .config import POLICY, ROBOTS, URLS
+from .config import POLICY, ROBOTS, URLS, FetchPolicy, capture_policy_sha256
 from .errors import CorpusError, check
 
 SAFE_HEADERS = frozenset(
@@ -45,6 +45,16 @@ class LiveAuthorization:
 
     reference: str
     batch_id: str
+    policy_sha256: str
+
+    def validate_policy(
+        self, robots_url: str, page_urls: tuple[str, ...], policy: FetchPolicy
+    ) -> None:
+        check(bool(self.reference.strip()), "live_not_authorized")
+        check(
+            self.policy_sha256 == capture_policy_sha256(robots_url, page_urls, policy),
+            "live_policy_not_authorized",
+        )
 
 
 class HttpsTransport:
@@ -57,6 +67,8 @@ class HttpsTransport:
             self.authorization is not None and bool(self.authorization.reference),
             "live_not_authorized",
         )
+        assert self.authorization is not None
+        self.authorization.validate_policy(ROBOTS, URLS, POLICY)
         check(url in (*URLS, ROBOTS), "url_not_allowed")
         check(self.requests < POLICY.request_limit, "request_limit_exhausted")
         check(

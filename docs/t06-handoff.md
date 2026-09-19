@@ -187,7 +187,7 @@ Remaining dependency: later bounded public-fetch authorization and successful
 five-page inspection/replay. T06 is not accepted and the MVP is not complete.
 
 
-## Final local results
+## Original offline implementation results (`d25b5c7`)
 
 | Command | Actual result |
 |---|---|
@@ -204,3 +204,34 @@ The final ingestion regression also checks that complete non-HTML error bodies
 remain receipt artifacts and do not populate article raw-HTML/hash fields. No tests
 were weakened. Offline acceptance is passed; live integration remains deliberately
 unperformed. Commit/push and draft PR delivery are authorized; no merge is authorized.
+
+
+## Pre-live authorization review follow-up
+
+The user reviewed `d25b5c7` and draft PR #7, confirmed hosted CI passed on that exact
+head, and accepted the offline review. The requested follow-up binds live approval
+to the exact frozen configuration and fixes the stale T02 status to accepted/merged.
+The capture configuration, package pins, corpus output contracts and live gate are
+unchanged. No real diabinfo/robots or model requests were made during this fix.
+
+`LiveAuthorization.policy_sha256` is required with no automatic default. The
+`t06-live-authorization/1` envelope hashes canonical sorted UTF-8 JSON containing
+`format`, `robots_url`, ordered `page_urls` and the complete `fetch_policy` object.
+The digest to record in any later explicit approval of the current proposal is:
+
+```text
+78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18
+```
+
+Carry that approved value into the authorization; do not recompute the field to
+refresh an older approval after configuration changes. `proposed-policy` now prints
+the robots URL and digest while retaining `authorized: false`. Both capture preflight
+(before a start artifact) and every HTTPS request (before connection construction or
+counter increment) reject a mismatching digest with `live_policy_not_authorized`.
+The existing batch binding and absence-of-approval checks remain in place.
+
+New offline tests exercise every policy field, all five URLs, order/membership,
+robots URL, stale/malformed/empty digests, unchanged batch IDs, no storage/network
+side effects on rejection, and a second-request policy change. Existing fake HTTPS
+success tests use a matching digest. No T00 schemas or dependencies changed.
+Follow-up check results and delivery are recorded below after verification.

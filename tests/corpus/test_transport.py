@@ -5,7 +5,7 @@ import http.client
 import pytest
 
 from binfocheck.corpus import transport as module
-from binfocheck.corpus.config import POLICY, URLS
+from binfocheck.corpus.config import POLICY, ROBOTS, URLS, capture_policy_sha256
 from binfocheck.corpus.errors import CorpusError
 from binfocheck.corpus.transport import HttpsTransport, LiveAuthorization
 
@@ -65,7 +65,13 @@ def wire(monkeypatch: pytest.MonkeyPatch, connection: Connection) -> HttpsTransp
         return connection
 
     monkeypatch.setattr(http.client, "HTTPSConnection", create)
-    return HttpsTransport(LiveAuthorization("synthetic test, no live permission", "test"))
+    return HttpsTransport(
+        LiveAuthorization(
+            "synthetic test, no live permission",
+            "test",
+            capture_policy_sha256(ROBOTS, URLS, POLICY),
+        )
+    )
 
 
 def test_direct_https_settings_and_request_cap(monkeypatch: pytest.MonkeyPatch) -> None:

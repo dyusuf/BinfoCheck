@@ -16,7 +16,15 @@ saved dependencies, reconstructs text/structure/passages offline and checks link
 `SnapshotCapture` is separate and takes an injected transport. Offline tests use a
 synthetic transport and fake clock. `HttpsTransport()` denies live requests by
 default. A later explicit operator authorization must supply a batch-bound
-`LiveAuthorization`; this implementation instruction supplies no such authorization.
+`LiveAuthorization` with the explicit approval reference, batch ID and required
+`policy_sha256`. The digest is SHA-256 of canonical JSON containing format
+`t06-live-authorization/1`, the robots URL, the ordered five page URLs and every
+`FetchPolicy` field. Copy the digest recorded in the explicit approval; do not
+recompute it to refresh an old authorization. Capture checks it before writing the
+start marker, and HTTPS checks it before each dispatch or request-counter increment.
+Mismatch returns `live_policy_not_authorized`. The offline `proposed-policy`
+command prints this digest with `authorized: false`; it grants no permission.
+This implementation instruction supplies no live authorization.
 Capture saves a start marker before dispatch and refuses a second invocation for
 that batch ID, including after an uncertain interruption. Replay never refetches.
 The API is intended for one capture caller, not concurrent capture workers.

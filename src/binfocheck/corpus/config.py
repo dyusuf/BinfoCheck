@@ -61,6 +61,20 @@ class FetchPolicy(Contract):
 POLICY = FetchPolicy()
 
 
+def capture_policy_sha256(robots_url: str, page_urls: tuple[str, ...], policy: FetchPolicy) -> str:
+    """Fingerprint the exact proposed capture envelope; this grants no authorization."""
+    return digest(
+        canonical(
+            {
+                "format": "t06-live-authorization/1",
+                "robots_url": robots_url,
+                "page_urls": page_urls,
+                "fetch_policy": policy.model_dump(mode="json"),
+            }
+        )
+    )
+
+
 class ParserConfig(Contract):
     # Provisional structural profile; real site selectors require saved-page inspection.
     roots: tuple[str, ...] = ("article",)

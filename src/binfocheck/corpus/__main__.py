@@ -7,7 +7,7 @@ from pathlib import Path
 from binfocheck.domain.interfaces import IngestionRequest
 from binfocheck.storage import SQLiteStore
 
-from .config import PACKAGES, POLICY, URLS
+from .config import PACKAGES, POLICY, ROBOTS, URLS, capture_policy_sha256
 from .ingestion import StoredCorpusIngestor
 
 
@@ -25,9 +25,11 @@ def main(argv: list[str] | None = None) -> int:
             json.dumps(
                 {
                     "authorized": False,
+                    "robots_url": ROBOTS,
                     "urls": URLS,
                     "packages": PACKAGES,
                     "policy": POLICY.model_dump(mode="json"),
+                    "authorization_policy_sha256": capture_policy_sha256(ROBOTS, URLS, POLICY),
                 },
                 ensure_ascii=False,
                 indent=2,

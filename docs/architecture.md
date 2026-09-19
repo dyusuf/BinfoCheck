@@ -388,6 +388,11 @@ exact cleaned-text offsets; replay is immutable and model-free. The bounded
 structural profile is synthetic-tested, not verified against live diabinfo HTML.
 The six-request public-fetch configuration is frozen for later authorization;
 **no diabinfo or robots requests are authorized by this offline instruction**.
+The subsequent pre-live review requires a `LiveAuthorization.policy_sha256` binding
+under `t06-live-authorization/1`: canonical SHA-256 over the robots URL, ordered
+five-page URLs and complete FetchPolicy. Validate before capture-start writes and
+every HTTPS dispatch; a changed policy requires a newly recorded approval digest.
+This safeguard changes no shared domain or saved-corpus schema.
 See [corpus README](../src/binfocheck/corpus/README.md) and
 [T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
 choices remain open; T02's recorded decision is unchanged.
