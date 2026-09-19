@@ -1,8 +1,7 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 accepted. T11A implemented with local and hosted CI passing; review
-pending. T01 live and offline acceptance passed. Other tasks not started.
+**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. Other tasks not started.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
