@@ -314,10 +314,13 @@ informational SVG is not in the saved HTML. No refetch occurred. The rejected
 text-only diagnostic candidate is retained as immutable history, not acceptance.
 See [T06 handoff](t06-handoff.md) for IDs, complete inspection, tests and the blocker.
 Media removal now requires exact positive signatures; unknown media fails closed.
-A separate exact one-SVG capture companion/proposal is prepared, not executed or
-authorized. Its new approval must bind the exact request and be persisted before
-dispatch; the old six-GET allowance stays consumed. Subsequent offline SVG inspection
-may require a product decision if no substantive text is recoverable. T06 is not
+The separate exact one-SVG companion was subsequently authorized once. Its bound
+authorization was persisted before dispatch; one GET returned a complete HTTP-200
+SVG (313,754 bytes, SHA-256 recorded in the T06 handoff), and the allowance is now
+consumed. Socket-blocked XML inspection found no machine-readable text, title,
+description or accessibility wording. No OCR or vector-path inference was used.
+Ramadan remains unusable pending an explicit product decision on textual-corpus
+acceptance for a captured informational visual without extractable text. T06 is not
 accepted or merge-ready. No T07 work or merge.
 
 ### T07 — Hybrid retrieval and context

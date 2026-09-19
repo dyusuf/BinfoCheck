@@ -472,10 +472,16 @@ identity-stable replay history. Saved-batch replay retains four usable pages and
 201 unchanged-text passages; Ramadan remains blocked. A separate fixed one-SVG
 T11A companion is prepared with an independently bound authorization envelope,
 restricted pre-dispatch evidence and one persistent intent. It cannot reuse the
-consumed six-GET authorization. Exact proposal and future inert XML/provenance
-procedure are in [capture report](t06-live-capture.md#proposed-one-svg-companion-not-authorized).
-No SVG request or asset-text integration has run; no product acceptance decision,
-T00 schema change or merge is implied. T06: code_hardening_passed / live_acceptance_blocked.
+consumed six-GET authorization. Exact proposal and inert XML/provenance procedure
+and result are in
+[capture report](t06-live-capture.md#one-svg-companion-policy-and-consumed-authorization).
+The user subsequently authorized the exact proposal once. One HTTP-200 SVG response
+was preserved with its bound authorization and receipts. Offline XML inspection found
+no machine-readable text/title/description/accessibility wording, so no asset text or
+parser-5 result was manufactured. The single allowance is consumed; the remaining
+gate is an explicit product decision on textual-corpus acceptance for the captured
+informational visual. No T00 schema change or merge is implied. T06 remains
+code_hardening_passed / live_acceptance_blocked.
 See [corpus README](../src/binfocheck/corpus/README.md) and
 [T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
 choices remain open; T02's recorded decision is unchanged.

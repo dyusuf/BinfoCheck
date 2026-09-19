@@ -1,15 +1,16 @@
-# T06 offline media-hardening handoff
+# T06 media-hardening and SVG-capture handoff
 
 **Task / assignee / status:** T06 / Codex / **code_hardening_passed / live_acceptance_blocked**.
 Branch: `codex/t06-corpus`. Delivery: draft [PR #7](https://github.com/dyusuf/BinfoCheck/pull/7),
 not merged. Reviewed starting head: `06f11493447922449b896a9e115f7c9266c61e12`.
 
-The saved batch now replays as four usable articles and one unusable article.
-**201 passages; incomplete corpus; T06 is not merge-ready.** No refetch, DNS lookup,
-HTTP request, provider/model call or package download was made for this adaptation.
-The separately requested Git/GitHub synchronization and delivery operations are
-not corpus/provider traffic. New capture/provider request count: **0**; paid usage
-**USD 0**. Deployed checks: not applicable. T07 was not started.
+The saved batch replays as four usable articles and one unusable article.
+**201 passages; incomplete corpus; T06 is not merge-ready.** After media hardening,
+the user separately authorized exactly one GET for the known Ramadan SVG. That one
+request completed and its allowance is consumed. No page/robots refetch, retry,
+redirect, other asset, provider/model call or package download occurred. This
+follow-up's corpus request count is **1**; paid usage **USD 0**. Deployed checks are
+not applicable. T07 was not started.
 
 ## Durable private preservation
 
@@ -29,8 +30,10 @@ would have been compared, not overwritten. No store or real HTML is committed.
 The durable store contains `acceptance-final/store-preservation.json` (complete
 per-file verification), `report.json`, `request.json`, `inspection.json`, four complete
 cleaned-text exports, structure companions and the offline verification scripts.
+`acceptance-svg-v1/inspection.json` is the restricted post-fetch XML inventory.
 All outputs remain private. This path is the continuing T11A store, not an off-machine
-backup. The original failed records and rejected diagnostic outputs are retained.
+backup. The original failed records and rejected diagnostic outputs are retained;
+the original raw page capture artifacts were not modified.
 
 ## Scope, dependencies and versions
 
@@ -208,7 +211,10 @@ Restricted T11A inspection artifact:
 `t06-live-20260919T114133Z.site-profile-review.v1` records the diagnostic rejection and
 then-current parser-3 blocked acceptance. New restricted companion
 `t06-live-20260919T114133Z.media-profile-review.v1` records parser-4 inspection,
-store verification and the inert SVG proposal (approval reference null). A stored diagnostic `ready` status is not an accepted inspection.
+store verification and the then-inert SVG proposal (approval reference null). The
+subsequent consumed asset authorization/receipt chain uses `t06-ramadan-svg-1.*`;
+restricted `t06-ramadan-svg-1.inspection.v1` records its offline outcome. A stored
+diagnostic `ready` status is not an accepted inspection.
 
 ## Reopen, integrity and network evidence
 
@@ -226,26 +232,27 @@ bind/connect and other socket events raise. The dependency `urllib3` attempted o
 its import-time IPv6 capability probe; construction was blocked before any socket
 existed. No DNS or connection attempt occurred. This caught probe is recorded, not
 misreported as zero attempted socket construction. No model/resource download ran.
-The current scripts replay `acceptance-media-v1/request.json`; no capture call is made.
+The current scripts replay `acceptance-media-v1/request.json`; no page capture call is made.
 That private directory contains the new request/report, complete cleaned text/structure
-exports, verification script and store-integrity report. No SVG artifact, asset-start
-marker or asset authorization exists in the live store.
+exports, verification script and store-integrity report. The SVG authorization,
+start, HTTP receipt, asset receipt, raw artifact and inspection companion all reopen
+and validate from the same store. Final verification found **717** immutable records,
+private permissions and SQLite integrity `ok`. Socket-blocked XML inspection and
+verification performed no request.
 
 ## Remaining blocker and authorization boundary
 
-**live_acceptance_blocked**: Ramadan references the external image
-`/fileadmin/diabinfo/Grafiken/0511_diabinfo_Ramadan_DE_ohne-Titel.svg`.
-Its saved alt label describes an infographic about fasting with diabetes, but the
-SVG bytes/complete text are not in the six saved response bodies. No complete
-transcript or duplication guarantee is present. Treating it as decorative would
-silently drop potentially substantive content. Final reason:
-`unsupported_informational_media`. The parser has not been loosened to force readiness.
+**live_acceptance_blocked**: Ramadan references the informational SVG described
+below. The asset is now captured, but it has no machine-readable text, title,
+description or accessibility wording. Treating its path-based graphics as text would
+require OCR or semantic inference, both excluded. Final parser reason remains
+`unsupported_informational_media`; the parser was not loosened to force readiness.
 
-The nearby HTML text was fully inspected, but cannot establish equivalence to an
-unavailable graphic. Completing five-page acceptance requires the separately authorized exact SVG
-capture and offline inspection below; its bytes are still absent.
-No further fetch is authorized or attempted. The prior live allowance remains
-consumed: exactly six historical GETs, all HTTP 200, under policy digest
+The remaining gate is an explicit product decision: whether the five-page textual
+corpus may be considered usable when the informational visual is captured and
+preserved but has no deterministic textual representation. No further request is
+authorized or needed to establish this outcome. The prior page-capture allowance
+also remains consumed: exactly six historical GETs, all HTTP 200, under policy digest
 `78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18`.
 See [capture history](t06-live-capture.md) for exact receipt times and raw hashes.
 No merge, T07 work or MVP-completion claim.
@@ -261,7 +268,8 @@ Driving and FAQ have no removable galleries in their article roots.
 The motivation illustrations' metadata describes the specific tip illustrations,
 including the generic four-step motif and exact tip-8 alt; these reviewed cases
 are enumerated, not inferred from stock filenames, copyright, or nearby text.
-No real image bytes were fetched or visually classified.
+Stock-image bytes were not fetched or visually classified. The separately captured
+Ramadan SVG was inspected only for machine-readable XML text and metadata.
 
 Each signature hashes the complete ordered subtree: element names, **all attributes**
 (including both img/noscript src, alt, title, classes, dimensions and loading),
@@ -280,13 +288,12 @@ Historical parser tests are explicitly pinned; new tests cover positive and nega
 media cases, legacy identities and immutable version chains. No existing test was
 weakened to permit unknown media.
 
-## Exact SVG proposal and offline interpretation plan
+## Consumed exact SVG authorization and offline outcome
 
-See the complete frozen proposal and acceptance path in
-[t06-live-capture.md](t06-live-capture.md#proposed-one-svg-companion-not-authorized).
-The prepared helper is deliberately separate from five-page capture. It cannot
-add URLs, reuse the old allowance, follow a link or make a second attempt.
-No SVG request or new authorization has been executed/persisted.
+See the complete policy and receipts in
+[t06-live-capture.md](t06-live-capture.md#one-svg-companion-policy-and-consumed-authorization).
+The helper is deliberately separate from five-page capture. It cannot add URLs,
+reuse the old allowance, follow a link or make a second attempt.
 
 - Exact URL: `https://www.diabinfo.de/fileadmin/diabinfo/Grafiken/0511_diabinfo_Ramadan_DE_ohne-Titel.svg`
 - Proposal format: `t06-ramadan-svg-proposal/1`; attempt: `t06-ramadan-svg-1`.
@@ -297,18 +304,32 @@ No SVG request or new authorization has been executed/persisted.
   watchdog; 2,097,152-byte (2 MiB) body ceiling, identity encoding required.
   One extra sentinel byte detects overflow and is retained only as incomplete
   evidence. OS DNS resolution cannot be forcibly interrupted by the stdlib timeout.
-- A new explicit approval reference is still required. The complete immutable
-  authorization digest additionally binds that reference, proposal and policy hash;
-  it cannot be finalized until the reference exists. No invented approval reference.
+- Approval reference: `user-message-2026-09-19:I authorize; proposal-sha256=` plus
+  the proposal digest above. Authorization envelope SHA-256:
+  `e16566cd6c0960ee921d3172bf6cc65413f862e139d717b62d07ceff41209f3a`.
 - An uncertain/failed dispatch or abandoned start marker consumes the allowance.
   A second attempt needs new authorization and a separately reviewed attempt;
   the helper never automatically resets or retries.
 
-Capturing an SVG will not itself accept Ramadan. Offline XML/text inspection must
-preserve exact machine-readable text and provenance, without execution, external
-resources, OCR or inferred vector meaning. If no substantive text is recoverable,
-report it and leave the textual-corpus product decision to the user. The current
-parser intentionally remains blocked even if an unreviewed asset is later present.
+The single GET ran from `2026-09-19T13:36:24.997348Z` through
+`2026-09-19T13:36:25.317748Z`, returning complete HTTP 200 `image/svg+xml` bytes:
+
+- raw artifact:
+  `corpus-raw-svg-1201b0c36772982079a76330da05f79bf236b6f30105dda898a30bbd38ac33ad`;
+- bytes: **313,754**; SHA-256:
+  `36dac445d2a67c53105b125a86a576d597b3544ed3f634146466f0862fc909de`;
+- evidence: `t06-ramadan-svg-1.authorization.v1`, `.start.v1`, `.http.v1`,
+  `.receipt.v1`; all restricted and immutable;
+- inspection: `t06-ramadan-svg-1.inspection.v1`, SHA-256
+  `6f1f81165037e45c44b7851b4aec1b723dda4b944a909b73e998e22032a2e1c1`.
+
+Offline inspection found valid UTF-8 XML with 587 elements, but zero `<text>`,
+`<tspan>`, `<title>`, `<desc>`, ARIA text/role attributes or `href` references.
+DOCTYPE/entities, scripts and `foreignObject` are absent. No resource was loaded;
+no OCR or vector-path semantics were inferred. Outcome: **informational visual
+captured; no deterministic text extractable**. No asset TextRecord, parser-5 output
+or fabricated transcript was created. Parser-4 corpus identity and its incomplete
+manifest remain unchanged.
 
 ## Regression checks and delivery
 
@@ -336,6 +357,6 @@ and T07 is not started.
 | `git diff --check` | Passed |
 | `git diff --cached --check` | Passed |
 
-Remaining blocker: one exact informational Ramadan SVG needs separate explicit
-authorization, capture and offline inspection. If no substantive machine-readable
-text exists, report the unresolved product decision. No acceptance or merge.
+Remaining blocker: explicit product decision on textual-corpus acceptance for the
+captured informational Ramadan visual, which has no deterministic machine-readable
+text. No acceptance, additional request or merge.

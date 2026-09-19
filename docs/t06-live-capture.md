@@ -111,11 +111,12 @@ not proof of real-page extraction. Live inspection/replay results above are the
 checks performed for this gate. Full regression tests were not repeated locally
 because no runtime code, dependency or synthetic fixture changed.
 
-## Proposed one-SVG companion (not authorized)
+## One-SVG companion policy and consumed authorization
 
-The six-GET authorization above remains fully consumed. **No new corpus/provider/
-model request occurred during media hardening.** The following is a proposal only,
-not permission or a new approval reference. Only Git/GitHub delivery uses network.
+The six-GET authorization above remains fully consumed. The policy below was prepared
+during media hardening and later authorized by the user's 19 September 2026 message
+`I authorize`. It covered exactly one new request and did not reuse or reinterpret
+the earlier allowance.
 
 `asset.PROPOSAL` is an inert, canonical `t06-ramadan-svg-proposal/1` value:
 
@@ -142,11 +143,12 @@ proposal including method/policy, attempt ID, exact URL and parent lineage:
 - parent raw artifact: `corpus-raw-html-b20f8e3b1f9ab0f136d75089f503ec43eb717090a9b7e93a2652aa164cda39d2`;
 - parent raw SHA-256: `8730ea878ffba196a129c7feb6728ed92531b48a272ec01e9c98ffb37a331afd`.
 
-Future `AssetApproval` format `t06-ramadan-svg-authorization/1` includes a **new**
+The `AssetApproval` format `t06-ramadan-svg-authorization/1` includes the **new**
 explicit approval reference, entire proposal, policy digest and `envelope_sha256`.
 The latter hashes every other envelope field, including the approval reference.
-It cannot be finalized until the user supplies that reference. Neither the old
-six-request digest nor its reference is a valid substitute for this authorization.
+The consumed authorization envelope SHA-256 is
+`e16566cd6c0960ee921d3172bf6cc65413f862e139d717b62d07ceff41209f3a`.
+Neither the old six-request digest nor its reference was reused.
 
 The small T06 `capture_asset` companion uses T11A only. It validates the frozen
 approval and original saved parent/robots evidence, then persists and reads back
@@ -167,7 +169,8 @@ validated SVG text or a ready article. Missing/corrupt assets never become decor
 Single-owner execution is required: T11A has no atomic multi-worker dispatch lease.
 The timer/decreasing timeouts bound socket work; OS DNS can outlast the target and
 cannot be forcibly preempted here. That remains an uncertain consumed attempt, never
-an excuse to dispatch a retry. There is no live CLI/default approval.
+an excuse to dispatch a retry. There is no live CLI/default approval. This attempt
+now exists and cannot be reset or dispatched again by this helper.
 
 ### Post-fetch offline acceptance procedure
 
@@ -193,6 +196,34 @@ an excuse to dispatch a retry. There is no live CLI/default approval.
    vector-path interpretation or manufactured wording. Report whether textual-corpus
    acceptance needs an explicit product decision; do not decide automatically.
 
-SVG interpretation/integration is intentionally prepared as this procedure, not
-implemented against unseen bytes. The asset mechanism does not remove the current
-Ramadan blocker or make T06 accepted. No SVG GET or merge is authorized by this text.
+### Actual SVG response and offline inspection
+
+Exactly one GET was dispatched at `2026-09-19T13:36:24.997348Z` and completed at
+`2026-09-19T13:36:25.317748Z`: HTTP 200, `image/svg+xml`, **313,754 bytes**, complete,
+with no retry or redirect. No HEAD, robots refresh, other asset, provider or model
+request occurred. The one-call allowance is fully consumed.
+
+- Raw SVG artifact:
+  `corpus-raw-svg-1201b0c36772982079a76330da05f79bf236b6f30105dda898a30bbd38ac33ad`.
+- Raw byte SHA-256:
+  `36dac445d2a67c53105b125a86a576d597b3544ed3f634146466f0862fc909de`.
+- Authorization/start/HTTP/asset receipt chain:
+  `t06-ramadan-svg-1.authorization.v1`, `t06-ramadan-svg-1.start.v1`,
+  `t06-ramadan-svg-1.http.v1`, `t06-ramadan-svg-1.receipt.v1`.
+- Restricted inspection companion: `t06-ramadan-svg-1.inspection.v1`, SHA-256
+  `6f1f81165037e45c44b7851b4aec1b723dda4b944a909b73e998e22032a2e1c1`.
+
+Socket-blocked offline parsing verified UTF-8 XML with one SVG root and 587 elements.
+DOCTYPE/entities, scripts and `foreignObject` are absent. The complete inventory
+contains **zero** `<text>`, `<tspan>`, `<title>` or `<desc>` elements; zero ARIA
+label/description/role attributes; and zero `href` references. No script ran, no
+external resource was loaded, and no OCR or vector-path semantic inference was used.
+The immutable finding is: **informational visual captured; no deterministic text
+extractable**.
+
+Outcome B therefore applies. No asset TextRecord or parser-5 article was fabricated.
+The parser-4 Ramadan ArticleVersion remains unusable and the manifest remains
+incomplete. T06 now needs an explicit product decision on whether a textual corpus
+may be considered usable when an informational visual is captured and preserved but
+has no machine-readable textual representation. This report does not make that
+decision. No additional request or merge is authorized.

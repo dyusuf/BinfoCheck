@@ -261,9 +261,13 @@ It grants no authorization. `capture_asset` requires a new explicit `AssetApprov
 checks parent/robots evidence from the existing store, persists approval then intent,
 and only then calls the private direct-HTTPS transport. `load_asset` is offline,
 validating receipt/body/hash/authorization/lineage and restricted storage. A failed or
-uncertain attempt cannot retry. Do not call capture until separately authorized;
-there is no CLI/default approval and no reuse of the consumed six-GET envelope.
+uncertain attempt cannot retry. The separately authorized attempt has now been used;
+its start marker prevents another dispatch. There is no CLI/default approval and no
+reuse of the consumed six-GET envelope.
 No asset is integrated into parser 4 automatically. Full policy digest, limitations
 and post-fetch SVG-text/provenance plan are in
-[the capture proposal](../../../docs/t06-live-capture.md#proposed-one-svg-companion-not-authorized).
-No SVG interpretation/OCR or T07 functionality is implemented.
+[the capture report](../../../docs/t06-live-capture.md#one-svg-companion-policy-and-consumed-authorization).
+The exact request was authorized and consumed once after this helper was implemented.
+It returned a complete SVG, but socket-blocked inspection found no machine-readable
+text or accessibility wording. No SVG OCR/vector interpretation or T07 functionality
+is implemented; Ramadan remains unusable pending a product decision.
