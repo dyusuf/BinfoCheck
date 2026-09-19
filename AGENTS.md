@@ -48,9 +48,20 @@ contract may change only when the assigned task or an existing decision record
 explicitly allows it; version the change and test affected consumers. Never create
 a duplicate local schema.
 
-Preserve unrelated changes. Do not revert or stage another contributor's work.
-Commit, push, merge, deploy and destructive actions require explicit instruction in
-the assigned task or a direct user instruction.
+## Task workflow
+
+Follow [Development workflow](docs/development-workflow.md): one task = one branch,
+one worktree and one dedicated Codex session, named clearly after the task/branch.
+At task start, fetch origin, inspect status, sync the task branch with its remote,
+and compare it with main. Never switch branches inside a task worktree. Preserve
+unrelated changes; never revert or stage another contributor's work.
+
+Before final delivery, fetch main and merge it if it advanced, then rerun validation.
+Commit the scoped changes, push the task branch and create/update its draft PR unless
+the assignment stops earlier. Never merge without explicit user instruction;
+deployment and destructive actions also require explicit authorization. After an
+authorized merge, verify it, preserve private artifacts and unfinished work, then
+remove the task worktree/branch only within authorized cleanup scope.
 
 ## Rules that must survive every change
 
@@ -98,13 +109,13 @@ configured lint/type checks. Create missing tooling when it is a task deliverabl
 otherwise report missing prerequisites that block the affected work. Do not create
 a parallel toolchain or claim a command ran when it did not.
 
-Run task acceptance and affected regression tests. Check the diff for unrelated
-changes, secrets, schema drift and missing tests; in a Git worktree run
-`git diff --check`.
+Run task acceptance and affected regression tests plus `scripts/verify.sh`.
+Review the diff for unrelated changes, secrets, schema drift and missing tests.
 
-Use the [handoff template](docs/implementation-plan.md#5-branch-handoff-and-completion-report).
-Report offline, live and deployed checks separately, including blockers, artifact
-origins and actual cost/usage. Mocks prove wiring, not live integration; live calls
+Overwrite `/tmp/binfocheck-<task>-handoff.txt` using the concise
+[handoff guidance](docs/development-workflow.md#handoffs).
+Report offline, live and deployed checks separately, including blockers, essential
+artifact origins and actual cost/usage. Mocks prove wiring, not live integration; live calls
 do not prove accuracy. Mark a task accepted only when required checks pass, and the
 MVP complete only after T14. Never invent results or model reasoning.
 
