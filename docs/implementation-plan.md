@@ -2,7 +2,7 @@
 
 **Version:** 1.4 · 19 September 2026  
 **Status:** T00 accepted. T11A implemented with local and hosted CI passing; review
-pending. All other tasks not started.
+pending. T01 live and offline acceptance passed. Other tasks not started.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -192,9 +192,11 @@ observation identity, answer, references/excerpts, settings and outcomes. A payl
 **Stop:** extraction, source fetching, browser automation or extra products.
 Offline replay alone is not live acquisition acceptance.
 
-**T01 implementation status — 19 September 2026:** offline implementation/checks
-passed; live integration blocked on D03 settings and explicit spending authorization.
-See [T01 handoff](t01-handoff.md). No live capture has been made; T01 is not yet accepted.
+**T01 status — 19 September 2026: accepted.** One authorized Google AI Mode live
+capture passed persistence, budget verification and network-blocked offline replay;
+128 acquisition tests and 394 total tests pass. Cost USD 0.004; one POST, zero retries.
+See [T01 handoff](t01-handoff.md). The one-call authorization is consumed; future
+provider requests require new explicit authorization. PR remains draft and unmerged.
 
 ### T02 — Index answers and reconstruct context
 
