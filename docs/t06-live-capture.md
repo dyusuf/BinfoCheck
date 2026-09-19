@@ -1,0 +1,266 @@
+# T06 bounded live capture — 19 September 2026
+
+**Capture and final textual-corpus acceptance passed. Parser 5 yields five usable
+pages and a ready manifest under the explicitly approved D06 visual-limitation rule.**
+
+Current durable private store:
+`/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`.
+The 29-file copy was verified by membership, byte size and SHA-256; the original
+source remains unchanged. See [current handoff](t06-handoff.md) for parser/version
+lineage and the final ready manifest. The default-profile outcomes below are
+historical and immutable; no second capture occurred.
+
+The user authorized one robots GET plus up to five allowlisted page GETs under
+policy SHA-256 `78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18`.
+This allowance was consumed once: **6 GETs, all complete HTTP 200; zero retries,
+redirects, assets, model/provider calls, or paid API usage (USD 0).**
+No further request is authorized by that consumed allowance. Infrastructure cost is not measured.
+
+Capture code: `ab202a682350fda19f27ae36755b9a8365d1cf65` (exact-head hosted CI green).
+Batch: `t06-live-20260919T114133Z`.
+Private T11A store: `/tmp/binfocheck-t06-live-20260919T114133Z` (directory mode 0700).
+This is a local `/tmp` store, not an off-machine backup; retain it for the next offline step.
+Raw captures are restricted artifacts outside Git. Supplementary private files include
+`live-audit.json`, `replay-request.json`, and page HTML/tree inspection copies.
+
+Authorization artifact: `t06-live-20260919T114133Z.authorization.v1`.
+It preserves the explicit user-message reference, batch, approved digest, robots URL,
+ordered page URLs and complete FetchPolicy, and is linked from the capture-start marker.
+The envelope was validated and persisted/read back before that marker and dispatch.
+The completion dependency graph includes it; offline reopen/load verified it.
+
+## Actual responses
+
+| Page | UTC start → finish | HTTP | Complete body bytes | SHA-256 of body bytes |
+|---|---|---|---|---|
+| Robots | 2026-09-19T11:42:05.340908Z → 2026-09-19T11:42:05.433204Z | 200 | 1049 | `b9b1b507f5da47e711f368b78ebf04fffd8e94997109646adc7624792c5ba227` |
+| Driving | 2026-09-19T11:42:07.341070Z → 2026-09-19T11:42:07.765643Z | 200 | 150189 | `3f60f20f4c6ea60c422ef0d4f084bf1a7ce25b2ef9e4c99e8c85c05a56a28d99` |
+| Ramadan | 2026-09-19T11:42:09.341211Z → 2026-09-19T11:42:09.849305Z | 200 | 148668 | `8730ea878ffba196a129c7feb6728ed92531b48a272ec01e9c98ffb37a331afd` |
+| Travel | 2026-09-19T11:42:11.341313Z → 2026-09-19T11:42:11.855425Z | 200 | 164899 | `e697d33561df1f21c894c9d1469e0587a340f2f39771f994ee7796869644b7a1` |
+| Risk-test FAQ | 2026-09-19T11:42:13.341412Z → 2026-09-19T11:42:13.822577Z | 200 | 208412 | `e5e4d4e6958ff38b4a528d68686a3e81cacc025c5f740a1cb4ddfc3e24092c62` |
+| Motivation | 2026-09-19T11:42:15.341537Z → 2026-09-19T11:42:18.201049Z | 200 | 157321 | `9b85cee3e71ee696a667dd23dcb81a708201b567d6f9503ccf087b16328c97f6` |
+
+Minimum observed interval between request starts: `2.000099 s`.
+Robots returned UTF-8 text allowing these exact paths; no applicable longer crawl delay
+or rate was declared. Every page returned UTF-8 HTML. Raw artifacts preserve complete
+content-decoded bytes before charset decoding; all content hashes were verified.
+
+## Snapshot identities
+
+- **Robots** — https://www.diabinfo.de/robots.txt
+  Receipt: `corpus-receipt-520c8faf33eb7e1741811d30c1497eb9d136b0df9d579628e94a40c504f24fd2`.
+  Body artifact: `corpus-robots-body-192361076cb2a96cc2bedf1e14ef1223c2be1280e9f2bbe1f9e37e331c960ab1`.
+- **Driving** — https://www.diabinfo.de/leben/diabetes-im-alltag/strassenverkehr.html
+  Receipt: `corpus-receipt-763a7b841efe034c454bea103edd1efe98b2cc5fa131ee9120ad25411ee64c19`.
+  Body artifact: `corpus-raw-html-b88fee4b5e77adbdb5abf43524b30e4fb892ef181f1cb18aa79c5c9e90b32e58`.
+- **Ramadan** — https://www.diabinfo.de/leben/diabetes-im-alltag/ramadan.html
+  Receipt: `corpus-receipt-abb2a865088b99cc804407db03a7403fbf9a4874fd3351780f0acbf17d45277f`.
+  Body artifact: `corpus-raw-html-b20f8e3b1f9ab0f136d75089f503ec43eb717090a9b7e93a2652aa164cda39d2`.
+- **Travel** — https://www.diabinfo.de/leben/diabetes-im-alltag/reisen.html
+  Receipt: `corpus-receipt-26ba8e7807830394dec227f103bf7c63e61a4ffd38fa0d06e4745a9c0d7eb896`.
+  Body artifact: `corpus-raw-html-50e27792b20ab24cd0e9f4bd68684187efe86308c81d554674000a9abdaad0a3`.
+- **Risk-test FAQ** — https://www.diabinfo.de/vorbeugen/diabetes/wie-hoch-ist-mein-risiko-fuer-diabetes-typ-2/haeufig-gestellte-fragen.html
+  Receipt: `corpus-receipt-54d86703ab6eb3c7430563895a43a5bf07151cef635d3f9d477f0d2720a89d13`.
+  Body artifact: `corpus-raw-html-252cad6f5db2f7a5b8eff062a091c652e38e3721df3320ac84b89a603d9b6e27`.
+- **Motivation** — https://www.diabinfo.de/vorbeugen/was-kann-ich-tun/so-erreichen-sie-ihre-ziele.html
+  Receipt: `corpus-receipt-fd2f5693aeac93a7d807246e5a1df52244079aa2288efa2b77cbcf35f10d3594`.
+  Body artifact: `corpus-raw-html-c37f0ac65e03161451e1116793642b06f68e3e82855a1c754f811428f8e643cb`.
+
+## Offline replay and remaining gate
+
+All five pages have zero `<article>` elements. The inspected title/content container
+is `main#main > .container`; it also contains chrome, TOC, related links and images.
+The FAQ additionally uses `button.accordion-headline`. These are observations from
+saved HTML, not a validated replacement extraction profile.
+
+Default-profile replay records all five as **unusable**, reason
+`ambiguous_article_root` (the existing zero-or-multiple-root error). Manifest
+`corpus-manifest-9b2788ec22042b1bdb1c0a93d3b8432348d61635f474d7c1d5b8e78fad415e6c` is **failed**, with **0 passages**.
+HTTP capture success is distinct from corpus readiness. Complete raw HTML and decoded
+raw TextRecords are retained despite the extraction failure; no source was overwritten.
+
+- Driving: `corpus-article-e590d6aa7bd9534217ecc31acfd9b9ecf9f2d3a475e0c47a1356d735a1594d3b`; raw text `corpus-raw-text-aca197e1cf4a01e042547d734632975d794736558978afcff80347ae32d719a0`.
+- Ramadan: `corpus-article-8aab24eb5f3b55d2213d9550782f5e7b7073ac338c42c76934cb76cd0a28a8e7`; raw text `corpus-raw-text-f83dd0753620bbc2fc4d3b84f356ed3a717535096eb67be8a2f5269f8ee34243`.
+- Travel: `corpus-article-a0b260fb6cdf9d7ff2ce1ef69dfb28f743d9557b182c1e04fe3413863b62beb5`; raw text `corpus-raw-text-5df6e633623591daa8d744e5f92eaa818d19a410ee64b74a60f9bdcd213442b9`.
+- Risk-test FAQ: `corpus-article-f0e086c38541ac41ec9f74d6ec16691b00e5edeaf19f8b2582c8078bc29a8acf`; raw text `corpus-raw-text-b9cc011b8dcbc840a4d8d5f63aec8b32c064d75cd603d7a46ab08ca792ca0caa`.
+- Motivation: `corpus-article-8aed706a5fd3427ca9845dd4e5d5d8cc23923a76c352fead4e6525b199b60c21`; raw text `corpus-raw-text-bb190c0d7719d3ee3ed960658b62a62d9d6174c9792bdd96b45607e7467df129`.
+
+Fresh-process replay used socket construction, DNS and connection blockers.
+Store reopen/load and repeat ingestion returned identical records and manifest.
+Authorization linkage, artifact hashes, all six receipt counts/statuses, and minimum
+spacing were checked. No live calls occurred during inspection or replay.
+An initial inspection script had an import-incompatible socket stub; it failed before
+reading pages and was corrected to a socket subclass. The successful offline runs
+above used the corrected blocker. The capture was never rerun.
+
+Next work is offline: define and test the narrowly scoped site profile from these
+saved bodies, distinguish article content/references from chrome/media, preserve FAQ
+headings, then inspect all five cleaned articles and exact spans. Append new parser
+versions with these failed versions as predecessors; do not overwrite or refetch.
+T06 is not accepted. T07, retrieval, models, PDF/video fetching and corpus expansion
+remain outside scope. No shared schema, dependency, parser or transport code changed
+during this capture gate. No deployment or PR merge occurred.
+
+## Delivery checks
+
+Latest `origin/main` remained `80b35c95daaf06bfe9149551068d609e39d4ab58`,
+already included in this branch. Ruff lint/format, schema drift and whitespace
+checks passed for this documentation-only delivery. The unchanged capture code's
+hosted CI passed with 732 tests; those tests are historical regression evidence,
+not proof of real-page extraction. Live inspection/replay results above are the
+checks performed for this gate. Full regression tests were not repeated locally
+because no runtime code, dependency or synthetic fixture changed.
+
+## One-SVG companion policy and consumed authorization
+
+The six-GET authorization above remains fully consumed. The policy below was prepared
+during media hardening and later authorized by the user's 19 September 2026 message
+`I authorize`. It covered exactly one new request and did not reuse or reinterpret
+the earlier allowance.
+
+`asset.PROPOSAL` is an inert, canonical `t06-ramadan-svg-proposal/1` value:
+
+- attempt ID: `t06-ramadan-svg-1`;
+- method/URL: **GET** `https://www.diabinfo.de/fileadmin/diabinfo/Grafiken/0511_diabinfo_Ramadan_DE_ohne-Titel.svg`;
+- maximum requests: **1**; retries **0**; redirects **0**; concurrency **1**;
+- connect timeout **10 s**, read timeout **20 s**, total deadline target **30 s**;
+- byte ceiling **2,097,152** (2 MiB), enough for a bounded vector graphic proposal;
+  exceeding it fails, with at most one overflow-detection byte retained as partial;
+- TLS certificate/hostname verification on; headers exactly
+  `User-Agent: BinfoCheck-T06/1.0`, `Accept: image/svg+xml`, `Accept-Encoding: identity`;
+- no HEAD, cookies, authentication, browser, proxy configuration, link following,
+  automatic robots refresh, additional assets, paid/provider/model calls; USD **0**;
+- nonidentity content encoding is preserved only as incomplete evidence, not
+  accepted SVG bytes; non-200/non-SVG responses never become usable SVG evidence;
+- failed/uncertain dispatch and abandoned intent consume the allowance; second
+  attempt needs a new explicit authorization. No automatic restart/reset.
+
+Proposal digest: **`e3d776762445657f46cb632f016b48e407837bc04430aa1ca83f515d9816aebf`**.
+SHA-256 covers canonical JSON (sorted keys, UTF-8, compact separators) of the complete
+proposal including method/policy, attempt ID, exact URL and parent lineage:
+
+- parent batch: `t06-live-20260919T114133Z`;
+- parent raw artifact: `corpus-raw-html-b20f8e3b1f9ab0f136d75089f503ec43eb717090a9b7e93a2652aa164cda39d2`;
+- parent raw SHA-256: `8730ea878ffba196a129c7feb6728ed92531b48a272ec01e9c98ffb37a331afd`.
+
+The `AssetApproval` format `t06-ramadan-svg-authorization/1` includes the **new**
+explicit approval reference, entire proposal, policy digest and `envelope_sha256`.
+The latter hashes every other envelope field, including the approval reference.
+The consumed authorization envelope SHA-256 is
+`e16566cd6c0960ee921d3172bf6cc65413f862e139d717b62d07ceff41209f3a`.
+Neither the old six-request digest nor its reference was reused.
+
+The small T06 `capture_asset` companion uses T11A only. It validates the frozen
+approval and original saved parent/robots evidence, then persists and reads back
+restricted immutable `<attempt>.authorization.v1` **before** `<attempt>.start.v1`
+and dispatch. The start marker pins the authorization artifact hash. Revalidation
+immediately precedes dispatch and HTTP request. No arbitrary URL argument exists.
+The previously captured robots body was checked offline for this exact asset path;
+no new robots request is proposed. This is a snapshot check, not a fresh robots claim.
+
+The restricted raw artifact preserves complete identity-encoded SVG response bytes
+unchanged. The HTTP and asset receipts retain URL, UTC start/finish, status/media,
+exact sizes/hash, parent raw ID, authorization/start links and partial/error states.
+`load_asset` validates restriction, immutable hashes, authorization and policy,
+URL/lineage, receipt consistency and sizes; it does no fetching or SVG interpretation.
+The helper's `usable_svg` means complete HTTP-200 SVG-typed bytes only, **not**
+validated SVG text or a ready article. Missing/corrupt assets never become decorative.
+
+Single-owner execution is required: T11A has no atomic multi-worker dispatch lease.
+The timer/decreasing timeouts bound socket work; OS DNS can outlast the target and
+cannot be forcibly preempted here. That remains an uncertain consumed attempt, never
+an excuse to dispatch a retry. There is no live CLI/default approval. This attempt
+now exists and cannot be reset or dispatched again by this helper.
+
+### Post-fetch offline acceptance procedure
+
+1. Close/reopen T11A and validate the exact saved asset/receipt/authorization chain;
+   inspect only immutable captured bytes with sockets/DNS/connections blocked.
+2. Parse as inert XML with explicit size/depth/node limits, DTD/entities disabled.
+   Reject unsafe/unsupported XML; never execute scripts, resolve external entities,
+   load href/image/font/style resources, or infer text from vector paths.
+3. Inventory machine-readable `<text>`/`<tspan>`, `<title>`, `<desc>` and ARIA metadata.
+   Preserve exact XML-decoded character data, source element/attribute locators and
+   original byte artifact/hash. XML decoding is a recorded transformation; preserve
+   a separate immutable asset TextRecord and exact code-point spans. Do not treat
+   generic labels, hidden text or unrelated descriptions as a full visual transcript.
+4. If substantive text is deterministically recoverable, design a **new** parser/
+   profile and restricted structure companion tying the Ramadan image locator to
+   the asset TextRecord/spans. Keep original HTML raw hash/lineage unchanged. Do not
+   pretend SVG wording came from the HTML or assign invented HTML offsets. Review
+   shared-contract compatibility before any combined-source representation; no T00
+   changes are authorized here. Replay from parser-4 predecessor and inspect all
+   output and links, then reopen/replay without network.
+5. If no substantive machine-readable text is recoverable, save the explicit result
+   “informational visual captured; no deterministic text extractable.” No OCR,
+   vector-path interpretation or manufactured wording. Report whether textual-corpus
+   acceptance needs an explicit product decision; do not decide automatically.
+
+### Actual SVG response and offline inspection
+
+Exactly one GET was dispatched at `2026-09-19T13:36:24.997348Z` and completed at
+`2026-09-19T13:36:25.317748Z`: HTTP 200, `image/svg+xml`, **313,754 bytes**, complete,
+with no retry or redirect. No HEAD, robots refresh, other asset, provider or model
+request occurred. The one-call allowance is fully consumed.
+
+- Raw SVG artifact:
+  `corpus-raw-svg-1201b0c36772982079a76330da05f79bf236b6f30105dda898a30bbd38ac33ad`.
+- Raw byte SHA-256:
+  `36dac445d2a67c53105b125a86a576d597b3544ed3f634146466f0862fc909de`.
+- Authorization/start/HTTP/asset receipt chain:
+  `t06-ramadan-svg-1.authorization.v1`, `t06-ramadan-svg-1.start.v1`,
+  `t06-ramadan-svg-1.http.v1`, `t06-ramadan-svg-1.receipt.v1`.
+- Restricted inspection companion: `t06-ramadan-svg-1.inspection.v1`, SHA-256
+  `6f1f81165037e45c44b7851b4aec1b723dda4b944a909b73e998e22032a2e1c1`.
+
+Socket-blocked offline parsing verified UTF-8 XML with one SVG root and 587 elements.
+DOCTYPE/entities, scripts and `foreignObject` are absent. The complete inventory
+contains **zero** `<text>`, `<tspan>`, `<title>` or `<desc>` elements; zero ARIA
+label/description/role attributes; and zero `href` references. No script ran, no
+external resource was loaded, and no OCR or vector-path semantic inference was used.
+The immutable finding is: **informational visual captured; no deterministic text
+extractable**.
+
+Outcome B therefore applies. No asset TextRecord or parser-5 article was fabricated.
+The parser-4 Ramadan ArticleVersion remains unusable and the manifest remains
+incomplete at this historical gate. T06 then needed an explicit product decision on whether a textual corpus
+may be considered usable when an informational visual is captured and preserved but
+has no machine-readable textual representation. This report does not make that
+decision. No additional request or merge is authorized.
+
+### Final offline textual derivation after explicit product approval
+
+The user subsequently approved D06: usable means all deterministically extractable
+textual evidence is represented; captured non-text informational visuals remain
+explicit audited limitations. `diabinfo-pilot/4` / `t06-corpus-parser/5` implements
+this only for the exact existing Ramadan chain. It preflights 13 pinned restricted
+artifacts, validates the parent/asset/authorization/receipt chain and exact no-text
+inspection, then records `captured_nontext_informational` rather than decorative.
+The historical inspection is not rewritten. No SVG wording is manufactured.
+
+Same batch: `t06-live-20260919T114133Z`. Same durable store above. Parser-4 articles
+are predecessors; their raw HTML and all existing records remain unchanged.
+All five new articles are usable: driving 41, Ramadan 27, travel 39, FAQ 97 and goals
+24 passages (**228 total**). Four unaffected cleaned texts and passage contents are
+identical to parser 4. Final ready manifest:
+`corpus-manifest-cca67f16867a3a37e37252c360e364e597a2cab368ac6cc52ee5d6b693d41e69`.
+
+Required restricted Ramadan companion:
+`corpus-article-64852ee4c0341e95b60af5e3cf7721e83cd7786e68d50c225b87c46862898f3d.media-evidence.v1`.
+It links the article, parent HTML, exact gallery locator, SVG URL/raw artifact,
+inspection and full hashed evidence chain. Its limitation explicitly states that
+visual content is not represented by textual passages. Completion requires all
+evidence; missing, corrupt or mismatched dependencies fail replay/load closed.
+Unknown media remains blocked; OCR, image interpretation and SVG path inference
+remain prohibited.
+
+Full Ramadan text inspection, all-five DOM coverage/span/link checks and clean
+SQLite close/reopen identical replay passed with sockets/DNS/connections blocked.
+Original 29-file source inventory and original durable payloads remain unchanged;
+717 prior records remain equal, 246 derived records were appended, 963 records total.
+Private permissions and SQLite integrity passed. Reports and exact request are in
+`acceptance-textual-v1/`; full IDs and regression results are in the current handoff.
+This final derivation made **0 external corpus/provider/model requests**, cost USD 0.
+The historical seven total GETs and both consumed authorizations are unchanged.
+T06 is `live_acceptance_passed / merge_ready`; PR #7 remains draft and unmerged.
+No T07 work or further fetch is authorized.
