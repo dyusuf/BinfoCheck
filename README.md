@@ -32,6 +32,7 @@ AI-search results
 - [Implementation plan](docs/implementation-plan.md)
 - [Beyond MVP](docs/beyond-mvp.md)
 - [Coding-agent instructions](AGENTS.md)
+- [Development workflow and offline verification](docs/development-workflow.md)
 
 ## Current status
 

@@ -26,8 +26,8 @@ the task delegates that choice. Continue unblocked work.
 ## 2. Shared rules
 
 Follow root [AGENTS.md](../AGENTS.md) for reading, authorization, safety, testing and
-reporting. One branch takes one task; no downstream work or substitutions outside
-its recorded scope.
+reporting, and [Development workflow](development-workflow.md) for task isolation,
+delivery and cleanup. No downstream work or substitutions outside the recorded scope.
 
 Paths are relative to planned `src/binfocheck/`, except `frontend/`, `tests/`, `docs/`,
 `prompts/`, `rubrics/` and project/deployment configuration. T00 establishes them.
@@ -493,27 +493,6 @@ Pass and report these gates separately:
 
 ## 5. Branch handoff and completion report
 
-Fill in actual files/versions before assignment; use this record to report completion.
-
-```text
-Task / assignee / status:
-Goal / stop boundary / allowed files / shared-file authorization reference:
-Architecture sections / schema and rubric versions / fixture IDs:
-Build dependencies / integration dependencies / their status:
-Blocking decision IDs / recorded choices or pending questions:
-Tools / configuration / input and output records:
-Acceptance checks / expected results:
-Live authorization source (task/user instruction) / request limit / cost ceiling:
-
-Completion:
-Changed files / contract or configuration changes with task/decision references:
-Commands actually run / results / checks not run and why:
-Offline, live, deployed checks: passed | failed | blocked | not applicable
-Artifacts: synthetic | replayed capture | fresh live; run/model/rubric IDs
-Actual usage/cost or unknown; state when no calls were made:
-Remaining blockers / next integration dependency:
-```
-
-Example: **T02 only**—use shared contracts and the German/emoji fixture to build
-indexing/context and tests. No Jev, extraction, retrieval, database service or UI.
-Report offline and real-capture integration separately.
+Use the [concise handoff guidance and template](development-workflow.md#handoffs)
+and follow [AGENTS.md](../AGENTS.md) for acceptance and reporting requirements.
+Task cards above retain ownership of required checks and stop boundaries.
