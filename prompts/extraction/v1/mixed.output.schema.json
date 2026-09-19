@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "Anchor": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End"
+        },
+        "quote": {
+          "pattern": "\\S",
+          "title": "Quote",
+          "type": "string"
+        },
+        "source_unit_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Unit Ids",
+          "type": "array"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start"
+        }
+      },
+      "required": [
+        "quote",
+        "source_unit_ids",
+        "start",
+        "end"
+      ],
+      "title": "Anchor",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "anchors": {
+      "items": {
+        "$ref": "#/$defs/Anchor"
+      },
+      "maxItems": 4,
+      "title": "Anchors",
+      "type": "array"
+    },
+    "excluded_quotes": {
+      "items": {
+        "$ref": "#/$defs/Anchor"
+      },
+      "maxItems": 4,
+      "title": "Excluded Quotes",
+      "type": "array"
+    },
+    "factual_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Factual Text"
+    },
+    "reason_code": {
+      "enum": [
+        "none",
+        "cannot_separate"
+      ],
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "derived",
+        "unresolved"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "factual_text",
+    "anchors",
+    "excluded_quotes",
+    "reason_code"
+  ],
+  "title": "Mixed",
+  "type": "object"
+}

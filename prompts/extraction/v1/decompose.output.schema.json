@@ -1,0 +1,127 @@
+{
+  "$defs": {
+    "Anchor": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End"
+        },
+        "quote": {
+          "pattern": "\\S",
+          "title": "Quote",
+          "type": "string"
+        },
+        "source_unit_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Unit Ids",
+          "type": "array"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start"
+        }
+      },
+      "required": [
+        "quote",
+        "source_unit_ids",
+        "start",
+        "end"
+      ],
+      "title": "Anchor",
+      "type": "object"
+    },
+    "Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/$defs/Anchor"
+        },
+        "consumed_binding_indices": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 8,
+          "title": "Consumed Binding Indices",
+          "type": "array"
+        },
+        "normalized_claim": {
+          "pattern": "\\S",
+          "title": "Normalized Claim",
+          "type": "string"
+        },
+        "required_support": {
+          "items": {
+            "$ref": "#/$defs/Anchor"
+          },
+          "maxItems": 8,
+          "title": "Required Support",
+          "type": "array"
+        }
+      },
+      "required": [
+        "normalized_claim",
+        "anchor",
+        "required_support",
+        "consumed_binding_indices"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/Candidate"
+      },
+      "maxItems": 4,
+      "title": "Candidates",
+      "type": "array"
+    },
+    "reason_code": {
+      "enum": [
+        "none",
+        "cannot_extract",
+        "candidate_limit"
+      ],
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidates",
+        "unresolved"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "candidates",
+    "reason_code"
+  ],
+  "title": "Decomposed",
+  "type": "object"
+}
