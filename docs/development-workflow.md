@@ -16,13 +16,29 @@ unrelated staged, unstaged and untracked work; do not automatically stash, reset
 clean or stage it. If the task already has a branch, inspect its local and remote
 history before syncing; do not overwrite remote work or force-push.
 
-For a new task, run from an existing checkout, replacing the example names:
+Prefer the lifecycle helper, invoked from any checkout of this repository. Worktree
+arguments are resolved relative to the primary BinfoCheck checkout (which must be
+on `main`), regardless of the invoking checkout. The destination's parent directory
+must exist. Replace the example names:
 
 ```sh
-git fetch origin
-git worktree add -b codex/<task> ../BinfoCheck-<task> origin/main
-cd ../BinfoCheck-<task>
+scripts/task-worktree.sh status codex/<task> ../BinfoCheck-<task>
+scripts/task-worktree.sh create codex/<task> ../BinfoCheck-<task>
+```
+
+`status` is read-only: it reports path/registration and working-tree state, local
+branch existence, ahead/behind and merge ancestry against `origin/main`, and remote
+branch presence from the last fetch. Fetch first when fresh remote status is needed.
+`create` fetches origin, requires a clean main checkout (tracked/untracked files),
+refuses existing local/remote branches or worktree paths, and creates only the
+branch/worktree at current `origin/main`. It does not move local main, install an
+environment, push, or open a session. Underlying Git operations, from the primary
+checkout after those checks, are:
+
+```sh
+git fetch --prune origin
 git status --short --branch
+git worktree add --no-track -b codex/<task> ../BinfoCheck-<task> origin/main
 ```
 
 Open the dedicated session in that worktree. For an existing branch, locate its
@@ -172,10 +188,47 @@ Update the handoff with that state and any preserved artifact locations. Inspect
 worktree status, including ignored/private files, and check for unpushed commits
 before removal. Preserve unfinished work and durable private evidence first.
 
-Within explicitly authorized cleanup scope, leave the task worktree, remove it
-with `git worktree remove <path>`, and delete the merged local/remote task branch
-if it still exists. Do not force removal or delete an unmerged branch; report
-anything Git refuses to remove safely. Sync the main checkout with a fast-forward
-only when clean and not in use by another session. Close/archive the task session
-once its resumability record is complete. If cleanup is not authorized or cannot
-be done safely, report the remaining worktree/branch instead of deleting it.
+Within explicitly authorized cleanup scope, leave the task worktree and prefer:
+
+```sh
+scripts/task-worktree.sh cleanup codex/<task> ../BinfoCheck-<task>
+```
+
+The helper fetches origin and checks all preconditions before removal: the path
+must be the registered task worktree, unlocked and clean, including ignored files.
+Preserve private evidence first and explicitly handle disposable caches/environments;
+the helper never removes them for you. The local branch must be an ancestor of
+`origin/main`. If its remote branch exists, the two tips must match; if absent,
+ancestry in `origin/main` proves the commits are already pushed. Squash/rebase
+merges without that ancestry are refused and need manual review.
+
+Cleanup then removes the worktree, deletes the local branch, deletes the remote
+branch if present, and verifies path, registration and branch absence. Underlying
+Git operations after those checks are:
+
+```sh
+git merge-base --is-ancestor codex/<task> origin/main
+git worktree remove ../BinfoCheck-<task>
+git -c branch.codex/<task>.remote=origin -c branch.codex/<task>.merge=refs/heads/main branch -d codex/<task>
+git push origin --delete codex/<task>
+git worktree list
+git branch --list codex/<task>
+git ls-remote --heads origin refs/heads/codex/<task>
+```
+
+The temporary branch configuration makes Git's non-forced deletion check use the
+verified `origin/main` even when local main is stale; no stored configuration is
+changed. The helper never targets `main`, uses force deletion, or closes a Codex
+session. Run lifecycle operations without concurrent edits/pushes to the same task.
+Failures stop immediately; cleanup is not transactional, so inspect `status` and
+finish any remaining authorized steps manually after a partial failure. Paths
+requiring Git's quoted porcelain encoding are refused for manual handling.
+
+Sync the main checkout with a fast-forward only when clean and not in use by
+another session. Close/archive the task session manually once its resumability
+record is complete. If cleanup is not authorized or cannot be done safely, report
+the remaining worktree/branch instead of deleting it.
+
+The helper's isolated local-repository tests run as part of `scripts/verify.sh`, or
+alone with `uv run --offline --locked pytest tests/workflow`. They require no
+network access, credentials or provider calls.
