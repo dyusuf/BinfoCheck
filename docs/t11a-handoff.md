@@ -53,15 +53,34 @@ migrations); artifact access labels remain metadata (no user authorization).
 | Errors | Fixed messages contain no SQL, payloads, credentials, or internal paths; busy/locked is retryable, validation/conflict is not. |
 | Scope | No provider/model calls, ingestion, retrieval, orchestration, API/UI, authorization, T11B, or downstream behavior. T00 wire schemas unchanged. |
 
+## Pre-merge root-permission review
+
+The review identified that `mkdir(mode=0o700, exist_ok=True)` does not change an
+existing directory's permissions. `SQLiteStore` now rejects any group/other
+permission bits with non-retryable `StorageInitializationError` code
+`insecure_storage_permissions`, before opening or creating SQLite. It does not
+chmod operator-owned paths or modify existing data on rejection. New roots remain
+private (`0700`), and private existing stores reopen normally.
+
+Ten additional cases cover `0755`, `0750`, `0707`, and `0777` roots, both empty and
+populated; assert SQLite is never opened and data/permissions remain unchanged;
+and verify new/private-existing root creation and recovery. Changes are limited to
+`storage/sqlite.py`, its README, `tests/storage/test_sqlite.py`, and this handoff.
+This is local filesystem protection, not T12 user authorization or an ACL audit.
+
+After the fix, the branch was rebased without conflicts onto `origin/main`
+(`e1fbae1`); its two README-only commits are preserved. All local commands below
+are rerun after that rebase. No downstream code or domain contract changed.
+
 ## Commands actually run
 
 | Command | Final local result |
 |---|---|
 | `uv sync --locked --dev` | Passed; locked environment unchanged. |
-| `uv run --offline --locked pytest tests/storage` | 80 passed. |
-| `uv run --offline --locked pytest` | 256 passed, including all 176 existing T00 tests. |
+| `uv run --offline --locked pytest tests/storage` | 90 passed after review/rebase. |
+| `uv run --offline --locked pytest` | 266 passed after review/rebase, including all 176 existing T00 tests. |
 | `uv run --offline --locked ruff check .` | Passed. |
-| `uv run --offline --locked ruff format --check .` | Passed; 51 Python files formatted. |
+| `uv run --offline --locked ruff format --check .` | Passed; 52 Python files formatted. |
 | `uv run --offline --locked pyright` | Passed; zero errors/warnings. |
 | `uv run --offline --locked python -m binfocheck.domain.export_schemas --check` | Passed; generated contracts match committed schemas. |
 | `git diff --check` and `git diff --cached --check` | Passed. |
@@ -73,8 +92,9 @@ values and exact strings remain preserved. The first sandboxed uv invocation cou
 not access its existing cache; required checks succeeded with approved cache access.
 
 Hosted integration: GitHub Actions [run 35410034823](https://github.com/dyusuf/BinfoCheck/actions/runs/35410034823)
-passed for implementation commit `cd3a977`. The documentation-only handoff commit
-is checked by the same workflow; the current head's result is available in
+passed for original pre-rebase implementation commit `cd3a977`; the original handoff
+head also passed [run 35410195699](https://github.com/dyusuf/BinfoCheck/actions/runs/35410195699).
+The reviewed/rebased branch is checked by the same workflow; its current result is in
 [PR #2 checks](https://github.com/dyusuf/BinfoCheck/pull/2/checks).
 
 Offline checks: passed. Hosted CI: implementation passed, current-head check linked
