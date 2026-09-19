@@ -115,3 +115,9 @@ must prepare one retained saved answer and derive a much tighter exact stage/req
 bound with explicit cost/request approval. Each adaptive request requires its exact
 T03 authorization binding. No such authorization is present. No T05/citation mapping,
 retrieval, medical truth checking, benchmark, worker, API or UI work is included.
+
+The [bounded live-gate proposal](../../../docs/t04-live-gate.md) freezes one retained
+sentence: at most five Jev calls and one OpenAI call, USD 0.06 total using existing
+per-call allowances. Initial B/D/F requests are prepared offline; exact H requests
+require the actual F output and a later authorization step. This is not permission
+to execute, and does not change extraction policy or the configured adapters.
