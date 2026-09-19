@@ -464,6 +464,18 @@ but its contents were not captured. Acceptance remains blocked, not merge-ready.
 The initial diagnostic ready corpus is explicitly rejected in restricted inspection
 evidence. Durable private store and exact versions/IDs are in the updated handoff.
 No further network call, shared-schema change or T07 work was introduced.
+**D06 media-hardening follow-up:** `diabinfo-pilot/3` / `t06-corpus-parser/4`
+replaces the copyright/negative-alt heuristic with 16 positive, per-page subtree
+signatures in `decorative_media_v1.json` (registry digest participates in identity).
+Every unknown/changed media signature fails closed; parser versions 1–3 remain
+identity-stable replay history. Saved-batch replay retains four usable pages and
+201 unchanged-text passages; Ramadan remains blocked. A separate fixed one-SVG
+T11A companion is prepared with an independently bound authorization envelope,
+restricted pre-dispatch evidence and one persistent intent. It cannot reuse the
+consumed six-GET authorization. Exact proposal and future inert XML/provenance
+procedure are in [capture report](t06-live-capture.md#proposed-one-svg-companion-not-authorized).
+No SVG request or asset-text integration has run; no product acceptance decision,
+T00 schema change or merge is implied. T06: code_hardening_passed / live_acceptance_blocked.
 See [corpus README](../src/binfocheck/corpus/README.md) and
 [T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
 choices remain open; T02's recorded decision is unchanged.

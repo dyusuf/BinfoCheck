@@ -192,12 +192,11 @@ transport policy, byte/charset handling, exact identities, failure states,
 publication interruptions, SQLite reopen, offline replay and model-free adapter.
 Mocks are not live integration proof.
 
-Before T06 acceptance: use the existing saved batch to select and test the bounded
-site profile offline; replay without requests;
-inspect full text/headings/lists/references for each page; validate every slice,
-reopen and replay with sockets blocked; report all actual snapshot IDs/hashes,
-times/statuses/request counts and any missing pages. Do not label T06 accepted
-until all five are usable. T07 remains outside scope.
+The bounded site profile has been tested on the saved batch with complete source
+coverage/span checks and socket-blocked reopen/replay. Four pages are usable; the
+remaining gate is separately authorized capture and offline inspection of the one
+Ramadan SVG described below. Do not label T06 accepted until all five pages meet
+acceptance. T07 remains outside scope.
 
 
 ### Persisted authorization evidence
@@ -221,10 +220,10 @@ T00 schema change or live permission is introduced.
 
 Use `from binfocheck.corpus.diabinfo import pilot_profile`, then set
 `ReplaySettings(parser=pilot_profile(), batch_artifact_id=..., previous_version_ids=...)`.
-Pass the five existing failed ArticleVersion IDs in URL order. The default stays
+Pass the five parser-3 ArticleVersion IDs in URL order for this new derivation. The default stays
 unchanged for historical replay; there is no automatic root fallback.
 
-Current `diabinfo-pilot/2` is parser version 3. It selects four unique regions
+Current `diabinfo-pilot/3` is parser version 4. It selects four unique regions
 (title, scientific credit, introduction text column, main article column) and
 validates TOC targets, reference structure and FAQ ARIA pairs before exclusions.
 FAQ question headings are level 3 under topics, and boxed headings end at the
@@ -238,7 +237,33 @@ do not choose that profile to bypass the final blocker. The restricted inspectio
 companion identifies both candidate and current manifests. No shared schema changed.
 
 Durable store: `/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`.
-Its `acceptance-final/request.json` is the exact offline replay request. The final
+Its `acceptance-media-v1/request.json` is the exact offline replay request. The final
 manifest is incomplete with 201 passages across four usable articles. The previous
 failed and rejected diagnostic corpora remain intact. Full inspection and exact IDs
 are recorded in [T06 handoff](../../../docs/t06-handoff.md). No further fetch is authorized.
+
+
+### Positive media policy and exact SVG companion
+
+`media.py` hashes a gallery/audio subtree's element names, all attributes and
+ordered children/text (ignoring whitespace-only nodes and text-edge whitespace).
+The result, page URL and kind must match one of 16 reviewed signatures in
+`decorative_media_v1.json`; no copyright/negative-alt heuristic remains in parser 4.
+Unknown paths, changed alt/title/captions/attributes or structure fail
+`unsupported_informational_media`. The registry digest participates in parser identity.
+The registry includes 14 stock galleries and the travel podcast icon/audio module;
+the Ramadan infographic is deliberately absent. Historical parsers 1–3 do not use it.
+Hand-authored fixtures use reviewed metadata to exercise exact signatures without
+committing real page bodies or media assets.
+
+`asset.PROPOSAL` freezes the sole Ramadan SVG URL and a separate one-GET policy.
+It grants no authorization. `capture_asset` requires a new explicit `AssetApproval`,
+checks parent/robots evidence from the existing store, persists approval then intent,
+and only then calls the private direct-HTTPS transport. `load_asset` is offline,
+validating receipt/body/hash/authorization/lineage and restricted storage. A failed or
+uncertain attempt cannot retry. Do not call capture until separately authorized;
+there is no CLI/default approval and no reuse of the consumed six-GET envelope.
+No asset is integrated into parser 4 automatically. Full policy digest, limitations
+and post-fetch SVG-text/provenance plan are in
+[the capture proposal](../../../docs/t06-live-capture.md#proposed-one-svg-companion-not-authorized).
+No SVG interpretation/OCR or T07 functionality is implemented.

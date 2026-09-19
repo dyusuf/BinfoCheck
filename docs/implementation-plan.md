@@ -306,14 +306,19 @@ record rules removing navigation/consent banners while retaining article referen
 **Stop:** PDFs, video, whole-site crawling, rewriting, embeddings or selecting pages
 to manufacture positive findings.
 
-**T06 status — 19 September 2026: live_acceptance_blocked.**
+**T06 status — 19 September 2026: code_hardening_passed / live_acceptance_blocked.**
 The single authorized batch is consumed. The capture is now preserved and verified
-in a durable private T11A store. Offline `diabinfo-pilot/2` adaptation yields four
+in a durable private T11A store. Offline `diabinfo-pilot/3` (parser 4) adaptation yields four
 usable pages and 201 passages; Ramadan remains unusable because a referenced
 informational SVG is not in the saved HTML. No refetch occurred. The rejected
 text-only diagnostic candidate is retained as immutable history, not acceptance.
 See [T06 handoff](t06-handoff.md) for IDs, complete inspection, tests and the blocker.
-T06 is not accepted or merge-ready.
+Media removal now requires exact positive signatures; unknown media fails closed.
+A separate exact one-SVG capture companion/proposal is prepared, not executed or
+authorized. Its new approval must bind the exact request and be persisted before
+dispatch; the old six-GET allowance stays consumed. Subsequent offline SVG inspection
+may require a product decision if no substantive text is recoverable. T06 is not
+accepted or merge-ready. No T07 work or merge.
 
 ### T07 — Hybrid retrieval and context
 

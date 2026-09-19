@@ -6,14 +6,23 @@ from bs4 import BeautifulSoup
 from binfocheck.corpus import StoredCorpusIngestor
 from binfocheck.corpus.artifacts import Store
 from binfocheck.corpus.config import URLS, ParserConfig
-from binfocheck.corpus.diabinfo import ROOTS, pilot_profile
+from binfocheck.corpus.diabinfo import ROOTS
+from binfocheck.corpus.diabinfo import pilot_profile as current_profile
 from binfocheck.corpus.errors import CorpusError, require
 from binfocheck.corpus.parsing import parse_html
 from binfocheck.corpus.passages import construct
 from binfocheck.corpus.transport import Response
+from binfocheck.domain.interfaces import IngestionResult
 from binfocheck.storage import MemoryStore
 
 from .helpers import NOW, Transport, capture, request
+
+
+def pilot_profile():
+    # Existing regression suite pins historical parser 3; the positive policy is
+    # exercised separately below, including replay of all historical versions.
+    return current_profile("diabinfo-pilot/2")
+
 
 FIXTURES = Path(__file__).parents[1] / "fixtures/corpus/diabinfo-v1"
 HTML = (FIXTURES / "article.html").read_text()
@@ -213,7 +222,7 @@ def test_informational_image_blocks_readiness_even_when_html_text_is_usable() ->
         parse(infographic)
     # Preserve replayability of the explicitly unaccepted diagnostic candidate.
     _, old = parse_html(
-        infographic, URLS[0], "a", "r", "t", "utf-8", pilot_profile("diabinfo-pilot/1")
+        infographic, URLS[0], "a", "r", "t", "utf-8", current_profile("diabinfo-pilot/1")
     )
     assert old.parser_version.version == "2"
     with MemoryStore() as backend:
@@ -240,3 +249,156 @@ def test_informational_image_blocks_readiness_even_when_html_text_is_usable() ->
         assert result.articles[1].status == "unusable"
         assert result.articles[1].reason == "unsupported_informational_media"
         assert all(p.article_version_id != result.articles[1].id for p in result.passages)
+
+
+def positive_html(media: str = "", *, faq_page: bool = False) -> str:
+    soup = BeautifulSoup(faq() if faq_page else HTML, "html5lib")
+    for node in soup.select(".ce-gallery, .frame-type-gddiabinfo_diabinfoaudio"):
+        node.decompose()
+    root = soup.select_one(ROOTS[-1])
+    assert root
+    fragment = BeautifulSoup(media, "html5lib")
+    assert fragment.body
+    for node in list(fragment.body.contents):
+        root.append(node)
+    return str(soup)
+
+
+def positive_parse(media: str = "", url: str = URLS[4]):
+    return parse_html(positive_html(media), url, "a", "r", "t", "utf-8", current_profile())
+
+
+DECORATIVE = (FIXTURES / "decorative.html").read_text()
+PODCAST = (FIXTURES / "podcast.html").read_text()
+
+
+def test_known_decorative_and_podcast_exact_signatures() -> None:
+    text, structure = positive_parse(DECORATIVE)
+    assert "crazymedia" not in text and structure.parser_version.version == "4"
+    assert text == (FIXTURES / "article.txt").read_text().rstrip("\n")
+    text, _ = positive_parse(PODCAST, URLS[2])
+    assert "Podcast" not in text
+    with pytest.raises(CorpusError, match="unsupported informational media"):
+        positive_parse(DECORATIVE, URLS[0])  # Correct media on an unreviewed page.
+
+
+@pytest.mark.parametrize(
+    ("before", "after"),
+    [
+        (
+            "Ein Mensch freut sich über den Aufstieg auf einen Berg.",
+            "Diagramm zum Blutzuckerverlauf",
+        ),
+        (
+            "Ein Mensch freut sich über den Aufstieg auf einen Berg.",
+            "Blutzuckerverlauf während des Fastens",
+        ),
+        (
+            "Ein Mensch freut sich über den Aufstieg auf einen Berg.",
+            "Infografik: Wichtige Information",
+        ),
+        ("csm_Fotolia_94056501_web_0a92209623.jpg", "unknown.jpg"),
+        ("ce-column", "unknown-layout"),
+        ("© crazymedia / Fotolia</figcaption>", "© Beispiel: Wichtiges beachten</figcaption>"),
+        ("© crazymedia / Fotolia</figcaption>", "Substantive Erklärung</figcaption>"),
+        ('loading="lazy"', 'loading="lazy" aria-label="Neue Information"'),
+        ("</figure>", "<img src='/unknown.svg'></figure>"),
+        ("</figure>", "<div>Wichtiger Text</div></figure>"),
+    ],
+)
+def test_unknown_media_always_fails_closed(before: str, after: str) -> None:
+    with pytest.raises(CorpusError, match="unsupported informational media"):
+        positive_parse(DECORATIVE.replace(before, after))
+
+
+@pytest.mark.parametrize(
+    "before,after",
+    [
+        ("icon-podcast.svg", "other.svg"),
+        ("Podcast Icon", "Diagramm"),
+        ("audio-element", "changed"),
+        ("audio/mp3", "changed"),
+        ("Ivo Rettig", "substantive transcript"),
+    ],
+)
+def test_podcast_signature_changes_fail(before: str, after: str) -> None:
+    with pytest.raises(CorpusError, match="unsupported informational media"):
+        positive_parse(PODCAST.replace(before, after), URLS[2])
+
+
+def test_positive_profile_preserves_history_and_blocks_missing_svg() -> None:
+    versions = [
+        ParserConfig(),
+        current_profile("diabinfo-pilot/1"),
+        current_profile("diabinfo-pilot/2"),
+        current_profile("diabinfo-pilot/3"),
+    ]
+    assert [v.version().version for v in versions] == ["1", "2", "3", "4"]
+    assert versions[1].version().sha256 == (
+        "5a9e2078f27dd2e57f77fb76cc44581760f2c52ef9e7d119fd3040e4d9ac8584"
+    )
+    assert (
+        versions[2].version().sha256
+        == "b4cd5fdda187a0da1206547e17416f64eed93a767f8d4a0b5fa32808be13e85e"
+    )
+    svg = (
+        '<div class="ce-gallery"><figure><img class="image-embed-item" '
+        'alt="Infografik: Was sollten Menschen mit Diabetes beim Fasten beachten?" '
+        'src="/fileadmin/diabinfo/Grafiken/0511_diabinfo_Ramadan_DE_ohne-Titel.svg">'
+        "</figure></div>"
+    )
+    with MemoryStore() as backend:
+        io = Store(backend, backend)
+        batch = capture(
+            io,
+            transport=Transport(
+                {
+                    url: Response(
+                        200,
+                        (("content-type", "text/html; charset=utf-8"),),
+                        positive_html(
+                            svg
+                            if url == URLS[1]
+                            else PODCAST
+                            if url == URLS[2]
+                            else DECORATIVE
+                            if url == URLS[4]
+                            else "",
+                            faq_page=url == URLS[3],
+                        ).encode(),
+                    )
+                    for url in URLS
+                }
+            ),
+        )
+        ingestor = StoredCorpusIngestor(backend, backend)
+        results: list[IngestionResult] = []
+        for version in versions:
+            previous = results[-1].manifest.article_version_ids if results else (None,) * 5
+            result = require(
+                ingestor.ingest(request(batch, parser=version, previous_version_ids=previous))
+            )
+            results.append(result)
+        final = results[-1]
+        assert [a.status for a in final.articles] == [
+            "usable",
+            "unusable",
+            "usable",
+            "usable",
+            "usable",
+        ]
+        assert final.articles[1].reason == "unsupported_informational_media"
+        assert final.manifest.status == "incomplete"
+        for result in results:
+            assert require(ingestor.load(result.manifest.id)) == result
+        for old, new in zip(results[-2].articles, final.articles, strict=True):
+            assert new.previous_version_id == old.id
+            assert new.raw_artifact_id == old.raw_artifact_id
+
+
+def test_unknown_image_cannot_hide_in_excluded_toc() -> None:
+    html = positive_html().replace(
+        "Inhaltsverzeichnis</h2>", 'Inhaltsverzeichnis</h2><img src="/unknown.svg">'
+    )
+    with pytest.raises(CorpusError, match="unsupported informational media"):
+        parse_html(html, URLS[0], "a", "r", "t", "utf-8", current_profile())

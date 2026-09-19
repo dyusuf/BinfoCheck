@@ -5,8 +5,9 @@ from bs4.element import NavigableString
 
 from .config import URLS, ParserConfig, SiteProfile
 from .errors import check
+from .media import validate_media
 
-PROFILE: SiteProfile = "diabinfo-pilot/2"
+PROFILE: SiteProfile = "diabinfo-pilot/3"
 CONTAINER = "main#main > .container"
 ROOTS = (
     CONTAINER + " > .frame:has(> header > h1)",
@@ -105,12 +106,23 @@ def validate_profile(soup: BeautifulSoup, roots: list[Tag], url: str, config: Pa
             "site_toc_unexpected_text",
         )
     for root in roots:
+        if config.site_profile == "diabinfo-pilot/3":
+            for image in root.select("img"):
+                check(
+                    any(
+                        parent.css.match(".ce-gallery, .frame-type-news_pi1")
+                        for parent in image.parents
+                    ),
+                    "unsupported_informational_media",
+                )
         for marker in root.select('a[data-mailto-token] > span[style="display: none;"]'):
             check(
                 marker.get_text() == "noSp@m" and not marker.find_all(True),
                 "site_mail_marker_mismatch",
             )
         for gallery in root.select(".ce-gallery"):
+            if config.site_profile == "diabinfo-pilot/3":
+                validate_media(gallery, url, "gallery")
             if config.site_profile == "diabinfo-pilot/2":
                 # Profile 1 is retained only to replay the unaccepted diagnostic
                 # candidate. Its broad image exclusion missed an informational SVG.
@@ -154,6 +166,8 @@ def validate_profile(soup: BeautifulSoup, roots: list[Tag], url: str, config: Pa
                 "site_media_mismatch",
             )
         for audio in root.select(".frame-type-gddiabinfo_diabinfoaudio"):
+            if config.site_profile == "diabinfo-pilot/3":
+                validate_media(audio, url, "audio")
             check(
                 bool(audio.select("audio > source")) and bool(audio.select("header > h2")),
                 "site_audio_mismatch",

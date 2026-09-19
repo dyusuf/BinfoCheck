@@ -110,3 +110,89 @@ hosted CI passed with 732 tests; those tests are historical regression evidence,
 not proof of real-page extraction. Live inspection/replay results above are the
 checks performed for this gate. Full regression tests were not repeated locally
 because no runtime code, dependency or synthetic fixture changed.
+
+## Proposed one-SVG companion (not authorized)
+
+The six-GET authorization above remains fully consumed. **No new corpus/provider/
+model request occurred during media hardening.** The following is a proposal only,
+not permission or a new approval reference. Only Git/GitHub delivery uses network.
+
+`asset.PROPOSAL` is an inert, canonical `t06-ramadan-svg-proposal/1` value:
+
+- attempt ID: `t06-ramadan-svg-1`;
+- method/URL: **GET** `https://www.diabinfo.de/fileadmin/diabinfo/Grafiken/0511_diabinfo_Ramadan_DE_ohne-Titel.svg`;
+- maximum requests: **1**; retries **0**; redirects **0**; concurrency **1**;
+- connect timeout **10 s**, read timeout **20 s**, total deadline target **30 s**;
+- byte ceiling **2,097,152** (2 MiB), enough for a bounded vector graphic proposal;
+  exceeding it fails, with at most one overflow-detection byte retained as partial;
+- TLS certificate/hostname verification on; headers exactly
+  `User-Agent: BinfoCheck-T06/1.0`, `Accept: image/svg+xml`, `Accept-Encoding: identity`;
+- no HEAD, cookies, authentication, browser, proxy configuration, link following,
+  automatic robots refresh, additional assets, paid/provider/model calls; USD **0**;
+- nonidentity content encoding is preserved only as incomplete evidence, not
+  accepted SVG bytes; non-200/non-SVG responses never become usable SVG evidence;
+- failed/uncertain dispatch and abandoned intent consume the allowance; second
+  attempt needs a new explicit authorization. No automatic restart/reset.
+
+Proposal digest: **`e3d776762445657f46cb632f016b48e407837bc04430aa1ca83f515d9816aebf`**.
+SHA-256 covers canonical JSON (sorted keys, UTF-8, compact separators) of the complete
+proposal including method/policy, attempt ID, exact URL and parent lineage:
+
+- parent batch: `t06-live-20260919T114133Z`;
+- parent raw artifact: `corpus-raw-html-b20f8e3b1f9ab0f136d75089f503ec43eb717090a9b7e93a2652aa164cda39d2`;
+- parent raw SHA-256: `8730ea878ffba196a129c7feb6728ed92531b48a272ec01e9c98ffb37a331afd`.
+
+Future `AssetApproval` format `t06-ramadan-svg-authorization/1` includes a **new**
+explicit approval reference, entire proposal, policy digest and `envelope_sha256`.
+The latter hashes every other envelope field, including the approval reference.
+It cannot be finalized until the user supplies that reference. Neither the old
+six-request digest nor its reference is a valid substitute for this authorization.
+
+The small T06 `capture_asset` companion uses T11A only. It validates the frozen
+approval and original saved parent/robots evidence, then persists and reads back
+restricted immutable `<attempt>.authorization.v1` **before** `<attempt>.start.v1`
+and dispatch. The start marker pins the authorization artifact hash. Revalidation
+immediately precedes dispatch and HTTP request. No arbitrary URL argument exists.
+The previously captured robots body was checked offline for this exact asset path;
+no new robots request is proposed. This is a snapshot check, not a fresh robots claim.
+
+The restricted raw artifact preserves complete identity-encoded SVG response bytes
+unchanged. The HTTP and asset receipts retain URL, UTC start/finish, status/media,
+exact sizes/hash, parent raw ID, authorization/start links and partial/error states.
+`load_asset` validates restriction, immutable hashes, authorization and policy,
+URL/lineage, receipt consistency and sizes; it does no fetching or SVG interpretation.
+The helper's `usable_svg` means complete HTTP-200 SVG-typed bytes only, **not**
+validated SVG text or a ready article. Missing/corrupt assets never become decorative.
+
+Single-owner execution is required: T11A has no atomic multi-worker dispatch lease.
+The timer/decreasing timeouts bound socket work; OS DNS can outlast the target and
+cannot be forcibly preempted here. That remains an uncertain consumed attempt, never
+an excuse to dispatch a retry. There is no live CLI/default approval.
+
+### Post-fetch offline acceptance procedure
+
+1. Close/reopen T11A and validate the exact saved asset/receipt/authorization chain;
+   inspect only immutable captured bytes with sockets/DNS/connections blocked.
+2. Parse as inert XML with explicit size/depth/node limits, DTD/entities disabled.
+   Reject unsafe/unsupported XML; never execute scripts, resolve external entities,
+   load href/image/font/style resources, or infer text from vector paths.
+3. Inventory machine-readable `<text>`/`<tspan>`, `<title>`, `<desc>` and ARIA metadata.
+   Preserve exact XML-decoded character data, source element/attribute locators and
+   original byte artifact/hash. XML decoding is a recorded transformation; preserve
+   a separate immutable asset TextRecord and exact code-point spans. Do not treat
+   generic labels, hidden text or unrelated descriptions as a full visual transcript.
+4. If substantive text is deterministically recoverable, design a **new** parser/
+   profile and restricted structure companion tying the Ramadan image locator to
+   the asset TextRecord/spans. Keep original HTML raw hash/lineage unchanged. Do not
+   pretend SVG wording came from the HTML or assign invented HTML offsets. Review
+   shared-contract compatibility before any combined-source representation; no T00
+   changes are authorized here. Replay from parser-4 predecessor and inspect all
+   output and links, then reopen/replay without network.
+5. If no substantive machine-readable text is recoverable, save the explicit result
+   “informational visual captured; no deterministic text extractable.” No OCR,
+   vector-path interpretation or manufactured wording. Report whether textual-corpus
+   acceptance needs an explicit product decision; do not decide automatically.
+
+SVG interpretation/integration is intentionally prepared as this procedure, not
+implemented against unseen bytes. The asset mechanism does not remove the current
+Ramadan blocker or make T06 accepted. No SVG GET or merge is authorized by this text.

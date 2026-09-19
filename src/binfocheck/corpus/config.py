@@ -75,7 +75,7 @@ def capture_policy_sha256(robots_url: str, page_urls: tuple[str, ...], policy: F
     )
 
 
-SiteProfile = Literal["diabinfo-pilot/1", "diabinfo-pilot/2"]
+SiteProfile = Literal["diabinfo-pilot/1", "diabinfo-pilot/2", "diabinfo-pilot/3"]
 
 
 class ParserConfig(Contract):
@@ -128,16 +128,25 @@ class ParserConfig(Contract):
         return selector
 
     def version(self) -> VersionRef:
+        extra: dict[str, str] = {}
+        if self.site_profile == "diabinfo-pilot/3":
+            from .media import SIGNATURES
+
+            extra["media_policy_sha256"] = digest(canonical(SIGNATURES))
         return VersionRef(
             name="t06-corpus-parser",
-            version={None: "1", "diabinfo-pilot/1": "2", "diabinfo-pilot/2": "3"}[
-                self.site_profile
-            ],
+            version={
+                None: "1",
+                "diabinfo-pilot/1": "2",
+                "diabinfo-pilot/2": "3",
+                "diabinfo-pilot/3": "4",
+            }[self.site_profile],
             sha256=digest(
                 canonical(
                     {
                         "settings": self.model_dump(mode="json"),
                         "packages": PACKAGES,
+                        **extra,
                     }
                 )
             ),
