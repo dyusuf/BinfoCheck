@@ -452,6 +452,18 @@ was consumed by one six-GET batch, all HTTP 200. Raw bodies and approval evidenc
 are saved in T11A. Default replay records five unusable pages: no `article` roots.
 A bounded site profile and full cleaned-content inspection remain offline work;
 no additional GET is authorized. See [capture report](t06-live-capture.md).
+**D06 offline site-profile follow-up:** four explicit title/credit/intro/article roots
+and shape-validated exclusions now implement the saved TYPO3 pilot layout.
+`diabinfo-pilot/2` uses `t06-corpus-parser/3` and keeps original parser-1 identities
+unchanged; the rejected diagnostic profile-1/parser-2 remains replayable history.
+FAQ questions use level 3 beneath topic headings; callout/question ancestry ends at
+its DOM boundary. Exact source wording and links remain; no broad fallback exists.
+The final saved-batch replay has four usable articles and 201 passages, but Ramadan
+is unusable (`unsupported_informational_media`): an informational SVG is referenced
+but its contents were not captured. Acceptance remains blocked, not merge-ready.
+The initial diagnostic ready corpus is explicitly rejected in restricted inspection
+evidence. Durable private store and exact versions/IDs are in the updated handoff.
+No further network call, shared-schema change or T07 work was introduced.
 See [corpus README](../src/binfocheck/corpus/README.md) and
 [T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
 choices remain open; T02's recorded decision is unchanged.

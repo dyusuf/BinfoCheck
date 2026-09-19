@@ -10,6 +10,7 @@ from bs4.element import NavigableString
 from binfocheck.domain.text import SpanRef
 
 from .config import ParserConfig, digest, identity
+from .diabinfo import validate_profile
 from .errors import CorpusError, check
 from .structure import Block, Exclusion, Heading, Link, ListItem, Structure
 
@@ -190,6 +191,8 @@ def parse_html(
         check(not any(p in roots for p in root.parents), "overlapping_article_roots")
     # Selected roots must retain document order, independent of selector order.
     roots.sort(key=lambda t: next(i for i, candidate in enumerate(tags) if candidate is t))
+    if config.site_profile:
+        validate_profile(soup, roots, url, config)
     root_locations = tuple(source_location(r) for r in roots)
     exclusions: list[Exclusion] = []
     for root in roots:
@@ -207,7 +210,12 @@ def parse_html(
     gathered: list[tuple[str, Tag, int]] = []
 
     def walk(tag: Tag) -> None:
-        if re.fullmatch(r"h[1-6]", tag.name):
+        if config.site_profile and tag.css.match(config.faq_heading):
+            gathered.append(("heading", tag, 3))
+        elif config.site_profile and tag.name == "button" and tag.css.match(".accordion-headline"):
+            for child in tag.find_all(recursive=False):
+                walk(child)
+        elif re.fullmatch(r"h[1-6]", tag.name):
             gathered.append(("heading", tag, int(tag.name[1])))
         elif tag.css.match(config.faq_heading) or tag.name == "summary":
             gathered.append(("heading", tag, 2))
@@ -263,7 +271,15 @@ def parse_html(
     links: list[Link] = []
     items: list[ListItem] = []
     stack: list[int] = []
+    scopes: list[Tag | None] = []
     for kind, tag, level, start, end, part in rendered:
+        # Pilot callout headings end with their box, not at an unrelated later
+        # heading. FAQ questions similarly belong to exactly one accordion item.
+        while stack and (scope := scopes[stack[-1]]) is not None:
+            if scope is tag or any(scope is parent for parent in tag.parents):
+                break
+            closed = stack.pop()
+            headings[closed] = headings[closed].model_copy(update={"section_end": start})
         if kind == "heading":
             while stack and headings[stack[-1]].level >= level:
                 old = stack.pop()
@@ -276,6 +292,17 @@ def parse_html(
                     section_end=len(text),
                 )
             )
+            scope = None
+            if config.site_profile:
+                scope = next(
+                    (
+                        parent
+                        for parent in tag.parents
+                        if parent.css.match(".background-container, .accordion-item")
+                    ),
+                    None,
+                )
+            scopes.append(scope)
             stack.append(len(headings) - 1)
         block = Block.model_validate(
             dict(

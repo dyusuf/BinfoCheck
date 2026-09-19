@@ -1,6 +1,14 @@
 # T06 bounded live capture — 19 September 2026
 
-**Capture passed; usable-corpus acceptance remains blocked by the site parser profile.**
+**Capture passed. Subsequent offline site-profile replay has four usable pages;
+Ramadan informational media remains an acceptance blocker.**
+
+Current durable private store:
+`/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`.
+The 29-file copy was verified by membership, byte size and SHA-256; the original
+source remains unchanged. See [current handoff](t06-handoff.md) for parser/version
+lineage and the final incomplete manifest. The default-profile outcomes below are
+historical and immutable; no second capture occurred.
 
 The user authorized one robots GET plus up to five allowlisted page GETs under
 policy SHA-256 `78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18`.

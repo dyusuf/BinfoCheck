@@ -75,8 +75,12 @@ def capture_policy_sha256(robots_url: str, page_urls: tuple[str, ...], policy: F
     )
 
 
+SiteProfile = Literal["diabinfo-pilot/1", "diabinfo-pilot/2"]
+
+
 class ParserConfig(Contract):
-    # Provisional structural profile; real site selectors require saved-page inspection.
+    # Absence preserves version-1 serialization/identity for existing saved replays.
+    site_profile: SiteProfile | None = Field(default=None, exclude_if=lambda value: value is None)
     roots: tuple[str, ...] = ("article",)
     chrome: tuple[str, ...] = (
         "nav",
@@ -126,7 +130,9 @@ class ParserConfig(Contract):
     def version(self) -> VersionRef:
         return VersionRef(
             name="t06-corpus-parser",
-            version="1",
+            version={None: "1", "diabinfo-pilot/1": "2", "diabinfo-pilot/2": "3"}[
+                self.site_profile
+            ],
             sha256=digest(
                 canonical(
                     {

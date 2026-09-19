@@ -1,7 +1,7 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 offline checks passed, live acceptance pending.
+**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 offline implementation passed; live acceptance blocked on uncaptured informational media.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -306,13 +306,14 @@ record rules removing navigation/consent banners while retaining article referen
 **Stop:** PDFs, video, whole-site crawling, rewriting, embeddings or selecting pages
 to manufacture positive findings.
 
-**T06 status — 19 September 2026: offline_passed; live integration pending.**
-The user authorized offline implementation only. D06 parser/core-ingestion pins,
-immutable source/structure/completion artifacts and offline checks are recorded in
-[T06 handoff](t06-handoff.md). A later authorized six-GET capture returned HTTP 200 for robots and all five pages;
-[default replay](t06-live-capture.md) records all five unusable because the site lacks
-`article` roots. Offline site-profile adaptation and all-five inspection remain;
-T06 is not accepted, and the fetch allowance is consumed.
+**T06 status — 19 September 2026: live_acceptance_blocked.**
+The single authorized batch is consumed. The capture is now preserved and verified
+in a durable private T11A store. Offline `diabinfo-pilot/2` adaptation yields four
+usable pages and 201 passages; Ramadan remains unusable because a referenced
+informational SVG is not in the saved HTML. No refetch occurred. The rejected
+text-only diagnostic candidate is retained as immutable history, not acceptance.
+See [T06 handoff](t06-handoff.md) for IDs, complete inspection, tests and the blocker.
+T06 is not accepted or merge-ready.
 
 ### T07 — Hybrid retrieval and context
 

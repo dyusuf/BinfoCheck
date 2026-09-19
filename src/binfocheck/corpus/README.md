@@ -2,8 +2,9 @@
 
 The five URLs in `config.URLS` are fixed. One authorized six-GET capture completed
 with all HTTP 200 responses; see [live capture report](../../../docs/t06-live-capture.md).
-Default-profile replay is unusable for all five pages (no `<article>` roots).
-T06 acceptance requires offline site-profile work and all-five cleaned-text inspection.
+The legacy default profile finds no `<article>` roots. Explicit `pilot_profile()`
+now handles four pages; Ramadan remains unusable because its informational SVG is
+not in the saved capture. T06 live acceptance remains blocked; see the handoff.
 
 ## Interfaces and usage
 
@@ -214,3 +215,30 @@ captures remain unauthenticated; earlier synthetic start markers remain readable
 Failed authorization persistence dispatches nothing. A saved envelope cannot be
 replaced, including after an interrupted write before the start marker. No shared
 T00 schema change or live permission is introduced.
+
+
+## Explicit saved-pilot profile
+
+Use `from binfocheck.corpus.diabinfo import pilot_profile`, then set
+`ReplaySettings(parser=pilot_profile(), batch_artifact_id=..., previous_version_ids=...)`.
+Pass the five existing failed ArticleVersion IDs in URL order. The default stays
+unchanged for historical replay; there is no automatic root fallback.
+
+Current `diabinfo-pilot/2` is parser version 3. It selects four unique regions
+(title, scientific credit, introduction text column, main article column) and
+validates TOC targets, reference structure and FAQ ARIA pairs before exclusions.
+FAQ question headings are level 3 under topics, and boxed headings end at the
+box boundary. Template news/sidebar/TOC, decorative media/controls and the exact
+hidden anti-spam marker are omitted; editorial links and references remain.
+Informational images without captured content fail `unsupported_informational_media`.
+
+A profile-1/parser-2 diagnostic candidate excluded the Ramadan infographic and was
+rejected during full inspection. It remains supported only for immutable replay;
+do not choose that profile to bypass the final blocker. The restricted inspection
+companion identifies both candidate and current manifests. No shared schema changed.
+
+Durable store: `/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`.
+Its `acceptance-final/request.json` is the exact offline replay request. The final
+manifest is incomplete with 201 passages across four usable articles. The previous
+failed and rejected diagnostic corpora remain intact. Full inspection and exact IDs
+are recorded in [T06 handoff](../../../docs/t06-handoff.md). No further fetch is authorized.
