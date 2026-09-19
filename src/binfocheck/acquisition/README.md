@@ -20,8 +20,11 @@ Settings reject unknown options.
 German support still needs the separately authorized live check; there is no fallback.
 
 Production transport uses stdlib HTTPS with Basic authentication from
-`DATAFORSEO_LOGIN`/`DATAFORSEO_PASSWORD`. Credentials are secret-valued, never put
-in records, headers receipts, fixtures or logs. HTTPS host/path are not configurable.
+`DATAFORSEO_LOGIN`/`DATAFORSEO_PASSWORD`. `Credentials.from_environment()` first loads
+an optional local `.env` in the current working directory with `python-dotenv`
+(`override=false`), so real process/server environment variables take precedence.
+`.env` is git-ignored and `.env.example` contains only empty placeholders. Credentials
+are secret-valued, never put in records, header receipts, fixtures or logs. HTTPS host/path are not configurable.
 Redirects are not followed. The initial policy is one attempt, zero retries,
 60-second timeout and a 16 MiB payload limit (configurable within bounded limits).
 An explicit `LiveAuthorization` must bind approval and a verified price/cost ceiling
