@@ -1,0 +1,1 @@
+Gib den synthetischen Eingabetext unverändert im Feld text zurück.

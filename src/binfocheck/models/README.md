@@ -1,0 +1,146 @@
+# Model adapters — T03, version 1
+
+`JevDecisionModel.decide` and `OpenAIGenerationModel.generate` implement the unchanged
+T00 protocols. Construct with `(records, artifacts, resources, config, transport,
+clock=None)`. The stores implement T11A protocols; `ResourceRegistry` explicitly maps
+`(name, version)` to immutable bytes. Transport and clock are injectable for offline
+tests. Runtime `jsonschema` is locked at 4.26.0.
+
+The approved direct endpoints and pins are:
+
+| Adapter | Endpoint | Model | Credential |
+|---|---|---|---|
+| Jev | `https://api.typesafe.ai/v1/systemone` | `jev-1.13.0` | `TYPESAFE_API_KEY` |
+| Generation | `https://api.openai.com/v1/responses` | `gpt-4.1-mini-2025-04-14` | `OPENAI_API_KEY` |
+
+`FixedHttpsTransport` uses `http.client` with TLS certificate/hostname checks. It
+sends one synchronous POST, does not follow redirects, and has no retry, gateway,
+model fallback or SDK default calls. Credentials load only for explicit execution,
+from process environment or explicit `.env`, without override/interpolation. No
+credential is part of a request body, settings, record, receipt or log.
+
+## Inputs and configuration
+
+Requests use `settings.version={name: "t03-model-adapters", version: "1"}` with
+`sha256=null`. The only `settings.values` entry is `state_artifact_id`, which must
+identify an actual artifact in `input_artifact_ids`. UTF-8 text or JSON object/array
+state is accepted; no URLs are fetched. `input_ids` and `input_artifact_ids` remain
+unchanged in the DecisionRecord. Run and input records must already exist.
+
+The caller supplies a versioned Jev rubric resource containing `instructions` and
+`criteria`, or an OpenAI UTF-8 instruction resource and output schema. Versions
+with hashes are verified; exact bytes are snapshotted regardless. Jev requests
+have no generation prompt; generation requests have no decision rubric. No business
+resource is selected or supplied by these adapters. Preparation, including validation,
+is available through `persistence.prepare` without credentials or network.
+
+`ModelAdapterConfig` pins adapter version 1, provider, maximum request bytes (4096
+default, at most 65536), response bytes (2 MiB), output tokens (512 maximum), and
+the existing shared Budget. T03 supports request limit 0/1, retry limit 0,
+concurrency 1, USD, and at most 60 seconds. The complete effective config enters
+the work-key hash and prepared artifact; the DecisionRecord keeps the caller's
+configuration VersionRef. Configurations and credentials do not authorize spending.
+
+## Validation
+
+Jev accepts only the exact label set and question `q0`; known label, type and
+confidence are required. Required probabilities must cover every label, be finite
+numbers in [0,1], sum to one within absolute tolerance 1e-6 and agree with the
+selected maximum (ties allowed). No renormalization or confidence substitution.
+Optional missing/partial probabilities remain unavailable/incomplete. Invalid
+complete distributions still fail. No business thresholds are applied.
+
+Generation requests use strict JSON Schema in Responses `text.format`, with tools
+disabled, temperature 0, standard service tier, no streaming/background/conversation
+and `store=false`. The exact returned model must match the pin. Require a completed
+response and exactly one completed assistant message with one `output_text` item;
+refusal, tool calls, ambiguous multiple outputs and incomplete responses fail.
+JSON rejects duplicate keys, nonfinite values and malformed UTF-8; there is no
+fence stripping, repair, field coercion, rewriting or second model call.
+
+The caller's exact schema is checked and validated by jsonschema. Version 1 supports
+a conservative subset: object roots, closed objects with all properties required,
+scalars, arrays, enums/const, nested anyOf and acyclic local `#/$defs/name` references;
+allowed numeric/array bounds and patterns are listed in `resources.py`. Remote
+references, `$id`, recursive schemas and unsupported keywords are rejected before
+dispatch, never fetched or silently removed. Downstream schemas may need an explicit
+adapter extension later; no T00 schema is changed or duplicated here.
+
+## Artifacts, IDs and replay
+
+SHA-256 covers canonical request/config/resource snapshots and actual input hashes.
+It determines the work key and `model-decision-<hash>` / `model-generation-<hash>`
+record ID. `role_id(record_id, role)` determines artifact IDs. Clock values, secrets
+and provider response IDs never determine work identity. An intentional new call
+requires a new analysis run and, for live work, fresh authorization.
+
+Artifacts use T11A exclusively and are immutable. Roles are `prepared`, `outbound`,
+`intent`, `raw`, `structured` and `receipt`. Prepared content includes the actual
+T00 request and exact base64 resource bytes, not duplicate domain schemas.
+`raw` preserves response entity bytes before JSON parsing, including malformed and
+error bodies. HTTP transfer framing is removed by http.client; content coding is
+requested as identity. Unexpected coded bytes/prefixes remain stored as failed,
+incomplete artifacts. Allowlisted headers are separate; credentials/cookies are omitted.
+
+**GenerationResult.output_artifact_id points to canonical validated structured JSON.**
+It never points to the provider envelope. The receipt separately links the raw
+response and semantic output; both are restricted. Neither is added to input lineage.
+Receipt/preparation/normalization versions are 1. The receipt captures UTC timing,
+elapsed time, dispatch uncertainty, headers, response ID, errors, raw usage and
+explicitly labeled cost estimates. The prepared configuration identifies provider
+and endpoint mapping. The intent records authorization and reserves the allowance.
+
+`replay_decision` / `replay_generation` accept stores and a record ID, with no
+credentials or transport. They verify artifact hashes, versions, IDs, original
+inputs, outbound bytes, normalized values, output JSON and usage, then append the
+identical record using original timestamps. No existing record is overwritten.
+
+Failures return `Outcome(failed, value=null)` and save failed DecisionRecords where
+storage works. They do not become successful Outcomes or negative labels. Normal
+provider/validation failures have replayable receipts. If the receipt survived a
+record-write failure, replay can finish local persistence. Missing/corrupt required
+artifacts fail replay; they never cause a new provider request. If receipt storage
+failed but record storage worked, the failed record remains inspectable, repeated
+invocation returns it, and full replay remains unavailable. Raw/output write failures
+are explicit failures, not successful results with missing artifacts.
+
+## Usage, authorization and limits
+
+Missing usage is unavailable; partial/invalid counters remain unknown. Explicit
+reported zero is preserved. Usage.cost/currency/requests remain null because neither
+selected response schema supplies a billed cost or request count. Dispatch state
+is separate receipt metadata. Jev/OpenAI detailed token metadata remains in raw
+responses/receipts. Estimates use the 2026-09-19 public model prices: Jev input
+$0.042/M, OpenAI input/cached/output $0.40/$0.10/$1.60 per million. Missing cache
+breakdown, unexpected service tier or cache-write usage makes the OpenAI estimate
+unknown. Estimates are not reported charges or proof of billing.
+
+Live authorization is unresolved. The real transport requires a reviewed
+`LiveAuthorization` bound to provider, endpoint, model, work key, body digest,
+approval/pricing references and a verified upper cost within the ceiling. Keys alone
+cannot dispatch. The standalone smoke entry point defaults to **offline preparation**:
+
+```bash
+uv run --offline --locked python -m binfocheck.models.live_check --provider jev
+uv run --offline --locked python -m binfocheck.models.live_check --provider openai
+```
+
+These print frozen fixture payloads/hashes and use MemoryStore only. Future execution
+requires explicit user approval plus `--execute --store <private-root>
+--authorization <reviewed-file>`. Do not create an authorization file from this
+README or infer consent from the command's availability. Review current pricing and
+the request's upper cost first; there is no provider-enforced dollar limit.
+
+One possible dispatch consumes the allowance even on timeout. Repeated calls reuse
+the receipt/failed record, and abandoned intents become uncertain failures without
+resending. Their elapsed network duration is unknown. Clock/size bounds apply to
+network reads; socket deadlines decrease rather than resetting per body chunk.
+DNS resolution and internal blocking header/TLS operations can exceed a wall-clock
+target on some platforms: this is not a process-kill or exactly-60-second guarantee.
+
+The supported execution mode is one process/one owner per work key. T11A has no
+atomic cross-process dispatch lease; do not launch the smoke runner concurrently.
+No exactly-once external billing, distributed transaction, recovery of bytes lost
+before persistence, power-loss durability or multi-worker orchestration is claimed.
+T11B owns coordination. Real access/API compatibility remains unverified; offline
+tests prove wiring/validation, not German model accuracy or provenance.
