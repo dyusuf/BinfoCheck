@@ -1,0 +1,1 @@
+{"model":"jev-1.13.0","questions":{"q0":{"criteria":{"andere":"Eine andere Farbe oder keine Farbe genannt.","rot":"Rot wird ausdrücklich genannt."},"instructions":"Welche Farbe nennt der synthetische Text?","type":"choice"}},"state":"Äpfel 🍎 sind rot."}

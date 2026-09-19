@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"text":{"title":"Text","type":"string"}},"required":["text"],"title":"SmokeOutput","type":"object"}
