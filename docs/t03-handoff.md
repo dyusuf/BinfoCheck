@@ -1,8 +1,8 @@
 # T03 implementation handoff — decision and generation adapters
 
 Task / assignee / status: T03 / Codex / offline implementation complete; final check
-results below. Live integration is blocked pending explicit authorization; T03 is
-not accepted. Branch: `codex/t03-model-adapters`, based on merged main `87808d1`.
+results below. Jev live passed; OpenAI live is blocked by unavailable credentials.
+T03 overall: integration partially blocked, not fully live-accepted. Branch: `codex/t03-model-adapters`, based on merged main `87808d1`.
 
 ## Scope and authorization
 
@@ -16,7 +16,7 @@ worker orchestration, new storage service, deployment or T00 wire changes.
 Read AGENTS.md, MVP/exclusions, task conventions/T03, Architecture Sections 3/7/8,
 model/storage contracts, T11A implementation, contract fixtures and existing receipt
 conventions. T00/T11A are present. D04 implementation choices are recorded in
-Architecture; live authorization remains unresolved. D07 remains downstream.
+Architecture; see the current Jev live acceptance entry below. D07 remains downstream.
 
 The initial interrupted sync fast-forwarded the branch to merged main; continuing
 confirmed and completed the push. No branch switch occurred. This assignment
@@ -231,3 +231,50 @@ and separate estimates; no accuracy/calibration claim follows from these two cal
 
 Verified during the T03 planning/implementation session on 19 September 2026. No
 third-party model gateway documentation is used as authority.
+
+
+## Jev live acceptance — 19 September 2026
+
+Current status: offline passed; Jev live passed; OpenAI live blocked — credentials
+unavailable (no API access). T03 overall: integration partially blocked, not fully
+live-accepted. OpenAI remains an outstanding integration dependency. The user
+explicitly authorized the single frozen Jev smoke and skipped OpenAI. No merge
+was performed; PR #6 remains draft.
+
+Exactly one Jev POST was dispatched, with zero retries, no fallback/redirect,
+concurrency one, a 60-second timeout and USD 0.01 ceiling. The existing frozen
+258-byte payload/hash/work key and model jev-1.13.0 were unchanged. No OpenAI,
+model-list, billing, token-count or credential-probe request was made. Public
+technical documentation was read separately without credentials.
+
+Official https://docs.typesafe.ai/models.md was checked before dispatch: USD
+0.042 per million input tokens; output free; 64k context. A conservative full
+65,536-token allowance yields USD 0.002752512, below the approved USD 0.01 ceiling.
+This is a documented-price upper estimate, not a provider-enforced billing cap.
+The shared repository dotenv supplied TYPESAFE_API_KEY without exposing/copying it.
+
+HTTP 200; exact returned model jev-1.13.0; selected label rot; complete probabilities
+rot=1.0, andere=0.0. Provider request ID: req_01a0b91e8ba77e4a95f90535d6a94b34.
+Reported usage: 331 input tokens, 33 output tokens. Provider-reported request count
+and billed cost/currency remain unknown. Observed adapter dispatch count: one.
+Estimated cost: USD 0.000013902 (input tokens times the verified published rate).
+Adapter elapsed time: 2.0122764855623245 seconds.
+
+Restricted T11A SQLite store, authorization, outcome and verification summary:
+/tmp/binfocheck-t03-jev-live-20260919/ (directory mode 0700; local temporary storage,
+not committed; preserve/export privately before workspace cleanup).
+The exact 178 raw response bytes are stored separately with restricted access.
+Raw SHA-256: 237d59011017488f8fe25fef0aa334c6a1b0c6d9a91995a6574ef10a36b5b6d8.
+DecisionRecord: model-decision-4961ad5958656c3a53d5c2719550bc9d35131fd01f0c5e8b78422e93f653e810.
+Versioned receipt: model-artifact-0cc0569c0c3ca881790aa64bb4366b7e9ebf93719577e23459524c073cb305f5.
+Raw artifact: model-artifact-a4b9b4d1e03fc6f0cc3157d7e09bcf85f67be722517260c19d5e43234ac0bf39.
+
+Post-call verification passed: close/reopen SQLite, exact returned model, raw
+artifact hash/access, complete probabilities, validate_links, deterministic replay
+with sockets disabled and without loading credentials. No second provider call.
+This smoke verifies integration only, not accuracy/calibration or business behavior.
+Prior final offline checks remain 121 model tests, 587 total tests, lint/format,
+pyright, exported schemas and diff checks passed. This follow-up changes only
+documentation; adapter code, contracts, fixtures and config versions are unchanged.
+The Jev one-request authorization is consumed; another call needs new authorization.
+Earlier no-live/authorization-pending statements below/above are historical.

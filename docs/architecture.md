@@ -354,7 +354,7 @@ implementation details need no separate approval.
 | D01 | Python schema/runtime/test dependencies | T00 acceptance |
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
-| D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Live authorization remains unresolved; no model request authorized |
+| D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06/T07 parser, passages, German lexical settings, BM25 and RRF remain open | T02 choice recorded below; remaining choices before affected T06/T07 acceptance |
 | D07 | Prompts, rubrics, uncertainty policy and stage budgets | T04/T08/T09/T10 live use and T05 mapping acceptance; draft in the owning task. Category changes require explicit scope authorization. |
@@ -395,12 +395,19 @@ Full configuration, schema subset, recovery limits and source references are in 
 [adapter README](../src/binfocheck/models/README.md) and [T03 handoff](t03-handoff.md).
 No domain wire-schema change or D07 business decision is authorized by this entry.
 
-**D04 live authorization unresolved:** implementation approval explicitly forbids
-Jev/OpenAI calls for now. Frozen synthetic smoke payloads propose exactly one request
-per adapter, USD 0.01 ceiling each, zero retries, concurrency one, 60-second timeout;
-these are proposals, not permission. Reverify pricing and a defensible upper cost,
-then obtain explicit user authorization bound to each exact payload/model before
-dispatch. Neither credentials nor writing an authorization artifact supplies consent.
+**D04 live status — 19 September 2026:** the user authorized exactly the frozen
+Jev smoke request, USD 0.01 ceiling, zero retries, concurrency one, 60-second timeout,
+and explicitly skipped OpenAI. One Jev request passed (HTTP 200, exact returned
+`jev-1.13.0`, complete choice probabilities); restricted raw/receipt persistence,
+reopen, link validation and network-disabled replay passed. Reported usage was
+331 input / 33 output tokens; billed cost is unknown, estimated USD 0.000013902.
+Published pricing and a conservative full-context cost bound were verified before
+dispatch. This single-request authorization is consumed; no repeat is authorized.
+OpenAI live is **blocked — credentials unavailable (no API access)**; no OpenAI
+request was made. Offline checks passed; **T03 overall: integration partially
+blocked**, not fully live-accepted. OpenAI remains an explicit outstanding
+integration dependency. See [live acceptance details](t03-handoff.md#jev-live-acceptance--19-september-2026).
+No merge is authorized by this status entry; PR #6 remains draft.
 
 **D06 T02 portion resolved — 19 September 2026:** user explicitly selected
 `spacy==3.8.16`, `spacy.blank("de")` and rule-based Sentencizer, without a downloaded
