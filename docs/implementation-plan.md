@@ -1,7 +1,8 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 accepted; local and hosted CI checks passed. All other tasks not started.
+**Status:** T00 accepted. T11A implemented with local and hosted CI passing; review
+pending. All other tasks not started.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -167,6 +168,9 @@ model decisions/reviews.
    or unrestricted artifact-download paths.
 
 **Stop:** scheduling, orchestration, API and UI; T11B owns execution.
+
+**Handoff:** [T11A implementation, checks, and limitations](t11a-handoff.md).
+Draft PR #2 is awaiting review; no downstream work started.
 
 ### T01 — Acquire a Google AI Mode observation
 
