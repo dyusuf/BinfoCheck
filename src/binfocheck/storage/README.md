@@ -18,6 +18,13 @@ with SQLiteStore(Path("/configured/private/store")) as store:
 
 The root is trusted operator configuration, not request input. The implementation
 targets POSIX local filesystems (the repository's Linux/Ubuntu environment).
+New roots are created with mode `0700`. Existing roots must have no group/other
+permission bits (normally `0700`); otherwise opening fails with
+`StorageInitializationError` code `insecure_storage_permissions` before SQLite is
+opened or created. Storage does not silently chmod an existing directory. The
+operator must secure the configured root before retrying, because SQLite contains
+record/text data as well as artifact metadata. Permissions must remain private
+throughout use; this startup check is not user authorization or an ACL audit.
 Each instance owns a SQLite connection and is used from its creating thread;
 separate instances support bounded concurrent writers. The default busy timeout
 is one second, configurable between zero and sixty seconds. There are no automatic

@@ -267,6 +267,52 @@ def test_schema_v1_initialization_and_reopen(tmp_path: Path) -> None:
         assert all_records(reopened) == ()
 
 
+@pytest.mark.parametrize("mode", [0o755, 0o750, 0o707, 0o777])
+@pytest.mark.parametrize("existing_database", [False, True])
+def test_insecure_root_rejected_before_sqlite_open(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mode: int, existing_database: bool
+) -> None:
+    root = tmp_path / "store"
+    root.mkdir(mode=0o700)
+    if existing_database:
+        with SQLiteStore(root) as store:
+            success(store.put_record(text()))
+    database = root / "store.sqlite3"
+    original_bytes = database.read_bytes() if existing_database else None
+    original_files = set(root.iterdir())
+    root.chmod(mode)
+
+    def unexpected_connect(*args: object, **kwargs: object) -> NoReturn:
+        raise AssertionError("An insecure root must be rejected before opening SQLite")
+
+    monkeypatch.setattr(sqlite3, "connect", unexpected_connect)
+    with pytest.raises(StorageInitializationError) as caught:
+        SQLiteStore(root)
+    assert caught.value.detail.code == "insecure_storage_permissions"
+    assert caught.value.detail.message == "insecure storage permissions"
+    assert not caught.value.detail.retryable
+    assert str(root) not in str(caught.value)
+    assert root.stat().st_mode & 0o777 == mode
+    assert set(root.iterdir()) == original_files
+    if existing_database:
+        assert database.read_bytes() == original_bytes
+    else:
+        assert not database.exists()
+
+
+@pytest.mark.parametrize("existing_root", [False, True])
+def test_private_root_creation_and_reopen(tmp_path: Path, existing_root: bool) -> None:
+    root = tmp_path / "store"
+    if existing_root:
+        root.mkdir(mode=0o700)
+        root.chmod(0o700)
+    with SQLiteStore(root) as store:
+        success(store.put_record(text()))
+    assert root.stat().st_mode & 0o777 == 0o700
+    with SQLiteStore(root) as reopened:
+        assert success(reopened.get_record(IdRequest(id="text-new"))) == text()
+
+
 @pytest.mark.parametrize("foreign", [True, False])
 def test_reject_foreign_or_newer_schema(tmp_path: Path, foreign: bool) -> None:
     with SQLiteStore(tmp_path):

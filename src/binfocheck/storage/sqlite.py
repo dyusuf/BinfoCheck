@@ -59,6 +59,10 @@ class SQLiteStore(BaseStore):
                 )
             ):
                 raise StorageError("unsafe_storage_path")
+            # mkdir's mode does not secure an existing directory. Reject before opening
+            # SQLite (which holds record/text data), without changing operator permissions.
+            if root.stat(follow_symlinks=False).st_mode & 0o077:
+                raise StorageError("insecure_storage_permissions")
             blobs = ContentAddressedFiles(root)
             connection = sqlite3.connect(
                 root / "store.sqlite3", timeout=busy_timeout_seconds, isolation_level=None
