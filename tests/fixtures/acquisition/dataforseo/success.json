@@ -1,0 +1,52 @@
+{
+  "version": "synthetic-v1",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.000 sec.",
+  "cost": 0.004,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [{
+    "id": "synthetic-task-1",
+    "status_code": 20000,
+    "status_message": "Ok.",
+    "time": "0.900 sec.",
+    "cost": 0.004,
+    "result_count": 1,
+    "path": ["v3", "serp", "google", "ai_mode", "live", "advanced"],
+    "data": {"tag": "capture-19f1064b619d49d35392eac7261cd7266c720671fc594f4b226f32bf0bee74ba", "language_code": "de", "location_name": "Germany", "device": "desktop", "os": "windows"},
+    "result": [{
+      "keyword": "Welche Farbe haben die Äpfel?",
+      "type": "ai_mode",
+      "language_code": "de",
+      "location_code": 2276,
+      "se_domain": "google.com",
+      "datetime": "2026-09-19 12:00:00 +00:00",
+      "items_count": 1,
+      "items": [{
+        "type": "ai_overview",
+        "markdown": "Äpfel 🍎 sind rot. [[1]](https://example.org/a)\r\nÄpfel 🍎 sind rot. [[1]](https://example.org/a)\n[Mehr](https://example.org/b)  ",
+        "references": [{
+          "type": "ai_overview_reference",
+          "source": "Synthetic source",
+          "domain": "example.org",
+          "url": "https://example.org/a",
+          "title": "Synthetic apples",
+          "text": "Äpfel 🍎 sind rot.\n"
+        }, {
+          "type": "ai_overview_reference",
+          "url": "https://example.org/b",
+          "text": null
+        }],
+        "items": [{
+          "type": "ai_overview_element",
+          "text": "Äpfel 🍎 sind rot.",
+          "markdown": "Äpfel 🍎 sind rot.",
+          "references": [],
+          "links": null
+        }],
+        "synthetic_unknown_field": {"keep": "exactly in raw payload"}
+      }]
+    }]
+  }]
+}

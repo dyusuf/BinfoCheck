@@ -353,7 +353,7 @@ implementation details need no separate approval.
 |---|---|---|
 | D01 | Python schema/runtime/test dependencies | T00 acceptance |
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
-| D03 | DataForSEO/AI Mode selected; access, capture settings, request/cost limits open | T01 live calls; explicit live-call authorization required |
+| D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
 | D04 | Claimify-inspired + Jev selected; exact Jev/generation model IDs and live-call limits open | T03 live calls; verify exact identifiers and current API settings |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
 | D06 | spaCy proposed; parser, passages, German lexical settings and RRF parameters open | Affected T02/T06/T07 acceptance |
@@ -361,6 +361,27 @@ implementation details need no separate approval.
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
+
+**D03 live authorization — 19 September 2026:** user explicitly authorized exactly one
+DataForSEO Google AI Mode Live Advanced request for the query
+`Darf ich mit Diabetes Auto fahren?` with `location_name="Germany"`,
+`language_code="de"`, `device="desktop"`, `os="windows"`,
+`calculate_rectangles=false`, timeout 60 seconds, request limit 1, retry limit 0,
+and an absolute cost ceiling of USD 0.01. Credentials are supplied locally through
+the ignored `.env`/process environment and must never be committed or printed. Before
+dispatch, verify the current endpoint price and current German-language support from
+the provider documentation. If the current price exceeds USD 0.01, credentials fail,
+settings are unsupported, or preflight checks fail, stop without making a request.
+Any second provider request, including a retry after an uncertain outcome, requires
+fresh explicit user authorization.
+
+**D03 live result — 19 September 2026:** current official endpoint, German listing
+and USD 0.004 Live price were verified before dispatch. The exact authorized query
+succeeded with one POST and zero retries; envelope/task costs both USD 0.004 and
+budget verified. SQLite reopen, exact-answer replay with network blocked, and linked
+validation passed. Provider task ID: `09190700-2568-0139-0000-71062a999c01`.
+See [T01 handoff](t01-handoff.md) for official URLs, artifact IDs, checks and limits.
+This consumes the one-call authorization; it does not authorize further calls.
 
 **D01 resolved — 18 September 2026:** Python 3.13, uv, Pydantic v2, pytest, Ruff
 and Pyright. Authorized by the user's explicit T00 approval in this branch.
