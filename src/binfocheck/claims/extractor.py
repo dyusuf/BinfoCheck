@@ -66,6 +66,7 @@ class Session:
         self.records, self.artifacts, self.models, self.inputs = records, artifacts, models, inputs
         self.claims: list[Claim] = []
         self.issues: list[ExtractionIssue] = []
+        self.issue_target_ids: dict[str, tuple[str, ...]] = {}
         self.stages: list[str] = []
         self.calls = self.decisions = self.generations = 0
         self.reserved = 0.0
@@ -91,7 +92,26 @@ class Session:
         proposed: str | None = None,
         span: SpanRef | None = None,
         candidate: str | None = None,
+        *,
+        target_ids: tuple[str, ...] | None = None,
     ) -> None:
+        # Evidence context can be wider than terminal coverage. An unlocated
+        # candidate accounts for no target; only whole-group outcomes default
+        # to the group's complete target scope.
+        if target_ids is None:
+            target_ids = (
+                tuple(
+                    u.id
+                    for u in self.inputs.units
+                    if u.id in work.group.target_ids
+                    and u.span.start < span.end
+                    and span.start < u.span.end
+                )
+                if span is not None
+                else ()
+                if candidate is not None
+                else work.group.target_ids
+            )
         if span is not None and span.source_unit_id:
             work.units.add(span.source_unit_id)
         self.issues.append(
@@ -111,6 +131,7 @@ class Session:
                 decision_ids=tuple(r.id for r in work.records),
             )
         )
+        self.issue_target_ids[self.issues[-1].id] = target_ids
 
     def call(
         self,
@@ -258,7 +279,7 @@ class Session:
             for anchor in mixed.anchors:
                 locate(anchor, self.inputs, group)
             if not mixed.excluded_quotes:
-                self.issue(work, "C.exclusion_unlocated", "unresolved")
+                self.issue(work, "C.exclusion_unlocated", "unresolved", target_ids=())
             for anchor in mixed.excluded_quotes:
                 self.issue(
                     work,
@@ -489,9 +510,18 @@ class Session:
                     if c.original_span.start < target.span.end
                     and target.span.start < c.original_span.end
                 ]
-                issues = list(self.issues[before_issues:])
+                issues = [
+                    i
+                    for i in self.issues[before_issues:]
+                    if target_id in self.issue_target_ids[i.id]
+                ]
                 if not claims and not issues:
-                    self.issue(work, "target_not_represented." + target_id, "unresolved")
+                    self.issue(
+                        work,
+                        "target_not_represented." + target_id,
+                        "unresolved",
+                        target_ids=(target_id,),
+                    )
                     issues = [self.issues[-1]]
                 self.accounting.append(
                     Accounting(
@@ -502,7 +532,7 @@ class Session:
                     )
                 )
         result = ExtractionResult(claims=tuple(self.claims), issues=tuple(self.issues))
-        validate_accounting(self.inputs, result, tuple(self.accounting))
+        validate_accounting(self.inputs, result, tuple(self.accounting), self.issue_target_ids)
         closure(self.records, self.artifacts, (*result.claims, *result.issues, self.inputs.run))
         failed = {i.id for i in result.issues if i.issue == "failed"}
         all_failed = all(
@@ -516,6 +546,7 @@ class Session:
             work_key=self.inputs.work_key,
             extraction_result=result,
             target_accounting=tuple(self.accounting),
+            issue_target_ids=self.issue_target_ids,
             stage_artifact_ids=tuple(self.stages),
             assessment_state=state,
         )
@@ -553,7 +584,10 @@ class Session:
 
 
 def validate_accounting(
-    inputs: Inputs, result: ExtractionResult, accounting: tuple[Accounting, ...]
+    inputs: Inputs,
+    result: ExtractionResult,
+    accounting: tuple[Accounting, ...],
+    issue_target_ids: dict[str, tuple[str, ...]],
 ) -> None:
     check(
         tuple(a.target_unit_id for a in accounting) == inputs.settings.target_unit_ids,
@@ -562,6 +596,14 @@ def validate_accounting(
     claims, issues = {c.id: c for c in result.claims}, {i.id: i for i in result.issues}
     check(
         len(claims) == len(result.claims) and len(issues) == len(result.issues), "duplicate_output"
+    )
+    check(
+        set(issue_target_ids) == set(issues)
+        and all(
+            len(ids) == len(set(ids)) and set(ids).issubset(inputs.settings.target_unit_ids)
+            for ids in issue_target_ids.values()
+        ),
+        "invalid_issue_target_scope",
     )
     for entry in accounting:
         check(
@@ -584,8 +626,16 @@ def validate_accounting(
         )
         check(
             all(
-                entry.target_unit_id in issues[id].context_unit_ids
-                for id in entry.terminal_issue_ids
+                entry.target_unit_id in issue_target_ids[issue.id]
+                and entry.target_unit_id in issue.context_unit_ids
+                and (
+                    issue.original_span is None
+                    or (
+                        issue.original_span.start < target.span.end
+                        and target.span.start < issue.original_span.end
+                    )
+                )
+                for issue in (issues[id] for id in entry.terminal_issue_ids)
             ),
             "accounting_issue_mismatch",
         )

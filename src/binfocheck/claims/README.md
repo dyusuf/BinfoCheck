@@ -69,7 +69,13 @@ Records use run creation time and deterministic SHA-256 IDs. The work key includ
 immutable inputs, T02 cohort, settings, versions, resources and effective adapter config.
 
 The final audit embeds the shared ExtractionResult and a validated target-accounting
-table. Every requested target must have terminal claims/issues. After graph validation,
+table. Assembly/final-audit version 2 records explicit issue target scopes separately
+from context lineage. Group-terminal issues cover the group; located candidate issues
+and claims cover only overlapping targets. Unlocated candidate issues cover no target.
+Any otherwise unrepresented target gets its own `target_not_represented` issue.
+The assembly version participates in the configuration hash, so corrected outputs
+cannot overwrite earlier audits; prior manifests require a newly configured run.
+Every requested target must have terminal claims/issues. After graph validation,
 write the final artifact, output records and completion payload LAST. No complete
 marker is published for incomplete accounting. Individual writes are immutable and
 idempotent, not a multi-record transaction. Reinvocation reconstructs the same audit

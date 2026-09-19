@@ -54,7 +54,7 @@ class T03Models:
                         "generation": generation_config.model_dump(mode="json"),
                         "preparation": "1",
                         "location": "1",
-                        "assembly": "1",
+                        "assembly": "2",
                         "contract_validation": "1.1",
                     }
                 )

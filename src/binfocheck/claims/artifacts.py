@@ -117,9 +117,10 @@ class Accounting(Contract):
 
 
 class FinalAudit(Contract):
-    version: Literal["1"] = "1"
+    version: Literal["2"] = "2"
     work_key: Id
     extraction_result: ExtractionResult
     target_accounting: tuple[Accounting, ...]
+    issue_target_ids: dict[Id, tuple[Id, ...]]
     stage_artifact_ids: tuple[Id, ...]
     assessment_state: Literal["complete", "partial_failure", "all_targets_failed"]

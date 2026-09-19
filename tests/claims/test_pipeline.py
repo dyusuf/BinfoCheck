@@ -311,7 +311,7 @@ def test_missing_accounting_rejected() -> None:
     req, _, _ = seed_extraction(store, "Rot.", lambda _stage, _state: "nonfactual")
     with pytest.raises(ExtractionError, match="incomplete_target_accounting"):
         validate_accounting(
-            prepare_inputs(store, store, req), ExtractionResult(claims=(), issues=()), ()
+            prepare_inputs(store, store, req), ExtractionResult(claims=(), issues=()), (), {}
         )
 
 
