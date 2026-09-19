@@ -60,6 +60,10 @@ class Credentials(Contract):
         return cls(login=SecretStr(login), password=SecretStr(password))
 
 
+def request_tag(request: CaptureRequest) -> str:
+    return "capture-" + hashlib.sha256(request.id.encode()).hexdigest()
+
+
 def request_body(request: CaptureRequest) -> bytes:
     request = CaptureRequest.model_validate_json(request.model_dump_json(warnings="error"))
     if not request.query.strip() or len(request.query) > 700:
@@ -68,5 +72,5 @@ def request_body(request: CaptureRequest) -> bytes:
     settings = CaptureSettings.model_validate(request.requested_settings.values)
     task = settings.model_dump(mode="json")
     task["keyword"] = request.query.replace("%", "%25").replace("+", "%2B")
-    task["tag"] = "capture-" + hashlib.sha256(request.id.encode()).hexdigest()
+    task["tag"] = request_tag(request)
     return json.dumps([task], ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()

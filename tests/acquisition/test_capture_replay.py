@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from binfocheck.acquisition import CapturePolicy, DataForSEOObservationProvider, replay_capture
+from binfocheck.acquisition.config import request_tag
 from binfocheck.acquisition.errors import AcquisitionError
 from binfocheck.acquisition.normalize import parse
 from binfocheck.acquisition.persistence import load_receipt
@@ -17,7 +18,7 @@ from binfocheck.domain.validation import validate_links
 from binfocheck.storage import MemoryStore, SQLiteStore
 from tests.storage.helpers import all_records, failure, success
 
-from .helpers import AT, FIXTURE, FakeTransport, Store, fixture, overview, request, response
+from .helpers import AT, FIXTURE, FakeTransport, Store, fixture, overview, request, response, task
 
 
 def test_capture_then_replay_exact_payload_and_no_network(store: Store) -> None:
@@ -207,14 +208,18 @@ def test_zero_limit_and_invalid_settings_prevent_dispatch(store: Store) -> None:
 
 
 def test_new_capture_id_not_same_identity(store: Store) -> None:
+    first_payload = fixture()
+    second_payload = fixture()
+    task(first_payload)["data"] = {"tag": request_tag(request("capture-a"))}
+    task(second_payload)["data"] = {"tag": request_tag(request("capture-b"))}
     first = success(
         DataForSEOObservationProvider(
-            store, store, FakeTransport(response()), clock=lambda: AT
+            store, store, FakeTransport(response(first_payload)), clock=lambda: AT
         ).capture(request("capture-a"))
     )
     second = success(
         DataForSEOObservationProvider(
-            store, store, FakeTransport(response()), clock=lambda: AT
+            store, store, FakeTransport(response(second_payload)), clock=lambda: AT
         ).capture(request("capture-b"))
     )
     assert first.id != second.id

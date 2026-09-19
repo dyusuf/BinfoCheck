@@ -12,7 +12,11 @@ The body is a one-element JSON array with `keyword`, `location_name`,
 `language_code="de"`, `device="desktop"`, `os="windows"`,
 `calculate_rectangles=false` and a deterministic correlation `tag`.
 Literal percent and plus characters are escaped for the documented provider decoding.
-The tag is **not** a provider idempotency key. Settings reject unknown options.
+The tag is **not** a provider idempotency key. Successful normalization requires
+`task.data` to be an object containing that exact tag; missing/mismatched tags return
+`response_correlation_failed`. Other returned data fields may be canonicalized or
+added by the provider and are not required to equal the outbound object.
+Settings reject unknown options.
 German support still needs the separately authorized live check; there is no fallback.
 
 Production transport uses stdlib HTTPS with Basic authentication from
@@ -94,8 +98,13 @@ uv run --offline --locked python -m binfocheck.acquisition.live_check \
 
 Inputs are the corresponding Pydantic JSON contracts. No approval/credential files
 are committed. The command performs at most one POST, closes/reopens SQLite, replays
-and checks observation equality, then reports IDs and usage. Exit 2 means the
-capture succeeded but reported billing was unknown or above the approved ceiling.
+and checks observation equality, then reports IDs, usage, both reported costs and
+`budget_verified`. Exit 2 means capture succeeded but budget verification failed.
+Verification uses the receipt's envelope/task costs, not preferential `usage.cost`:
+neither available fails; one available is compared to the ceiling; two must agree
+within absolute `1e-9 USD` (zero relative tolerance). The larger reported cost must
+be at or below the ceiling, with no ceiling tolerance. Costs are never added or
+rewritten, and conflicting costs cannot produce a verified budget success.
 There are no automatic retries in either the CLI or provider. Ordinary pytest
 fixtures are synthetic, block sockets, and never run this live command.
 

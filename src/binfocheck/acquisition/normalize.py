@@ -23,7 +23,7 @@ from binfocheck.domain.records import Record, RecordSet
 from binfocheck.domain.text import ArtifactRef, SpanRef, TextRecord
 from binfocheck.domain.validation import validate_links
 
-from .config import NORMALIZATION_VERSION
+from .config import NORMALIZATION_VERSION, request_tag
 from .errors import AcquisitionError, status_error
 from .receipt import JSON_OBJECT, CaptureReceipt, NormalizedCapture, identifier
 from .transport import HttpResponse, allowed_headers
@@ -368,6 +368,9 @@ def normalize(
             raise AcquisitionError(code, provider_id)
         if integer(envelope.get("tasks_error")) != 0 or integer(task.get("result_count")) != 1:
             raise AcquisitionError("malformed_response", provider_id)
+        task_data = task.get("data")
+        if not isinstance(task_data, dict) or task_data.get("tag") != request_tag(request):
+            raise AcquisitionError("response_correlation_failed", provider_id)
         expected_path = ["v3", "serp", "google", "ai_mode", "live", "advanced"]
         if task.get("path") != expected_path:
             raise AcquisitionError("unexpected_provider_endpoint", provider_id)

@@ -1,7 +1,8 @@
-"""Opt-in single capture. Never run by pytest/CI; explicit approval file is required."""
+"""Opt-in single capture. Tests inject a fake transport; live use requires approval."""
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 from binfocheck.domain.observations import CaptureRequest
@@ -11,8 +12,23 @@ from .config import CapturePolicy, Credentials, LiveAuthorization
 from .dataforseo import DataForSEOObservationProvider
 from .errors import AcquisitionError, PersistenceError, require
 from .persistence import load_receipt
+from .receipt import CaptureReceipt
 from .replay import replay_capture
 from .transport import HttpsTransport
+
+# Absolute USD tolerance for representation noise only; no relative or ceiling tolerance.
+COST_AGREEMENT_TOLERANCE_USD = 1e-9
+
+
+def budget_verified(receipt: CaptureReceipt, ceiling_usd: float) -> bool:
+    costs = [
+        cost for cost in (receipt.envelope_cost_usd, receipt.task_cost_usd) if cost is not None
+    ]
+    if not costs or max(costs) > ceiling_usd:
+        return False
+    return len(costs) == 1 or math.isclose(
+        costs[0], costs[1], rel_tol=0.0, abs_tol=COST_AGREEMENT_TOLERANCE_USD
+    )
 
 
 def main() -> int:
@@ -50,6 +66,7 @@ def main() -> int:
             if original != replayed:
                 raise AcquisitionError("replay_mismatch")
             receipt = load_receipt(store, request.id)
+            verified = budget_verified(receipt, authorization.cost_ceiling_usd)
             print(
                 json.dumps(
                     {
@@ -58,13 +75,13 @@ def main() -> int:
                         "raw_artifact_id": original.raw_artifact_id,
                         "provider_request_id": original.provider_request_id,
                         "usage": receipt.usage.model_dump(mode="json"),
+                        "budget_verified": verified,
+                        "envelope_cost_usd": receipt.envelope_cost_usd,
+                        "task_cost_usd": receipt.task_cost_usd,
                     }
                 )
             )
-            usage = receipt.usage.data
-            if usage is None or usage.cost is None:
-                return 2  # Unknown billing must not be reported as a verified budget result.
-            return 0 if usage.cost <= authorization.cost_ceiling_usd else 2
+            return 0 if verified else 2
     except (AcquisitionError, PersistenceError, StorageInitializationError) as error:
         print(json.dumps({"status": "failed", "error": error.detail.code}))
         return 1

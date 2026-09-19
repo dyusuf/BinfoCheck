@@ -15,7 +15,7 @@ browser automation, other AI-search product, scheduling, API/UI or T02+ behavior
   exact decoded raw artifacts, conservative normalization, receipt and offline replay.
 - `src/binfocheck/acquisition/README.md`: rules, limits, gated future live-check usage.
 - `tests/acquisition/{__init__,conftest,helpers,test_normalize,test_capture_replay,
-  test_transport}.py`: offline fixtures, no-network guard and acceptance tests.
+  test_transport,test_review_fixes}.py`: offline fixtures, no-network guard and acceptance tests.
 - `tests/fixtures/acquisition/dataforseo/{success.json,README.md}`: labeled synthetic
   provider-shaped payload, not a saved real capture or clinical content.
 - `docs/architecture.md`, `docs/implementation-plan.md`, this handoff: minimal D03
@@ -29,6 +29,12 @@ fallback. Basic-auth secrets stay in transport memory/environment, not stored se
 One attempt/zero retries applies even to uncertain dispatch. Existing request IDs
 refuse re-dispatch; new authorized captures need new IDs. No provider idempotency
 or cross-process exactly-once guarantee is claimed.
+
+Pre-live review fixes: successful normalization now requires object-valued `task.data`
+and an exact returned deterministic request tag. Missing/mismatched tags fail with
+`response_correlation_failed`; provider-added/canonicalized unrelated fields are
+allowed. Outbound and validation paths share the tag helper. The synthetic fixture
+contains the expected tag; tests of distinct captures use their own matching tags.
 
 Raw response bytes are saved after normal HTTP transfer/content decoding and before
 JSON parsing/reformatting. Allowlisted HTTP metadata lives separately in a versioned
@@ -51,14 +57,21 @@ Error bodies are retained when delivered completely by transport. Task/HTTP requ
 IDs, reported cost and provider time are retained; missing cost is null, zero remains
 zero, envelope/task costs are not added, and token counts are unknown.
 
+Budget verification now uses both receipt costs, not preferential `usage.cost`.
+Neither known fails; one known is compared to the ceiling; both known must agree
+within absolute `1e-9 USD` (zero relative tolerance). The maximum must not exceed
+the ceiling, with no ceiling tolerance. Disagreement or unknown/over-ceiling cost
+returns CLI exit 2 and `budget_verified=false`. Both raw reported values remain
+unchanged in the receipt and are included in the CLI report. No wire schema changes.
+
 ## Fixture coverage and local verification
 
 Commands actually run successfully:
 
 ```text
 uv sync --locked --dev
-uv run --offline --locked pytest tests/acquisition          99 passed
-uv run --offline --locked pytest                          365 passed
+uv run --offline --locked pytest tests/acquisition         126 passed
+uv run --offline --locked pytest                          392 passed
 uv run --offline --locked ruff check .                     passed
 uv run --offline --locked ruff format --check .             passed
 uv run --offline --locked pyright                          0 errors/warnings
@@ -75,6 +88,12 @@ missing/zero/positive usage; gzip/deflate and transfer-decoded payload handling;
 authorization/hash/attempt guards; uncertain dispatch with no retries; saved request
 before dispatch and saved raw before parse; immutable idempotent replay; and repair
 of partial text/reference/observation writes without another provider call.
+
+Review regression coverage adds matching/missing/wrong/non-object task tags, extra
+task data fields, typed failure replay, and 13 mocked-transport CLI budget cases:
+equal costs, envelope-only, task-only, both missing, disagreements in both directions,
+over-ceiling values, tolerance boundaries (without relaxing the ceiling), and zero.
+These tests close/reopen SQLite and verify preservation of both receipt costs.
 
 Transport tests replace HTTPS connections, and acquisition tests block socket
 connections. Initial transport assertions needed a test-only correction to match
@@ -93,7 +112,7 @@ and delivery handoff. No live or deployed checks were run.
   discrepancy remains for live verification; there is no English fallback.
 - The live-check command requires request, policy and request-hash-bound approval
   files plus environment credentials. It makes at most one POST, closes/reopens
-  storage, replays and checks reported billing; unknown/over-ceiling cost is not a
+  storage, replays and checks reported billing; unknown/conflicting/over-ceiling cost is not a
   verified budget success. Credentials alone are not spending permission.
 - The endpoint does not establish exhaustive visible-citation capture or fan-out
   completeness. Unsupported fields are raw-only, never inferred.
