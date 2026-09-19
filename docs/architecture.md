@@ -356,7 +356,7 @@ implementation details need no separate approval.
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
 | D04 | Claimify-inspired + Jev selected; exact Jev/generation model IDs and live-call limits open | T03 live calls; verify exact identifiers and current API settings |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
-| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06/T07 parser, passages, German lexical settings, BM25 and RRF remain open | T02 choice recorded below; remaining choices before affected T06/T07 acceptance |
+| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 offline parser/passages resolved below; T07 German lexical settings, BM25 and RRF remain open | T02 choice recorded below; remaining choices before affected T06/T07 acceptance |
 | D07 | Prompts, rubrics, uncertainty policy and stage budgets | T04/T08/T09/T10 live use and T05 mapping acceptance; draft in the owning task. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
@@ -372,6 +372,25 @@ blocks. Context uses explicit completion cohorts and reference-only windows
 (`t02-text-context/1`). See [T02 handoff](t02-handoff.md). This resolves answer
 indexing only; corpus parsing, passages, lexical retrieval, BM25 and RRF parameters
 remain open for T06/T07.
+
+**D06 T06 offline portion resolved — 19 September 2026:** the user's T06
+implementation instruction approves Beautiful Soup with explicit html5lib, core-only
+LlamaIndex ingestion, stdlib direct HTTPS and no embeddings/LLM/retrieval. Resolved
+compatible pins: `beautifulsoup4==4.15.0`, `html5lib==1.1`,
+`llama-index-core==0.14.24`; exact dependencies in `pyproject.toml`/`uv.lock`.
+Configuration and versions live in `src/binfocheck/corpus/config.py`: hashed
+`t06-corpus-parser/1`, `t06-corpus-passages/1`, `t06-corpus-fetch/1`, and
+`t06-corpus-settings/1`. Article raw artifact/hash mean the same complete HTTP
+content-decoded HTML bytes before charset decoding; encoded/partial bytes remain
+separate receipt artifacts. Structure/completion companions reuse shared spans and
+T11A artifacts; wire schema 1 is unchanged. Natural paragraph/list passages retain
+exact cleaned-text offsets; replay is immutable and model-free. The bounded
+structural profile is synthetic-tested, not verified against live diabinfo HTML.
+The six-request public-fetch configuration is frozen for later authorization;
+**no diabinfo or robots requests are authorized by this offline instruction**.
+See [corpus README](../src/binfocheck/corpus/README.md) and
+[T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
+choices remain open; T02's recorded decision is unchanged.
 
 **D03 live authorization — 19 September 2026:** user explicitly authorized exactly one
 DataForSEO Google AI Mode Live Advanced request for the query

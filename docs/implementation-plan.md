@@ -1,7 +1,7 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. Other tasks not started.
+**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is implemented; T06 offline checks passed, live acceptance pending.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -297,6 +297,12 @@ record rules removing navigation/consent banners while retaining article referen
 
 **Stop:** PDFs, video, whole-site crawling, rewriting, embeddings or selecting pages
 to manufacture positive findings.
+
+**T06 status — 19 September 2026: offline_passed; live integration pending.**
+The user authorized offline implementation only. D06 parser/core-ingestion pins,
+immutable source/structure/completion artifacts and offline checks are recorded in
+[T06 handoff](t06-handoff.md). No real page or robots.txt was fetched. Actual site
+selectors and all-five usability remain a live acceptance gate; T06 is not accepted.
 
 ### T07 — Hybrid retrieval and context
 
