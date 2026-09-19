@@ -388,6 +388,22 @@ and unavailable data retain their meanings; incomplete distributions are not
 required to sum to one. D04 integration verification remains with T03. This is
 structural validation, not a calibration or provenance-probability claim.
 
+**D02 resolved — 19 September 2026:** T11A uses SQLite for persistent typed-record
+metadata/indexing and a content-addressed local filesystem for artifact bytes. Keep
+both behind the T00 storage protocols so later deployment may replace them without
+changing domain contracts. Use the Python standard library (`sqlite3`, `pathlib`) unless
+T11A demonstrates a concrete need for another dependency. One configured store root
+contains the SQLite database and artifact directory. Record writes are immutable by
+ID: byte-for-byte/logically identical retries are idempotent; different serialized
+content under the same ID is a conflict. Artifact writes verify the declared SHA-256,
+write atomically, and never trust an unrestricted user path. Store artifacts by
+content hash and keep their logical `storage_key` as metadata rather than using it as
+an arbitrary filesystem path. Decisions and reviews remain append-only records. Use
+bounded deterministic listing with opaque cursors. Add a small schema-version/migration
+mechanism sufficient for T11A, not an ORM or deployment service. PostgreSQL/object
+storage remain future substitutions if D09 deployment or concurrency requirements
+justify them.
+
 Live calls also follow [AGENTS.md](../AGENTS.md#safety-and-live-calls). Never count an
 undisclosed substitute as live acceptance.
 
