@@ -101,6 +101,14 @@ sanitized error messages; the final checks above all pass. CI uses the existing
 offline quality workflow; final remote run/commit details belong in the draft PR
 and delivery handoff. No live or deployed checks were run.
 
+Pre-live review fix commit `fbdef0c` passed the complete GitHub Actions offline
+quality workflow: [CI run 35426404505](https://github.com/dyusuf/BinfoCheck/actions/runs/35426404505).
+Local review rerun: 126 acquisition tests passed in 21.16s and 392 total tests in
+48.40s. Initial review checks found a test-double type annotation and import spacing
+issue; both were corrected, and final Ruff, Pyright, schema and whitespace checks
+passed. The subsequent handoff-only commit's final CI status is recorded in draft
+PR #4 and `/tmp/handoff.txt`. No live API request or merge was performed.
+
 ## Limits and remaining D03 requirements
 
 - T01 is not accepted until one separately authorized Google AI Mode live capture
