@@ -192,6 +192,10 @@ observation identity, answer, references/excerpts, settings and outcomes. A payl
 **Stop:** extraction, source fetching, browser automation or extra products.
 Offline replay alone is not live acquisition acceptance.
 
+**T01 implementation status — 19 September 2026:** offline implementation/checks
+passed; live integration blocked on D03 settings and explicit spending authorization.
+See [T01 handoff](t01-handoff.md). No live capture has been made; T01 is not yet accepted.
+
 ### T02 — Index answers and reconstruct context
 
 **Build:** T00 + answer fixtures. **Integrate:** T01 output + T11A. **Decisions:** D06.  

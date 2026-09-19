@@ -353,7 +353,7 @@ implementation details need no separate approval.
 |---|---|---|
 | D01 | Python schema/runtime/test dependencies | T00 acceptance |
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
-| D03 | DataForSEO/AI Mode selected; access, capture settings, request/cost limits open | T01 live calls; explicit live-call authorization required |
+| D03 | DataForSEO/AI Mode selected; T01 offline adapter uses proposed de/Germany/desktop/windows with one POST and zero retries, no language fallback; final access/settings/cost ceiling and spending authorization remain open | T01 live calls; explicit live-call authorization required |
 | D04 | Claimify-inspired + Jev selected; exact Jev/generation model IDs and live-call limits open | T03 live calls; verify exact identifiers and current API settings |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
 | D06 | spaCy proposed; parser, passages, German lexical settings and RRF parameters open | Affected T02/T06/T07 acceptance |
