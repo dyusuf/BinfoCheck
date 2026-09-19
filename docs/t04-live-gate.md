@@ -40,7 +40,20 @@ selected by existing T04 code. No wording or claim is preselected as a model res
 
 ## Frozen private proposal
 
-Private directory: `/tmp/binfocheck-t04-live-gate-5cCOzYFR/` (mode 0700).
+Durable private directory: `/mnt/workspace/BinfoCheck-data/t04-live-gate/`.
+The private parent and every bundle directory are mode 0700; all files are mode 0600.
+The original `/tmp/binfocheck-t04-live-gate-5cCOzYFR/` remains unchanged.
+
+Preservation verified all 24 files, 10 directories and 293830 file bytes by complete
+membership, sizes and SHA-256. The copied SQLite store passed integrity and foreign-key
+checks using an immutable read-only connection. The private verification manifests
+are beside the bundle at `t04-live-gate-preservation.json` and
+`t04-live-gate-revalidation.json`, also mode 0600.
+
+After merging main `579ad7571841394256de5e80d94775ccb3da1492` (T06), offline
+reconstruction on a scratch copy reproduced the same observation/answer, target/span,
+ExtractionRequest, B/D/F prepared identities/outbound bytes and proposal/policy hashes.
+The six-call/USD 0.06 proposal is unchanged. Neither preserved copy was modified.
 
 Frozen policy SHA-256: `648f18cbd76e0f454160104bf6bdfd42627c5a29c9696244bc407411a9d67aa8`.
 Proposal SHA-256: `b1779ca46e3d1d29679c1b2c4f755bdd211fa03ae41af07e255df43fddda58cb`.
@@ -54,9 +67,12 @@ Proposal SHA-256: `b1779ca46e3d1d29679c1b2c4f755bdd211fa03ae41af07e255df43fddda5
 - `store/`: private T11A copy; retained evidence, new run/index and source-state artifacts.
 - `prepare_gate.py`: private offline preparation/recheck script; sockets are blocked
   and preparation stops before any adapter invocation. No credentials are loaded.
+  Its original paths are preserved as historical preparation code. Rechecking the
+  relocated bundle uses a scratch copy and overrides working paths in memory; never
+  run it against the preserved store or silently rewrite the frozen proposal.
 
 No real answer text, raw provider payload, private store or credential is committed.
-The bundle is ephemeral: preserve it privately before cleanup. Missing bundle/evidence
+The durable copy preserves the formerly ephemeral bundle. Missing bundle/evidence
 blocks execution; do not recreate it by fetching or by fabricating a model response.
 
 ## Conditional stage and cost bound

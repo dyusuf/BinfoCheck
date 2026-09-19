@@ -356,7 +356,7 @@ implementation details need no separate approval.
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
 | D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
-| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06/T07 parser, passages, German lexical settings, BM25 and RRF remain open | T02 choice recorded below; remaining choices before affected T06/T07 acceptance |
+| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 German lexical settings, BM25 and RRF remain open | T06 five-page acceptance passed; T07 choices remain open |
 | D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
@@ -461,6 +461,96 @@ blocks. Context uses explicit completion cohorts and reference-only windows
 (`t02-text-context/1`). See [T02 handoff](t02-handoff.md). This resolves answer
 indexing only; corpus parsing, passages, lexical retrieval, BM25 and RRF parameters
 remain open for T06/T07.
+
+**D06 T06 offline portion resolved — 19 September 2026:** the user's T06
+implementation instruction approves Beautiful Soup with explicit html5lib, core-only
+LlamaIndex ingestion, stdlib direct HTTPS and no embeddings/LLM/retrieval. Resolved
+compatible pins: `beautifulsoup4==4.15.0`, `html5lib==1.1`,
+`llama-index-core==0.14.24`; exact dependencies in `pyproject.toml`/`uv.lock`.
+Configuration and versions live in `src/binfocheck/corpus/config.py`: hashed
+`t06-corpus-parser/1`, `t06-corpus-passages/1`, `t06-corpus-fetch/1`, and
+`t06-corpus-settings/1`. Article raw artifact/hash mean the same complete HTTP
+content-decoded HTML bytes before charset decoding; encoded/partial bytes remain
+separate receipt artifacts. Structure/completion companions reuse shared spans and
+T11A artifacts; wire schema 1 is unchanged. Natural paragraph/list passages retain
+exact cleaned-text offsets; replay is immutable and model-free. The bounded
+structural profile is synthetic-tested, not verified against live diabinfo HTML.
+The six-request public-fetch configuration is frozen for later authorization;
+**no diabinfo or robots requests are authorized by this offline instruction**.
+The subsequent pre-live review requires a `LiveAuthorization.policy_sha256` binding
+under `t06-live-authorization/1`: canonical SHA-256 over the robots URL, ordered
+five-page URLs and complete FetchPolicy. Validate before capture-start writes and
+every HTTPS dispatch; a changed policy requires a newly recorded approval digest.
+The auditability follow-up persists the validated envelope as restricted immutable
+`<batch-id>.authorization.v1` before the capture-start marker and any dispatch.
+It records batch ID, approval reference, digest, robots URL, ordered URLs and full
+policy. CaptureStart links the artifact; completion includes it as a dependency.
+Replay/load require and validate this evidence for live batches against the frozen
+policy. Synthetic batches carry no authorization. No shared domain schema changes;
+CaptureStart gains an optional companion link (required for live captures).
+**D06 live-capture gate — 19 September 2026:** the subsequent user authorization
+for digest `78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18`
+was consumed by one six-GET batch, all HTTP 200. Raw bodies and approval evidence
+are saved in T11A. Default replay records five unusable pages: no `article` roots.
+A bounded site profile and full cleaned-content inspection remain offline work;
+no additional GET is authorized. See [capture report](t06-live-capture.md).
+**D06 offline site-profile follow-up:** four explicit title/credit/intro/article roots
+and shape-validated exclusions now implement the saved TYPO3 pilot layout.
+`diabinfo-pilot/2` uses `t06-corpus-parser/3` and keeps original parser-1 identities
+unchanged; the rejected diagnostic profile-1/parser-2 remains replayable history.
+FAQ questions use level 3 beneath topic headings; callout/question ancestry ends at
+its DOM boundary. Exact source wording and links remain; no broad fallback exists.
+That saved-batch replay has four usable articles and 201 passages, but Ramadan
+is unusable (`unsupported_informational_media`): an informational SVG is referenced
+but its contents were not captured. Acceptance remains blocked, not merge-ready.
+The initial diagnostic ready corpus is explicitly rejected in restricted inspection
+evidence. Durable private store and exact versions/IDs are in the updated handoff.
+No further network call, shared-schema change or T07 work was introduced.
+**D06 media-hardening follow-up:** `diabinfo-pilot/3` / `t06-corpus-parser/4`
+replaces the copyright/negative-alt heuristic with 16 positive, per-page subtree
+signatures in `decorative_media_v1.json` (registry digest participates in identity).
+Every unknown/changed media signature fails closed; parser versions 1–3 remain
+identity-stable replay history. Saved-batch replay retains four usable pages and
+201 unchanged-text passages; Ramadan remains blocked. A separate fixed one-SVG
+T11A companion is prepared with an independently bound authorization envelope,
+restricted pre-dispatch evidence and one persistent intent. It cannot reuse the
+consumed six-GET authorization. Exact proposal and inert XML/provenance procedure
+and result are in
+[capture report](t06-live-capture.md#one-svg-companion-policy-and-consumed-authorization).
+The user subsequently authorized the exact proposal once. One HTTP-200 SVG response
+was preserved with its bound authorization and receipts. Offline XML inspection found
+no machine-readable text/title/description/accessibility wording, so no asset text or
+parser-5 result was manufactured. The single allowance is consumed; the remaining
+gate is an explicit product decision on textual-corpus acceptance for the captured
+informational visual. No T00 schema change or merge is implied. T06 remains
+code_hardening_passed / live_acceptance_blocked at that historical gate.
+
+**D06 final textual-corpus decision — 19 September 2026:** the user explicitly
+approved that usable means **all deterministically extractable textual evidence is
+represented; captured non-text informational visuals remain explicit audited
+limitations**. This permits neither decorative reclassification nor OCR, image
+interpretation, SVG path inference or fabricated wording. `diabinfo-pilot/4` /
+`t06-corpus-parser/5` implements only the exact saved Ramadan visual case.
+Before any derived article writes, replay verifies pinned restricted parent HTML,
+batch/authorization/start/receipts, SVG bytes and inspection evidence. The complete
+asset chain must validate and the pinned inspection must report
+`no_deterministic_text_extractable` with no text/accessibility wording. The frozen
+policy and evidence identities participate in the parser hash, preventing an
+evidence-dependent failure from publishing a conflicting ArticleVersion.
+The restricted `<article-id>.media-evidence.v1` records
+`captured_nontext_informational`, exact HTML gallery locator, article/parent/SVG/
+inspection links and the visual limitation. Completion requires the companion and
+all pinned evidence; loading validates them again and fails closed on missing,
+corrupt or mismatched evidence. Unknown media still fails closed under the exact
+positive signatures. Parsers 1–4, rejected diagnostics and original captures are
+unchanged immutable history; the prior inspection's blocked decision is historical.
+Offline replay from parser-4 predecessors yields five usable articles, 228 passages
+and a ready manifest, with unchanged text/passages for the four unaffected pages.
+Socket-blocked close/reopen replay passed. No new network call, dependency, shared
+schema, T07 work or merge is introduced.
+See [corpus README](../src/binfocheck/corpus/README.md) and
+[T06 final handoff](t06-handoff.md). T07 lexical/BM25/RRF choices remain open;
+T02's recorded decision is unchanged.
 
 **D03 live authorization — 19 September 2026:** user explicitly authorized exactly one
 DataForSEO Google AI Mode Live Advanced request for the query
