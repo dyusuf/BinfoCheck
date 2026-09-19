@@ -1,0 +1,19 @@
+[
+  {"text":"Äpfel 🍎 sind rot. Äpfel 🍎 sind rot.","sentences":["Äpfel 🍎 sind rot.","Äpfel 🍎 sind rot."]},
+  {"text":"Dr. Müller nennt z. B. 3,5 und 3.5. Danach geht er.","sentences":["Dr. Müller nennt z. B. 3,5 und 3.5.","Danach geht er."]},
+  {"text":"Prof. Meier erklärt d. h. genauer. Das gilt ggf. weiterhin.","sentences":["Prof. Meier erklärt d. h. genauer.","Das gilt ggf. weiterhin."]},
+  {"text":"Am 3. Mai kommt er. Am 12.09.2026 geht er.","sentences":["Am 3. Mai kommt er.","Am 12.09.2026 geht er."]},
+  {"text":"Das gilt usw. Danach nicht.","sentences":["Das gilt usw.","Danach nicht."]},
+  {"text":"Rot usw. und grün. Dann blau.","sentences":["Rot usw. und grün.","Dann blau."]},
+  {"text":"  Äpfel\t🍎 sind\u00a0rot.\r\n\tCafé bleibt.  ","sentences":["Äpfel\t🍎 sind\u00a0rot.","Café bleibt."]},
+  {"text":"Ja. [[1]](https://example.org/a) Nein.","sentences":["Ja. [[1]](https://example.org/a)","Nein."]},
+  {"text":"Ja. [[1]](https://example.org/a) [[2]](https://example.org/b) Nein.","sentences":["Ja. [[1]](https://example.org/a) [[2]](https://example.org/b)","Nein."]},
+  {"text":"Lies [Dr. A.](https://example.org/a.b). Danach weiter.","sentences":["Lies [Dr. A.](https://example.org/a.b).","Danach weiter."]},
+  {"text":"Lies [Text](https://example.org/a_(b)). Dann weiter.","sentences":["Lies [Text](https://example.org/a_(b)).","Dann weiter."]},
+  {"text":"„Ja!“ Danach nein.","sentences":["„Ja!“","Danach nein."]},
+  {"text":"**Ja.** Nein.","sentences":["**Ja.**","Nein."]},
+  {"text":"Familie 👨‍👩‍👧‍👦 bleibt. Weiter.","sentences":["Familie 👨‍👩‍👧‍👦 bleibt.","Weiter."]},
+  {"text":"Ein Satz ohne Punkt","sentences":["Ein Satz ohne Punkt"]},
+  {"text":"Lies [kaputt. Dann weiter.","sentences":["Lies [kaputt. Dann weiter."]},
+  {"text":"Code `a. b.` bleibt. Danach weiter.","sentences":["Code `a. b.` bleibt.","Danach weiter."]}
+]
