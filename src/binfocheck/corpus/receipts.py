@@ -5,7 +5,7 @@ from typing import Annotated, Literal, Self
 
 from pydantic import Field, model_validator
 
-from binfocheck.domain.common import Id, UTCRecord, VersionRef, require_utc
+from binfocheck.domain.common import Contract, Id, UTCRecord, VersionRef, require_utc
 
 from .config import FETCH_VERSION, URLS, FetchPolicy
 
@@ -49,3 +49,15 @@ class Batch(UTCRecord):
     robots_receipt_id: Id | None
     requests_dispatched: Annotated[int, Field(ge=0, le=6)]
     policy: FetchPolicy = FetchPolicy()
+
+
+class AuthorizationEvidence(Contract):
+    """Restricted immutable record of the operator-supplied capture approval."""
+
+    format: Literal["t06-live-authorization/1"] = "t06-live-authorization/1"
+    batch_id: Id
+    approval_reference: str
+    policy_sha256: str
+    robots_url: str
+    page_urls: tuple[str, ...]
+    fetch_policy: FetchPolicy

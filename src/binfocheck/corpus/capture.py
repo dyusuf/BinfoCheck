@@ -6,19 +6,54 @@ from datetime import UTC, datetime
 from typing import Literal
 from urllib.robotparser import RobotFileParser
 
-from binfocheck.domain.common import UTCRecord
+from binfocheck.domain.common import Id, UTCRecord
 from binfocheck.domain.storage import IdRequest
+from binfocheck.domain.text import ArtifactRef
 
 from .artifacts import Store
-from .config import POLICY, ROBOTS, URLS, identity
+from .config import POLICY, ROBOTS, URLS, capture_policy_sha256, identity
 from .errors import CorpusError, boundary, check
-from .receipts import Batch, Receipt
+from .receipts import AuthorizationEvidence, Batch, Receipt
 from .transport import SAFE_HEADERS, HttpsTransport, Response, Transport, content_decode
 
 
 class CaptureStart(UTCRecord):
     format: Literal["t06-capture-start/1"] = "t06-capture-start/1"
     origin: Literal["synthetic", "live"]
+    authorization_artifact_id: Id | None = None
+
+
+def validate_authorization(evidence: AuthorizationEvidence, batch_id: str) -> None:
+    check(
+        evidence.batch_id == batch_id
+        and bool(evidence.approval_reference.strip())
+        and evidence.robots_url == ROBOTS
+        and evidence.page_urls == URLS
+        and evidence.fetch_policy == POLICY
+        and evidence.policy_sha256
+        == capture_policy_sha256(evidence.robots_url, evidence.page_urls, evidence.fetch_policy),
+        "invalid_authorization_evidence",
+    )
+
+
+def load_capture_start(store: Store, batch: Batch) -> CaptureStart:
+    start = store.load(batch.id + ".start.v1", CaptureStart)
+    check(
+        start.id == batch.id
+        and start.created_at == batch.created_at
+        and start.origin == batch.origin,
+        "capture_start_mismatch",
+    )
+    if batch.origin == "live":
+        id = batch.id + ".authorization.v1"
+        check(start.authorization_artifact_id == id, "missing_authorization_evidence")
+        evidence = store.load(id, AuthorizationEvidence)
+        validate_authorization(evidence, batch.id)
+        check(batch.policy == evidence.fetch_policy, "authorization_policy_mismatch")
+        check(store.record(id, ArtifactRef).access == "restricted", "authorization_access_mismatch")
+    else:
+        check(start.authorization_artifact_id is None, "synthetic_authorization_evidence")
+    return start
 
 
 def save_response(
@@ -104,6 +139,8 @@ class SnapshotCapture:
 
     @boundary
     def capture(self, batch_id: str, origin: Literal["synthetic", "live"]) -> Batch:
+        evidence: AuthorizationEvidence | None = None
+        check(origin != "live" or isinstance(self.transport, HttpsTransport), "live_not_authorized")
         if isinstance(self.transport, HttpsTransport):
             approval = self.transport.authorization
             check(
@@ -112,13 +149,34 @@ class SnapshotCapture:
             )
             assert approval is not None
             approval.validate_policy(ROBOTS, URLS, POLICY)
-        start = CaptureStart(id=batch_id, created_at=self.now(), origin=origin)
+            evidence = AuthorizationEvidence(
+                batch_id=batch_id,
+                approval_reference=approval.reference,
+                policy_sha256=approval.policy_sha256,
+                robots_url=ROBOTS,
+                page_urls=URLS,
+                fetch_policy=POLICY,
+            )
+            validate_authorization(evidence, batch_id)
+        authorization_id = batch_id + ".authorization.v1" if evidence else None
+        start = CaptureStart(
+            id=batch_id,
+            created_at=self.now(),
+            origin=origin,
+            authorization_artifact_id=authorization_id,
+        )
         start_id = batch_id + ".start.v1"
         existing = self.store.records.get_record(IdRequest(id=start_id))
         check(
             existing.error is not None and existing.error.code == "not_found",
             "capture_already_started",
         )
+        if evidence is not None and authorization_id is not None:
+            self.store.json(evidence, "authorization", authorization_id)
+            check(
+                self.store.load(authorization_id, AuthorizationEvidence) == evidence,
+                "authorization_readback_mismatch",
+            )
         self.store.json(start, "capture-start", start_id)
         deadline = self.clock() + POLICY.batch_seconds
         last_start: float | None = None

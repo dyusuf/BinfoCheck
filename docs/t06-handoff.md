@@ -260,3 +260,53 @@ new-head CI is tracked separately from these completed local checks. Offline rev
 passes; live acceptance remains pending. No diabinfo/robots/model calls, paid usage
 or deployed checks were performed during this follow-up. The frozen six-GET proposal
 above remains unapproved; the required digest does not itself grant authorization.
+
+## Authorization evidence follow-up
+
+The user confirmed exact-head hosted CI green on `e18faa86fc31ee8a1109864071e8dd37256cff33`
+with 719 tests, and requested persistence of the explicit approval envelope before
+any live capture. This follow-up adds restricted immutable
+`<batch-id>.authorization.v1` using T11A ArtifactRef/Payload storage. Its format is
+`t06-live-authorization/1`; fields preserve batch ID, approval reference, policy
+SHA-256, robots URL, ordered five page URLs and complete FetchPolicy.
+
+Capture validates the envelope first, writes and reads it back before the start
+marker, then dispatches. CaptureStart links `authorization_artifact_id`; ingestion
+includes that artifact in the completion dependency graph. Both replay and load
+check the start linkage, batch identity, nonblank approval reference, restricted
+access, exact frozen policy and its digest. Missing/invalid evidence prevents live
+replay/readiness. Synthetic captures have no authorization link; existing synthetic
+start markers remain readable. Live origin cannot be supplied through an
+unauthenticated custom transport. Offline tests use an explicit HTTPS subclass
+with synthetic responses and no sockets; these are not real live captures.
+
+Failures saving authorization or the start marker dispatch nothing. If interrupted
+after writing the envelope, its immutable ID prevents replacement by a different
+approval. Successful SQLite reopen/replay retains the exact approval reference and
+policy. Tests also reject missing evidence, wrong batch/reference/digest/robots/
+ordered URLs/policy and missing start linkage, and cover immutable orphan evidence.
+
+No T00/shared schema, package, parser, fetch policy or digest change. D06 and corpus
+README record the companion convention. The complete frozen proposal above remains
+unapproved, including its digest
+`78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18`.
+No diabinfo, robots, provider/model requests, paid usage or deployed checks occurred.
+Latest main was fetched and remained `80b35c95daaf06bfe9149551068d609e39d4ab58`,
+already included in this branch. T07 remains outside this task.
+
+Validation for the authorization evidence follow-up:
+
+| Command | Result |
+|---|---|
+| `uv sync --locked --dev` | Passed; 103 packages audited |
+| `uv run --offline --locked pytest tests/corpus` | 145 passed |
+| `uv run --offline --locked pytest` | 732 passed |
+| `uv run --offline --locked ruff check .` | Passed |
+| `uv run --offline --locked ruff format --check .` | Passed; 146 files formatted |
+| `uv run --offline --locked pyright` | Zero errors/warnings |
+| `uv run --offline --locked python -m binfocheck.domain.export_schemas --check` | Schemas match |
+| `git diff --check` / staged whitespace check | Passed |
+
+All checks were offline; a final fetch confirmed main had not advanced. Draft PR #7
+is the delivery target and must not be merged by this task. Exact-head hosted CI
+for this new commit is reported separately from the completed local checks.

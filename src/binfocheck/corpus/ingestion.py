@@ -11,7 +11,7 @@ from binfocheck.domain.text import ArtifactRef, TextRecord
 from binfocheck.domain.validation import validate_links
 
 from .artifacts import Store
-from .capture import CaptureStart
+from .capture import load_capture_start
 from .config import (
     PASSAGES_VERSION,
     SETTINGS_VERSION,
@@ -108,13 +108,9 @@ class StoredCorpusIngestor:
 
         artifact(batch.id)
         artifact(batch.id + ".start.v1")
-        start = self.store.load(batch.id + ".start.v1", CaptureStart)
-        check(
-            start.id == batch.id
-            and start.created_at == batch.created_at
-            and start.origin == batch.origin,
-            "capture_start_mismatch",
-        )
+        start = load_capture_start(self.store, batch)
+        if start.authorization_artifact_id:
+            artifact(start.authorization_artifact_id)
         if batch.robots_receipt_id:
             artifact(batch.robots_receipt_id)
             robots = self.store.load(batch.robots_receipt_id, Receipt)
@@ -285,6 +281,7 @@ class StoredCorpusIngestor:
         expected = "ready" if usable == 5 else "incomplete" if usable else "failed"
         check(result.manifest.status == expected, "invalid_readiness")
         batch = self.store.load(settings.batch_artifact_id, Batch)
+        load_capture_start(self.store, batch)
         check(
             batch.id == settings.batch_artifact_id
             and batch.urls == URLS

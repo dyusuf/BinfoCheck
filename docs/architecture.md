@@ -439,7 +439,13 @@ The subsequent pre-live review requires a `LiveAuthorization.policy_sha256` bind
 under `t06-live-authorization/1`: canonical SHA-256 over the robots URL, ordered
 five-page URLs and complete FetchPolicy. Validate before capture-start writes and
 every HTTPS dispatch; a changed policy requires a newly recorded approval digest.
-This safeguard changes no shared domain or saved-corpus schema.
+The auditability follow-up persists the validated envelope as restricted immutable
+`<batch-id>.authorization.v1` before the capture-start marker and any dispatch.
+It records batch ID, approval reference, digest, robots URL, ordered URLs and full
+policy. CaptureStart links the artifact; completion includes it as a dependency.
+Replay/load require and validate this evidence for live batches against the frozen
+policy. Synthetic batches carry no authorization. No shared domain schema changes;
+CaptureStart gains an optional companion link (required for live captures).
 See [corpus README](../src/binfocheck/corpus/README.md) and
 [T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
 choices remain open; T02's recorded decision is unchanged.

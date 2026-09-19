@@ -196,3 +196,20 @@ inspect full text/headings/lists/references for each page; validate every slice,
 reopen and replay with sockets blocked; report all actual snapshot IDs/hashes,
 times/statuses/request counts and any missing pages. Do not label T06 accepted
 until all five are usable. T07 remains outside scope.
+
+
+### Persisted authorization evidence
+
+For live batches, capture validates and saves restricted immutable
+`<batch-id>.authorization.v1` before the start marker and any network dispatch.
+The `t06-live-authorization/1` envelope contains `batch_id`, `approval_reference`,
+`policy_sha256`, `robots_url`, ordered `page_urls` and complete `fetch_policy`.
+The approval reference should identify the explicit authorization without embedding
+credentials or secrets. The start marker links its artifact ID; corpus completion
+includes the artifact in its dependency graph. Replay and load check the link,
+restriction, batch identity, nonblank approval reference and exact frozen policy
+and digest. Missing or invalid evidence blocks live replay/readiness. Synthetic
+captures remain unauthenticated; earlier synthetic start markers remain readable.
+Failed authorization persistence dispatches nothing. A saved envelope cannot be
+replaced, including after an interrupted write before the start marker. No shared
+T00 schema change or live permission is introduced.
