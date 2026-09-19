@@ -239,10 +239,12 @@ DecisionRecords. No undisclosed fallback.
 
 **Stop:** business rubrics, extraction policies, comparisons and calibration.
 
-**T03 status — 19 September 2026:** offline_passed; live integration blocked pending
-explicit authorization for one request per selected adapter. User-approved D04
-implementation uses Jev `jev-1.13.0` and OpenAI Responses
-`gpt-4.1-mini-2025-04-14`. No live calls made; T03 is not accepted.
+**T03 status — 19 September 2026:** offline passed; Jev live integration passed
+with exactly one authorized request and zero retries using `jev-1.13.0`.
+OpenAI Responses `gpt-4.1-mini-2025-04-14` remains offline-tested only: live
+integration is blocked because credentials/API access are unavailable, and the
+user explicitly skipped that live smoke. T03 remains partially integrated, with
+OpenAI as an outstanding integration dependency; it is not fully live-accepted.
 **Handoff:** [T03 files, checks, frozen smoke payloads and limitations](t03-handoff.md).
 
 ### T04 — Claimify-inspired ClaimExtractor
