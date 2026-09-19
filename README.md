@@ -36,7 +36,3 @@ AI-search results
 ## Current status
 
 The MVP is under development. The current implementation establishes the shared contracts and infrastructure required by the later measurement pipeline.
-
-## License
-
-See [LICENSE](LICENSE).
