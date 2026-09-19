@@ -9,9 +9,12 @@ from typing import Protocol
 
 from pydantic import JsonValue
 
-from binfocheck.domain.common import Availability, Available, ErrorDetail, Outcome
+from binfocheck.domain.common import Availability, Available, DerivedRecord, ErrorDetail, Outcome
 from binfocheck.domain.decisions import DecisionRecord, GenerationResult, ModelResult, Usage
 from binfocheck.domain.interfaces import DecisionRequest, GenerationRequest
+from binfocheck.domain.observations import Observation
+from binfocheck.domain.records import Record
+from binfocheck.domain.runs import RunManifest
 from binfocheck.domain.storage import ArtifactPayload, ArtifactStore, IdRequest, RecordStore
 from binfocheck.domain.text import ArtifactRef
 
@@ -73,6 +76,31 @@ def optional_artifact(artifacts: ArtifactStore, id: str) -> ArtifactPayload | No
     if result.error is not None and result.error.code == "not_found":
         return None
     return require(result)
+
+
+def validate_request_lineage(
+    request: DecisionRequest | GenerationRequest, records: RecordStore
+) -> None:
+    """Reject unpersistable lineage before authorization or any adapter writes."""
+
+    def resolve_record(id: str) -> Record:
+        result = records.get_record(IdRequest(id=id))
+        if result.error is not None and result.error.code == "not_found":
+            raise ModelError("invalid_request_lineage")
+        return require(result)
+
+    run = resolve_record(request.analysis_run_id)
+    if not isinstance(run, RunManifest):
+        raise ModelError("invalid_request_lineage")
+    for id in request.input_ids:
+        record = resolve_record(id)
+        if isinstance(record, DerivedRecord) and record.analysis_run_id != run.id:
+            raise ModelError("invalid_request_lineage")
+        if isinstance(record, Observation) and record.id not in run.observation_ids:
+            raise ModelError("invalid_request_lineage")
+    for id in request.input_artifact_ids:
+        if not isinstance(resolve_record(id), ArtifactRef):
+            raise ModelError("invalid_request_lineage")
 
 
 def prepare(
@@ -356,6 +384,10 @@ class ModelAdapter:
             request = type(request).model_validate_json(request.model_dump_json())
         except ValueError:
             return failure(ModelError("invalid_request").detail)
+        try:
+            validate_request_lineage(request, self.records)
+        except ModelError as caught:
+            return failure(caught.detail)
         prepared = PreparedRequest(
             request=request, config=self.config, body={}, resource_bytes_base64={}, input_hashes={}
         )
@@ -363,9 +395,6 @@ class ModelAdapter:
         response = HttpResponse(None, None, dispatched=False)
         try:
             prepared = prepare(request, self.config, self.resources, self.artifacts)
-            for id in request.input_ids:
-                require(self.records.get_record(IdRequest(id=id)))
-            require(self.records.get_record(IdRequest(id=request.analysis_run_id)))
         except (ModelError, ValueError) as caught:
             preflight_error = (
                 caught.detail
