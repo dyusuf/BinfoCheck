@@ -7,7 +7,8 @@ Branch: `codex/t01-acquisition`. No merge authorized. No live provider call made
 
 Architecture acquisition/shared contracts/storage/D03; domain wire schema v1 and
 validation v1.1 unchanged, storage schema v1 unchanged. T00/T11A build dependencies
-are present. No new dependencies. No extraction, source fetching, claim routing,
+are present. `python-dotenv` is added solely to load an optional local `.env`; real
+environment variables retain precedence (`override=false`). No extraction, source fetching, claim routing,
 browser automation, other AI-search product, scheduling, API/UI or T02+ behavior.
 
 - `src/binfocheck/acquisition/{__init__,config,errors,transport,receipt,normalize,
@@ -133,3 +134,12 @@ PR #4 and `/tmp/handoff.txt`. No live API request or merge was performed.
   without adding a duplicate domain record or modifying authoritative schemas.
 
 Stop before downstream work. Draft review only; do not merge.
+
+
+## Local credential loading update
+
+T01 now depends on `python-dotenv>=1.2,<2`. `Credentials.from_environment()` loads an
+optional `.env` from the process current working directory before reading
+`DATAFORSEO_LOGIN` and `DATAFORSEO_PASSWORD`, with `override=false` so existing
+server/shell environment variables win. `.env` remains git-ignored and the committed
+`.env.example` contains empty placeholders only. No credential values are committed.
