@@ -150,6 +150,7 @@ dependencies = [
     { name = "beautifulsoup4" },
     { name = "html5lib" },
     { name = "llama-index-core" },
+    { name = "jsonschema" },
     { name = "pydantic" },
     { name = "python-dotenv" },
     { name = "spacy" },
@@ -157,7 +158,6 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "jsonschema" },
     { name = "pyright", extra = ["nodejs"] },
     { name = "pytest" },
     { name = "ruff" },
@@ -169,6 +169,7 @@ requires-dist = [
     { name = "beautifulsoup4", specifier = "==4.15.0" },
     { name = "html5lib", specifier = "==1.1" },
     { name = "llama-index-core", specifier = "==0.14.24" },
+    { name = "jsonschema", specifier = ">=4.23,<5" },
     { name = "pydantic", specifier = ">=2.11,<3" },
     { name = "python-dotenv", specifier = ">=1.2,<2" },
     { name = "spacy", specifier = "==3.8.16" },
@@ -176,7 +177,6 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "jsonschema", specifier = ">=4.23,<5" },
     { name = "pyright", extras = ["nodejs"], specifier = ">=1.1.400,<2" },
     { name = "pytest", specifier = ">=8.3,<9" },
     { name = "ruff", specifier = ">=0.12,<1" },

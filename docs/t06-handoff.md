@@ -234,4 +234,29 @@ New offline tests exercise every policy field, all five URLs, order/membership,
 robots URL, stale/malformed/empty digests, unchanged batch IDs, no storage/network
 side effects on rejection, and a second-request policy change. Existing fake HTTPS
 success tests use a matching digest. No T00 schemas or dependencies changed.
-Follow-up check results and delivery are recorded below after verification.
+Follow-up implementation commit: `702af5e`. Before final review, `origin/main`
+advanced to `80b35c95daaf06bfe9149551068d609e39d4ab58` (T03 / PR #6).
+That revision was merged into this branch. Dependency conflicts retain all three
+T06 exact pins and T03's promotion of `jsonschema` to a runtime dependency;
+`uv lock --offline` resolved the same 103 packages. T03 code, fixtures and decision
+records are preserved. A subsequent fetch confirmed main remained at that revision.
+
+All required checks passed again on the combined implementation:
+
+| Command | Result |
+|---|---|
+| `uv sync --locked --dev` | Passed; 103 packages resolved |
+| `uv run --offline --locked pytest tests/corpus` | 132 passed |
+| `uv run --offline --locked pytest` | 719 passed |
+| `uv run --offline --locked ruff check .` | Passed |
+| `uv run --offline --locked ruff format --check .` | Passed; 145 files formatted |
+| `uv run --offline --locked pyright` | Zero errors/warnings |
+| `uv run --offline --locked python -m binfocheck.domain.export_schemas --check` | Schemas match |
+| `git diff --check` / staged whitespace check | Passed |
+
+Delivery remains draft [PR #7](https://github.com/dyusuf/BinfoCheck/pull/7),
+with no merge to main. The original head's hosted CI was confirmed by user review;
+new-head CI is tracked separately from these completed local checks. Offline review
+passes; live acceptance remains pending. No diabinfo/robots/model calls, paid usage
+or deployed checks were performed during this follow-up. The frozen six-GET proposal
+above remains unapproved; the required digest does not itself grant authorization.

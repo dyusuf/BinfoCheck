@@ -10,6 +10,7 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
     "beautifulsoup4==4.15.0",
     "html5lib==1.1",
+    "jsonschema>=4.23,<5",
     "llama-index-core==0.14.24",
     "pydantic>=2.11,<3",
     "python-dotenv>=1.2,<2",
@@ -17,7 +18,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=8.3,<9", "ruff>=0.12,<1", "pyright[nodejs]>=1.1.400,<2", "jsonschema>=4.23,<5", "types-jsonschema>=4.23"]
+dev = ["pytest>=8.3,<9", "ruff>=0.12,<1", "pyright[nodejs]>=1.1.400,<2", "types-jsonschema>=4.23"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
