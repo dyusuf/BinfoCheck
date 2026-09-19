@@ -52,9 +52,9 @@ a duplicate local schema.
 
 Follow [Development workflow](docs/development-workflow.md): one task = one branch,
 one worktree and one dedicated Codex session, named clearly after the task/branch.
-At task start, fetch origin, inspect status and sync with main. Never switch branches
-inside a task worktree. Preserve unrelated changes; never revert or stage another
-contributor's work.
+At task start, fetch origin, inspect status, sync the task branch with its remote,
+and compare it with main. Never switch branches inside a task worktree. Preserve
+unrelated changes; never revert or stage another contributor's work.
 
 Before final delivery, fetch main and merge it if it advanced, then rerun validation.
 Commit the scoped changes, push the task branch and create/update its draft PR unless

@@ -1,7 +1,7 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 five-page textual corpus live acceptance passed under the approved D06 visual-limitation rule; PR remains draft and unmerged.
+**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 five-page textual corpus live acceptance passed under the approved D06 visual-limitation rule; PR #7 is merged.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -306,7 +306,7 @@ record rules removing navigation/consent banners while retaining article referen
 **Stop:** PDFs, video, whole-site crawling, rewriting, embeddings or selecting pages
 to manufacture positive findings.
 
-**T06 status — 19 September 2026: live_acceptance_passed / merge_ready.**
+**T06 status — 19 September 2026: live_acceptance_passed / merged.**
 The original six-GET batch and separate one-SVG authorization are fully consumed.
 Both captures remain restricted in the durable private T11A store. The user approved
 D06's textual-corpus rule: all deterministically extractable text must be represented;
@@ -321,8 +321,8 @@ dependencies; missing/corrupt evidence fails closed. Unknown media remains block
 Historical parsers 1–4, rejected diagnostics, and capture artifacts remain immutable.
 Source coverage, spans, full Ramadan text inspection and socket-blocked reopen/replay
 passed. No refetch, OCR, image interpretation, model calls, shared-schema change,
-T07 work or merge. See [T06 handoff](t06-handoff.md) for IDs and validation results.
-PR #7 remains draft; merge is a separate user action.
+T07 work. See [T06 handoff](t06-handoff.md) for IDs and validation results.
+PR #7 merged as `579ad7571841394256de5e80d94775ccb3da1492`.
 
 ### T07 — Hybrid retrieval and context
 

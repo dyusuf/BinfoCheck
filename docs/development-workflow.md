@@ -56,8 +56,10 @@ git status --short --branch
 git rev-list --left-right --count HEAD...origin/main
 ```
 
-The counts are task-only (ahead) then main-only (behind). If main advanced and the
-worktree is ready for integration, run `git merge origin/main` on the task branch.
+The counts are task-only (ahead) then main-only (behind). At task start, sync the
+task branch with its remote and compare with main; this does not require merging
+main immediately. Before final delivery, if main advanced and the worktree is ready
+for integration, run `git merge origin/main` on the task branch.
 Commit only your scoped work first if necessary; unrelated changes must remain
 untouched. If they prevent safe integration, report that blocker.
 
