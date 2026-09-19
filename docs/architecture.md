@@ -357,10 +357,52 @@ implementation details need no separate approval.
 | D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 German lexical settings, BM25 and RRF remain open | T06 five-page acceptance passed; T07 choices remain open |
-| D07 | Prompts, rubrics, uncertainty policy and stage budgets | T04/T08/T09/T10 live use and T05 mapping acceptance; draft in the owning task. Category changes require explicit scope authorization. |
+| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
+
+**D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
+of the revised T04 plan and subsequent offline implementation instruction. Scope is
+extraction only; T05 mapping and T08/T09/T10 rubrics/categories are untouched.
+Configuration/policy are under `src/binfocheck/claims/`; exact resource bytes are
+pinned by `prompts/extraction/v1/manifest.json` (SHA-256
+`f6b0fc9d2acdd1e96392e29830d57aa96f15c5afd827fd58ba755fbe1d91e281`).
+The effective `t04-claim-extraction/1` configuration hashes the resource bundle,
+policy, adapter configurations and mechanical versions. Shared wire schema 1,
+validation 1.1, T02 and T03 remain unchanged.
+
+Selection uses factual/nonfactual/mixed/uncertain; ambiguity uses
+clear/resolvable_from_context/unresolved. Faithfulness, atomicity and self-containment
+are three independent Jev decisions; all must be positive, with complete untied
+probabilities. No confidence threshold or calibration claim. Generation rewrites
+mixed content, clarifies supplied references and proposes atomic German claims only.
+Each stage receives minimal inputs; B/C have no question or default neighbors.
+Question use is referential only and recorded per call. A frozen conservative cue
+rule selects stored antecedent context; uncertainty remains auditable.
+
+Code locates unique exact original support and forms the smallest contiguous envelope
+of required fragments without padding to groups or stripping qualifiers. Faithfulness
+also assesses semantic sufficiency/minimality; code alone cannot prove it. Multiple
+claims may share a span. Exact T03 preparation stays in `claims/integration.py`;
+model evidence is retrieved by PreparedRequest.record_id, never scanning records.
+T11A stores immutable states, decisions, original/output lineage and complete target
+accounting. Boundary success means durable complete accounting even when every target
+has failed issues and zero claims. Persistence/preflight/incomplete accounting fails.
+
+The theoretical offline hard bounds are <=20 groups, <=4 candidates/group, <=280
+decision and <=60 generation operations (340 total). This is not expected live usage,
+a live budget recommendation or authorization. Effective run request/cost limits
+also apply, with conservative per-call reservation, zero retries, concurrency one
+and <=60-second T03 timeout targets; the recorded extraction profile uses <=16384
+request bytes and <=512 generation output tokens. Immutable T11A allowance slots keyed
+by run and bound to exact prepared operations enforce caps across extraction scopes;
+local replay reuses those reservations. Slots assume one synchronous owner per run
+and do not represent actual usage or T11B worker coordination. Uncertain dispatch
+stops further model calls. Later live acceptance must derive a much tighter exact bound
+from a prepared saved answer/stages and obtain request-bound authorization. Generation live
+access remains blocked; no live calls are authorized. See the
+[component README](../src/binfocheck/claims/README.md) for tests and limitations.
 
 **D04 implementation resolved — 19 September 2026:** authorized by the user's T03
 implementation instruction approving the planning handoff with two corrections:

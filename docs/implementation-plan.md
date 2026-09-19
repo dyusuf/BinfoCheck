@@ -267,6 +267,11 @@ claims and separate rejected/unresolved issues.
 
 **Stop:** citation fidelity, corpus matching or claims of reproduced Claimify quality.
 
+**Status:** Offline implementation and acceptance fixtures completed. Live integration
+is blocked by unavailable GenerationModel access and absent request-bound authorization.
+Check 3 remains outstanding; T04 is not fully accepted. Shared contracts and T03 remain
+unchanged; extraction-only D07 resources are selected.
+
 ### T05 — Citation mapping and routing
 
 **Build:** T00 + provider/claim fixtures. **Integrate:** T01, T04, T11A.  

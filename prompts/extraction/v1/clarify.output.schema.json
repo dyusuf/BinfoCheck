@@ -1,0 +1,145 @@
+{
+  "$defs": {
+    "Anchor": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End"
+        },
+        "quote": {
+          "pattern": "\\S",
+          "title": "Quote",
+          "type": "string"
+        },
+        "source_unit_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Unit Ids",
+          "type": "array"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start"
+        }
+      },
+      "required": [
+        "quote",
+        "source_unit_ids",
+        "start",
+        "end"
+      ],
+      "title": "Anchor",
+      "type": "object"
+    },
+    "Binding": {
+      "additionalProperties": false,
+      "properties": {
+        "answer_context_unit_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Answer Context Unit Ids",
+          "type": "array"
+        },
+        "question_reference_used": {
+          "title": "Question Reference Used",
+          "type": "boolean"
+        },
+        "reference": {
+          "pattern": "\\S",
+          "title": "Reference",
+          "type": "string"
+        },
+        "resolved_reference": {
+          "pattern": "\\S",
+          "title": "Resolved Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference",
+        "resolved_reference",
+        "answer_context_unit_ids",
+        "question_reference_used"
+      ],
+      "title": "Binding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "anchors": {
+      "items": {
+        "$ref": "#/$defs/Anchor"
+      },
+      "maxItems": 4,
+      "title": "Anchors",
+      "type": "array"
+    },
+    "bindings": {
+      "items": {
+        "$ref": "#/$defs/Binding"
+      },
+      "maxItems": 8,
+      "title": "Bindings",
+      "type": "array"
+    },
+    "clarified_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Clarified Text"
+    },
+    "reason_code": {
+      "enum": [
+        "none",
+        "insufficient_context"
+      ],
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "clarified",
+        "unresolved"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "clarified_text",
+    "anchors",
+    "bindings",
+    "reason_code"
+  ],
+  "title": "Clarified",
+  "type": "object"
+}
