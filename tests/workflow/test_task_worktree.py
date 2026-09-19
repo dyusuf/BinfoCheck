@@ -1,6 +1,7 @@
 """Exercise the shell helper against disposable local Git repositories only."""
 
 import os
+import shlex
 import subprocess
 from pathlib import Path
 
@@ -198,3 +199,40 @@ def test_stale_worktree_registration_refused(repo: Path) -> None:
     task_path(repo).rename(repo.parent / "moved without git")
     assert "already exists" in helper(repo, "create", "codex/other", success=False)
     assert not git(repo, "branch", "--list", "codex/other")
+
+
+def test_remote_advance_during_cleanup_preserved(repo: Path) -> None:
+    helper(repo, "create")
+    commit_task(repo)
+    publish_and_merge(repo)
+    remote = repo.parent / "origin.git"
+    racer = repo.parent / "concurrent checkout"
+    git(repo, "clone", "--branch", "codex/task", str(remote), str(racer))
+    git(racer, "config", "user.name", "Concurrent Test")
+    git(racer, "config", "user.email", "concurrent@example.invalid")
+    (racer / "unseen.txt").write_text("preserve concurrent work\n")
+    git(racer, "add", "unseen.txt")
+    git(racer, "commit", "-m", "Concurrent work")
+    new_tip = git(racer, "rev-parse", "HEAD")
+
+    # Advance the remote immediately before it advertises refs for the deletion push.
+    # Also refresh tracking refs: the lease must use the saved SHA, not a moving ref.
+    receiver = repo.parent / "receive-with-concurrent-push.sh"
+    receiver.write_text(
+        "#!/usr/bin/env bash\nset -euo pipefail\n"
+        f"test ! -d {shlex.quote(str(task_path(repo)))}\n"
+        f"git -C {shlex.quote(str(racer))} push origin HEAD:refs/heads/codex/task >&2\n"
+        f"git -C {shlex.quote(str(repo))} fetch origin >&2\n"
+        'exec git-receive-pack "$@"\n'
+    )
+    git(repo, "config", "remote.origin.receivepack", f"bash {shlex.quote(str(receiver))}")
+    output = helper(repo, "cleanup", success=False)
+    assert "stale info" in output
+    assert "worktree/local branch already removed" in output
+    assert "Cleanup verified" not in output
+    assert not task_path(repo).exists()
+    assert not git(repo, "branch", "--list", "codex/task")
+    assert git(remote, "rev-parse", "refs/heads/codex/task") == new_tip
+    assert git(remote, "show", "refs/heads/codex/task:unseen.txt") == "preserve concurrent work"
+    assert git(repo, "rev-parse", "refs/remotes/origin/codex/task") == new_tip
+    assert "Remote branch (last fetched): present" in helper(repo, "status")

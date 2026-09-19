@@ -208,13 +208,21 @@ Git operations after those checks are:
 
 ```sh
 git merge-base --is-ancestor codex/<task> origin/main
+# Save the remote tip when verifying that it matches the local branch.
+remote_tip=$(git rev-parse refs/remotes/origin/codex/<task>)
 git worktree remove ../BinfoCheck-<task>
 git -c branch.codex/<task>.remote=origin -c branch.codex/<task>.merge=refs/heads/main branch -d codex/<task>
-git push origin --delete codex/<task>
+git push --force-with-lease="refs/heads/codex/<task>:$remote_tip" origin --delete codex/<task>
 git worktree list
 git branch --list codex/<task>
 git ls-remote --heads origin refs/heads/codex/<task>
 ```
+
+Remote deletion uses an explicit expected-SHA lease captured during verification.
+Despite Git's `--force-with-lease` option name, this is a conditional deletion:
+it refuses a changed remote tip and never falls back to unconditional force.
+On rejection, the worktree/local branch are already removed, but the remote work
+remains intact; fetch and inspect it before any further cleanup.
 
 The temporary branch configuration makes Git's non-forced deletion check use the
 verified `origin/main` even when local main is stale; no stored configuration is

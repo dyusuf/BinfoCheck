@@ -103,14 +103,17 @@ git merge-base --is-ancestor "refs/heads/$branch" refs/remotes/origin/main || fa
 remote_present=false
 if exists "refs/remotes/origin/$branch"; then
     remote_present=true
-    [[ $(git rev-parse "refs/heads/$branch") == $(git rev-parse "refs/remotes/origin/$branch") ]] || fail 'Local/remote branch differ; refusing unpushed commits or remote work.'
+    remote_tip=$(git rev-parse "refs/remotes/origin/$branch")
+    [[ $(git rev-parse "refs/heads/$branch") == "$remote_tip" ]] || fail 'Local/remote branch differ; refusing unpushed commits or remote work.'
 fi
 # If the task remote is already absent, ancestry in origin/main proves every commit is pushed.
 git worktree remove -- "$worktree"
 # Use the verified origin/main as the deletion safety check, without changing branch config.
 git -c "branch.$branch.remote=origin" -c "branch.$branch.merge=refs/heads/main" branch -d -- "$branch"
 if [[ "$remote_present" == true ]]; then
-    git push origin --delete "$branch"
+    # An explicit expected SHA rejects concurrent remote updates, even after another fetch.
+    git push --force-with-lease="refs/heads/$branch:$remote_tip" origin --delete "$branch" ||
+        fail "Remote deletion refused; worktree/local branch already removed. Fetch origin and inspect refs/heads/$branch on origin before further cleanup."
 fi
 [[ ! -e "$worktree" && ! -L "$worktree" ]] || fail 'Worktree path remains.'
 ! exists "refs/heads/$branch" || fail 'Local branch remains.'
