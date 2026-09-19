@@ -200,7 +200,7 @@ provider requests require new explicit authorization. PR remains draft and unmer
 ### T02 — Index answers and reconstruct context
 
 **Build:** T00 + answer fixtures. **Integrate:** T01 output + T11A. **Decisions:** D06.  
-**Tools / files:** code, proposed spaCy German tokenizer/Sentencizer; `text/`, text tests.
+**Tools / files:** code, spaCy 3.8.16 blank German tokenizer/Sentencizer; `text/`, text tests.
 
 Index headings, paragraphs, bullets and sentences against unchanged text/citation
 locations. Reconstruct neighboring context by ID, allowing multiple sentences but
@@ -214,6 +214,10 @@ never crossing observations. Do not duplicate neighbor text in records.
 3. Index/reload a real capture unchanged. Reuse the German/emoji fixture in T13.
 
 **Stop:** claim generation, citation association or matching. Sentences are not claims.
+
+**Handoff:** [T02 implementation, offline capture verification and limitations](t02-handoff.md).
+Implementation and local acceptance are complete; remote review/CI status is recorded
+in the draft PR and final delivery handoff. No new provider call is authorized.
 
 ### T03 — Decision and generation adapters
 

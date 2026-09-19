@@ -356,11 +356,22 @@ implementation details need no separate approval.
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
 | D04 | Claimify-inspired + Jev selected; exact Jev/generation model IDs and live-call limits open | T03 live calls; verify exact identifiers and current API settings |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
-| D06 | spaCy proposed; parser, passages, German lexical settings and RRF parameters open | Affected T02/T06/T07 acceptance |
+| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06/T07 parser, passages, German lexical settings, BM25 and RRF remain open | T02 choice recorded below; remaining choices before affected T06/T07 acceptance |
 | D07 | Prompts, rubrics, uncertainty policy and stage budgets | T04/T08/T09/T10 live use and T05 mapping acceptance; draft in the owning task. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
+
+**D06 T02 portion resolved — 19 September 2026:** user explicitly selected
+`spacy==3.8.16`, `spacy.blank("de")` and rule-based Sentencizer, without a downloaded
+language model, parser, NER, transformer or GPU pipeline. Configuration and the small
+German abbreviation/decimal/protected-Markdown rule layer are versioned as
+`t02-text-index/1` under `src/binfocheck/text/`; dependencies are pinned in `uv.lock`.
+The bounded structure scanner preserves original offsets and opaque unsupported
+blocks. Context uses explicit completion cohorts and reference-only windows
+(`t02-text-context/1`). See [T02 handoff](t02-handoff.md). This resolves answer
+indexing only; corpus parsing, passages, lexical retrieval, BM25 and RRF parameters
+remain open for T06/T07.
 
 **D03 live authorization — 19 September 2026:** user explicitly authorized exactly one
 DataForSEO Google AI Mode Live Advanced request for the query
