@@ -1,8 +1,9 @@
 # T06 corpus ingestion
 
-Offline implementation only. **No diabinfo page or robots.txt has been fetched.**
-The five URLs in `config.URLS` are fixed. T06 live acceptance remains outstanding;
-synthetic readiness proves wiring and extraction invariants, not real-page usability.
+The five URLs in `config.URLS` are fixed. One authorized six-GET capture completed
+with all HTTP 200 responses; see [live capture report](../../../docs/t06-live-capture.md).
+Default-profile replay is unusable for all five pages (no `<article>` roots).
+T06 acceptance requires offline site-profile work and all-five cleaned-text inspection.
 
 ## Interfaces and usage
 
@@ -24,7 +25,8 @@ recompute it to refresh an old authorization. Capture checks it before writing t
 start marker, and HTTPS checks it before each dispatch or request-counter increment.
 Mismatch returns `live_policy_not_authorized`. The offline `proposed-policy`
 command prints this digest with `authorized: false`; it grants no permission.
-This implementation instruction supplies no live authorization.
+The original offline implementation instruction supplied no live authorization.
+The later one-batch user authorization is now consumed; see the capture report.
 Capture saves a start marker before dispatch and refuses a second invocation for
 that batch ID, including after an uncertain interruption. Replay never refetches.
 The API is intended for one capture caller, not concurrent capture workers.
@@ -105,8 +107,8 @@ Pins: Beautiful Soup **4.15.0**, explicit **html5lib 1.1**, and
 transitive dependencies are in `uv.lock`.
 
 The default root is a unique `article` element. Multiple explicit, nonoverlapping
-roots can be configured and are traversed in DOM order. Actual site selectors are
-**unverified** until the later authorized five-page capture. There is no body-wide,
+roots can be configured and are traversed in DOM order. The saved five-page capture has no `<article>` elements; its observed
+`main#main > .container` requires a separately tested bounded site profile. There is no body-wide,
 longest-text, readability, relevance or generic crawler fallback.
 
 Supported blocks are h1–h6, paragraphs/captions, ordered/unordered nested lists,
@@ -189,9 +191,8 @@ transport policy, byte/charset handling, exact identities, failure states,
 publication interruptions, SQLite reopen, offline replay and model-free adapter.
 Mocks are not live integration proof.
 
-Before later T06 acceptance: obtain the frozen bounded public-fetch authorization;
-capture robots and all five pages into the private T11A store once; inspect saved
-HTML offline to select/verify the bounded site profile; replay without requests;
+Before T06 acceptance: use the existing saved batch to select and test the bounded
+site profile offline; replay without requests;
 inspect full text/headings/lists/references for each page; validate every slice,
 reopen and replay with sockets blocked; report all actual snapshot IDs/hashes,
 times/statuses/request counts and any missing pages. Do not label T06 accepted

@@ -1,8 +1,19 @@
-# T06 offline implementation handoff
+# T06 implementation and capture handoff
 
 Task / assignee / status: **T06 / Codex / offline_passed; live acceptance pending**.
 Branch: `codex/t06-corpus`. User authorized implementation, commit/push and a draft
-PR, with no merge and explicitly no diabinfo/robots requests. No T07 work.
+PR, with no merge. The original offline instruction prohibited live requests; the later
+bounded user authorization was consumed once as recorded below. No T07 work.
+
+## Current live gate
+
+The authorized capture has completed: six GETs, all complete HTTP 200. The allowance
+is consumed. The restricted store and full response/hash/version report are in
+[T06 live capture](t06-live-capture.md). Default-profile replay is **failed** with
+five `unusable` pages (`ambiguous_article_root`), because the site has no `<article>`
+elements. Offline site-profile work from the saved HTML remains before acceptance;
+no refetch is needed. Socket-blocked reopen/load/replay passed. Historical offline
+and pre-authorization records below describe their respective earlier gates.
 
 ## Scope, contracts and decisions
 

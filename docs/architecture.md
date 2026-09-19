@@ -446,6 +446,12 @@ policy. CaptureStart links the artifact; completion includes it as a dependency.
 Replay/load require and validate this evidence for live batches against the frozen
 policy. Synthetic batches carry no authorization. No shared domain schema changes;
 CaptureStart gains an optional companion link (required for live captures).
+**D06 live-capture gate — 19 September 2026:** the subsequent user authorization
+for digest `78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18`
+was consumed by one six-GET batch, all HTTP 200. Raw bodies and approval evidence
+are saved in T11A. Default replay records five unusable pages: no `article` roots.
+A bounded site profile and full cleaned-content inspection remain offline work;
+no additional GET is authorized. See [capture report](t06-live-capture.md).
 See [corpus README](../src/binfocheck/corpus/README.md) and
 [T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
 choices remain open; T02's recorded decision is unchanged.

@@ -309,8 +309,10 @@ to manufacture positive findings.
 **T06 status — 19 September 2026: offline_passed; live integration pending.**
 The user authorized offline implementation only. D06 parser/core-ingestion pins,
 immutable source/structure/completion artifacts and offline checks are recorded in
-[T06 handoff](t06-handoff.md). No real page or robots.txt was fetched. Actual site
-selectors and all-five usability remain a live acceptance gate; T06 is not accepted.
+[T06 handoff](t06-handoff.md). A later authorized six-GET capture returned HTTP 200 for robots and all five pages;
+[default replay](t06-live-capture.md) records all five unusable because the site lacks
+`article` roots. Offline site-profile adaptation and all-five inspection remain;
+T06 is not accepted, and the fetch allowance is consumed.
 
 ### T07 — Hybrid retrieval and context
 
