@@ -5,7 +5,9 @@ import pytest
 from binfocheck.acquisition.config import Credentials
 
 
-def test_credentials_load_local_dotenv(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_credentials_load_local_dotenv(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("DATAFORSEO_LOGIN", raising=False)
     monkeypatch.delenv("DATAFORSEO_PASSWORD", raising=False)
@@ -20,7 +22,9 @@ def test_credentials_load_local_dotenv(tmp_path: Path, monkeypatch: pytest.Monke
     assert credentials.password.get_secret_value() == "dotenv-password"
 
 
-def test_process_environment_overrides_dotenv(\n    tmp_path: Path, monkeypatch: pytest.MonkeyPatch\n) -> None:
+def test_process_environment_overrides_dotenv(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.chdir(tmp_path)
     (tmp_path / ".env").write_text(
         "DATAFORSEO_LOGIN=dotenv-login\nDATAFORSEO_PASSWORD=dotenv-password\n",
