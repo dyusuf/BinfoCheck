@@ -353,7 +353,7 @@ implementation details need no separate approval.
 |---|---|---|
 | D01 | Python schema/runtime/test dependencies | T00 acceptance |
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
-| D03 | DataForSEO/AI Mode selected; T01 offline adapter uses proposed de/Germany/desktop/windows with one POST and zero retries, no language fallback; final access/settings/cost ceiling and spending authorization remain open | T01 live calls; explicit live-call authorization required |
+| D03 | DataForSEO/AI Mode selected; T01 live acceptance authorized for one exact German query with Germany/de/desktop/windows, one POST, zero retries, 60s timeout, and USD 0.01 ceiling; current provider price/language support must be rechecked immediately before dispatch | T01 live call only; any second provider call requires new explicit authorization |
 | D04 | Claimify-inspired + Jev selected; exact Jev/generation model IDs and live-call limits open | T03 live calls; verify exact identifiers and current API settings |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
 | D06 | spaCy proposed; parser, passages, German lexical settings and RRF parameters open | Affected T02/T06/T07 acceptance |
@@ -361,6 +361,19 @@ implementation details need no separate approval.
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
+
+**D03 live authorization — 19 September 2026:** user explicitly authorized exactly one
+DataForSEO Google AI Mode Live Advanced request for the query
+`Darf ich mit Diabetes Auto fahren?` with `location_name="Germany"`,
+`language_code="de"`, `device="desktop"`, `os="windows"`,
+`calculate_rectangles=false`, timeout 60 seconds, request limit 1, retry limit 0,
+and an absolute cost ceiling of USD 0.01. Credentials are supplied locally through
+the ignored `.env`/process environment and must never be committed or printed. Before
+dispatch, verify the current endpoint price and current German-language support from
+the provider documentation. If the current price exceeds USD 0.01, credentials fail,
+settings are unsupported, or preflight checks fail, stop without making a request.
+Any second provider request, including a retry after an uncertain outcome, requires
+fresh explicit user authorization.
 
 **D01 resolved — 18 September 2026:** Python 3.13, uv, Pydantic v2, pytest, Ruff
 and Pyright. Authorized by the user's explicit T00 approval in this branch.
