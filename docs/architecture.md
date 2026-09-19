@@ -398,11 +398,11 @@ and <=60-second T03 timeout targets; the recorded extraction profile uses <=1638
 request bytes and <=512 generation output tokens. Immutable T11A allowance slots keyed
 by run and bound to exact prepared operations enforce caps across extraction scopes;
 local replay reuses those reservations. Slots assume one synchronous owner per run
-and do not represent actual usage or T11B worker coordination. Uncertain dispatch stops further
-model calls. Later live acceptance must derive a much tighter exact bound from a
-prepared saved answer/stages and obtain request-bound authorization. Generation live
-access remains blocked; no live calls are authorized. See the [T04 handoff](t04-handoff.md)
-and [component README](../src/binfocheck/claims/README.md) for tests and limitations.
+and do not represent actual usage or T11B worker coordination. Uncertain dispatch
+stops further model calls. Later live acceptance must derive a much tighter exact bound
+from a prepared saved answer/stages and obtain request-bound authorization. Generation live
+access remains blocked; no live calls are authorized. See the
+[component README](../src/binfocheck/claims/README.md) for tests and limitations.
 
 **D04 implementation resolved — 19 September 2026:** authorized by the user's T03
 implementation instruction approving the planning handoff with two corrections:
