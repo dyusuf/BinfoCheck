@@ -5,6 +5,7 @@ import json
 import os
 from typing import Annotated, Literal, Self
 
+from dotenv import load_dotenv
 from pydantic import Field, SecretStr, model_validator
 
 from binfocheck.domain.common import Contract, Digest, NonEmpty
@@ -53,6 +54,8 @@ class Credentials(Contract):
 
     @classmethod
     def from_environment(cls) -> Self:
+        # Local development/server convenience. Real environment variables win.
+        load_dotenv(dotenv_path=".env", override=False)
         login = os.environ.get("DATAFORSEO_LOGIN", "")
         password = os.environ.get("DATAFORSEO_PASSWORD", "")
         if not login or not password:
