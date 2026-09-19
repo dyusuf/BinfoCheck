@@ -1,362 +1,266 @@
-# T06 media-hardening and SVG-capture handoff
+# T06 final textual-corpus handoff
 
-**Task / assignee / status:** T06 / Codex / **code_hardening_passed / live_acceptance_blocked**.
+**Task / assignee / status:** T06 / Codex / **live_acceptance_passed / merge_ready**.
 Branch: `codex/t06-corpus`. Delivery: draft [PR #7](https://github.com/dyusuf/BinfoCheck/pull/7),
-not merged. Reviewed starting head: `06f11493447922449b896a9e115f7c9266c61e12`.
+not merged. Reviewed starting head: `6a4f39b5e170d55e9676ce00d50f2f7e13849237`.
+Exact delivery commit and hosted CI are recorded in the overwritten
+`/tmp/binfocheck-t06-handoff.txt` and PR. This document describes that commit's result.
 
-The saved batch replays as four usable articles and one unusable article.
-**201 passages; incomplete corpus; T06 is not merge-ready.** After media hardening,
-the user separately authorized exactly one GET for the known Ramadan SVG. That one
-request completed and its allowance is consumed. No page/robots refetch, retry,
-redirect, other asset, provider/model call or package download occurred. This
-follow-up's corpus request count is **1**; paid usage **USD 0**. Deployed checks are
-not applicable. T07 was not started.
+The original saved batch now yields **five usable ArticleVersions, 228 passages,
+one coherent parser version and a ready manifest**. This derivation made **zero
+external corpus/provider/model requests** and spent **USD 0** on providers.
+Git/GitHub delivery synchronization is separate. No new live capture, package
+download, OCR, image interpretation, vector-path inference, fabricated text,
+retrieval or T07 work occurred. Deployed checks are not applicable.
 
-## Durable private preservation
+## Approved D06 rule and implementation
 
-During the previous adaptation, before code changes, the closed/quiescent source
-`/tmp/binfocheck-t06-live-20260919T114133Z` was copied to:
+The user explicitly approved: **usable means all deterministically extractable
+textual evidence is represented; captured non-text informational visuals remain
+explicit audited limitations**. Ramadan's SVG is informational, not decorative.
+Its previously saved inspection reports `no_deterministic_text_extractable`.
+No new SVG text is invented. The inspection's historical blocked acceptance
+decision remains immutable; the new companion records the subsequent approved rule.
 
-`/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`
+New `nontext.py` and `nontext_evidence_v1.json` implement the fixed evidence case.
+Thirteen exact restricted artifact IDs/body hashes pin the original parent HTML,
+batch/start/approval/Ramadan receipt/robots and the SVG approval/start/HTTP/asset
+receipt/raw bytes/inspection. Validation reuses `asset.load_asset`, verifies URL,
+parent, authorization, receipts, body hash/size and the exact inspection outcome.
+Inspections with machine-readable text or accessibility wording cannot use this rule.
+Nothing invokes asset capture or external XML resources during derivation.
 
-Verified identical file/directory membership, sizes and SHA-256 for **29 files,
-2,826,449 bytes**; SQLite integrity check returned `ok`. No journal/WAL or process
-holding source-store files was found. Parent and target directories are mode 0700;
-all copied files are mode 0600. The source was not modified and its full inventory
-was verified again after replay. All original destination payloads remain identical;
-only the destination database and newly appended outputs changed. Existing destinations
-would have been compared, not overwritten. No store or real HTML is committed.
+Before any parser-5 derived record is published, ingestion validates this evidence.
+The frozen evidence/policy identity is also in the parser hash. Failed preflight
+returns a failed Outcome with no article writes; recovery cannot conflict with an
+immutable failed ArticleVersion. Completion includes every evidence artifact plus
+the restricted article-specific media companion. Loading requires graph membership,
+hashes, restriction, full chain and reconstructed companion equality. Missing,
+corrupt or mismatched evidence makes a formerly ready corpus fail load.
 
-The durable store contains `acceptance-final/store-preservation.json` (complete
-per-file verification), `report.json`, `request.json`, `inspection.json`, four complete
-cleaned-text exports, structure companions and the offline verification scripts.
-`acceptance-svg-v1/inspection.json` is the restricted post-fetch XML inventory.
-All outputs remain private. This path is the continuing T11A store, not an off-machine
-backup. The original failed records and rejected diagnostic outputs are retained;
-the original raw page capture artifacts were not modified.
+The informational gallery must exactly match its inspected URL and complete
+structure/metadata signature. Its structure exclusion is distinctly
+`captured_nontext_informational`; the companion links the original HTML DOM locator
+and exact asset/inspection evidence. Unknown media still fails closed.
+Decorative removal retains the parser-4 positive policy: page/kind plus exact
+element/all-attributes/ordered-content subtree hash must match one of 16 deliberately
+reviewed signatures (14 stock galleries and travel podcast icon/audio structure).
+Copyright credit or absence of “Infografik” alone never permits removal.
 
-## Scope, dependencies and versions
+No T00/domain/storage schema or shared contract changed. Existing fetch/settings/
+passage versions remain 1. No dependencies or lockfile changed.
+Pins remain Beautiful Soup **4.15.0**, explicit **html5lib 1.1** and model-free
+**llama-index-core 0.14.24**, with Python 3.13 and locked transitive dependencies.
+LlamaIndex only checks passage/node text, offsets and source links.
 
-D06 media hardening changes `corpus/diabinfo.py`, `media.py`,
-`decorative_media_v1.json` and parser version selection in `config.py`.
-The separate exact-asset companion is in `asset.py` / `asset_transport.py`.
-Synthetic regressions live in `tests/corpus/test_diabinfo.py` and
-`tests/fixtures/corpus/diabinfo-v1/`; fixtures are hand-authored, not copied HTML.
-Documentation updates cover architecture, task status, capture history and corpus usage.
-No T00/domain/storage schema, existing six-GET transport, package or lockfile change.
-
-Pins remain Beautiful Soup **4.15.0**, explicit **html5lib 1.1**, core-only
-LlamaIndex **0.14.24**, Python 3.13 and existing locked dependencies. LlamaIndex still
-only checks exact passage/node provenance; no models, embeddings, lexical indexes,
-retrieval, BM25/RRF, executed asset fetching, PDF/video extraction or generic readability.
-Shared wire schema 1 / validation revision 1.1 and T11A version 1 are unchanged.
-Fetch/settings/passage construction versions remain 1.
+## Versions, lineage and corpus
 
 Current factory: `binfocheck.corpus.diabinfo.pilot_profile()`.
-Current profile: **diabinfo-pilot/3**, parser **t06-corpus-parser/4**, SHA-256
-`a21b5e2f13e5108af14ed504feda09415e191755d6ffdcef2685c700f7fd7037`.
-Profile 2 / parser 3 remains identity-stable at
-`b4cd5fdda187a0da1206547e17416f64eed93a767f8d4a0b5fa32808be13e85e`.
+Profile **diabinfo-pilot/4**, parser **t06-corpus-parser/5**.
+Parser SHA-256: `db6903268a38e67a07699495f73402e1d8fe911ab2a9c702acff0c2efdec9870`.
+Non-text evidence-policy SHA-256: `9f8e55b1c116a651528b2d53f05a6d7c968b6ecf0c2645a46fa9e19ee70d834b`.
 
-The legacy default `article` profile remains parser version 1 with unchanged hash
-`c448c2e55730915600d812dd074b0f0787aae6270de7d06b4cab838a464d3898`.
-Its absent site-profile field is excluded from serialization, preserving old replay
-identities and completion artifacts. All five original failures remain loadable.
+Historical versions retain their identities and remain loadable:
 
-An intermediate **diabinfo-pilot/1 / parser 2** candidate passed text-only checks
-but was rejected during the complete media audit: its gallery removal omitted an
-informational SVG. Its configuration and semantics remain available solely for
-immutable historical replay; it is not the recommended/accepted profile.
+- parser 1: `c448c2e55730915600d812dd074b0f0787aae6270de7d06b4cab838a464d3898`;
+  original five failures because saved pages have no `article` element;
+- profile 1 / parser 2: `5a9e2078f27dd2e57f77fb76cc44581760f2c52ef9e7d119fd3040e4d9ac8584`;
+  rejected diagnostic candidate that omitted the informational visual;
+- profile 2 / parser 3: `b4cd5fdda187a0da1206547e17416f64eed93a767f8d4a0b5fa32808be13e85e`;
+  four usable, Ramadan blocked;
+- profile 3 / parser 4: `a21b5e2f13e5108af14ed504feda09415e191755d6ffdcef2685c700f7fd7037`;
+  positive media guard, four usable and 201 passages.
 
-## Bounded extraction rules
+All five new ArticleVersions use the parser-4 versions below as predecessors.
+Original raw HTML artifact IDs/hashes and raw TextRecord IDs are identical.
+The four unaffected cleaned texts and ordered passage wording are identical;
+derived text/passage IDs differ because their ArticleVersion/parser changed.
 
-Four unique, nonoverlapping roots, in document order:
+Historical manifest IDs (also verified on reopen):
 
-- `main#main > .container > .frame:has(> header > h1)`
-- `main#main > .container > .frame.frame-space-before-extra-small`
-- `main#main > .container > .frame-type-gddiabinfo_diabinfobackground > .background-container > .frame > .row.grid-container > .col-lg-9`
-- `main#main > .container > .frame-type-gddiabinfo_diabinfocolumns > .row.grid-container > .col-lg-9`
+- Parser 1 failed: `corpus-manifest-9b2788ec22042b1bdb1c0a93d3b8432348d61635f474d7c1d5b8e78fad415e6c`.
+- Parser 2 rejected diagnostic: `corpus-manifest-8368ed29181d0b1558acbe6a1269e9299d005d27c783a14065b3f20cf4c3d069`.
+- Parser 3 incomplete: `corpus-manifest-056765aa650055fb61689247c4c3b31b620b5dea1b1e8295cf2558d0c359ac10`.
 
-These select title, scientific credit, introduction text, and main article text.
-They do not select the whole outer container. Outer navigation, cookie/header/footer
-material and the main promotional sidebar are outside the roots. New unselected
-outer content frames/text fail explicitly instead of silently disappearing.
+Batch: `t06-live-20260919T114133Z`.
+Prior parser-4 manifest:
+`corpus-manifest-ec0a9377dbd14090a7edf1cecfe51a9a850280a44dcc65097bed446d4e4b8545`.
+Final **ready** manifest:
+`corpus-manifest-cca67f16867a3a37e37252c360e364e597a2cab368ac6cc52ee5d6b693d41e69`.
+Completion: final manifest ID plus `.completion.v1`.
+Ramadan media-evidence artifact:
+`corpus-article-64852ee4c0341e95b60af5e3cf7721e83cd7786e68d50c225b87c46862898f3d.media-evidence.v1`.
 
-The TOC must have its exact structural heading, local links and unique existing
-article targets; FAQ group labels must correspond to actual headings. Remove only
-the validated TOC, templated news modules, exactly allowlisted image galleries, podcast icon
-and audio-only module, separator rules, empty accordion controls, decorative SVG
-chevrons, and the exact hidden email anti-spam marker. Substantive captions,
-unknown structures, missing roots/TOC/references, changed rules and broken FAQ
-associations fail explicitly. Informational/uncaptioned imagery is not blindly
-excluded. The new positive-signature media guard is described below.
+| Page | Cleaned code points | Passages | Headings | List items | Links |
+|---|---:|---:|---:|---:|---:|
+| Straßenverkehr | 14,029 | 41 | 18 | 29 | 14 |
+| Ramadan | 11,144 | 27 | 14 | 44 | 31 |
+| Reisen | 20,965 | 39 | 22 | 25 | 29 |
+| FAQ | 38,979 | 97 | 34 | 4 | 102 |
+| Ziele | 10,285 | 24 | 18 | 51 | 14 |
 
-Retain scientific credits, substantive callouts, all paragraphs, nested lists,
-editorial further-reading links, source bibliographies/links and update dates.
-Source wording, numbers, punctuation, duplicates and apparent typos are preserved;
-only established structural whitespace/list markers and the hidden anti-spam
-marker change. No link is followed, and no email obfuscation script executes.
+### Straßenverkehr
 
-FAQ `button.accordion-headline > h2.h3` questions become semantic level-3 headings
-under their level-2 topic. Validate one question/answer pair and ARIA references,
-including collapsed answers. Callout headings end at their box boundary; questions
-end at their accordion-item boundary. This prevents following article paragraphs
-from inheriting unrelated callout/question headings. Natural passages remain whole
-paragraphs/lists, optionally joining an immediately preceding colon paragraph in
-the same section. Every source location uses the original pre-removal DOM locator.
-
-## Five-page complete inspection
-
-Complete diagnostic cleaned text was read for **each** page, from title/scientific
-credit through its ending. Every retained text node was independently accounted for
-against source DOM blocks after explicit exclusions; non-whitespace character order
-and link order/targets match the saved HTML. All heading/block/list/link/passage
-spans slice exactly. Block membership and heading paths were checked for every
-passage; no passage crosses a heading or unrelated FAQ answer.
-
-| Page | Inspection result | Final passages |
-|---|---|---|
-| Driving | Six substantive sections, advisory boxes, 29 list items, 18 headings, 14 links; source list/update ending retained. Navigation, TOC and news/sidebar absent. | 41 |
-| Ramadan | Full diagnostic text includes six sections, three risk groups with nested lists, qualifiers and references. **Rejected** because the informational SVG cannot be verified from saved HTML; no final cleaned TextRecord/passages. | 0 |
-| Travel | Six sections, checklist and direction-specific options, 25 list items, 22 headings, 29 links; sources/update retained. Only podcast promotion/icon omitted, not nearby guidance. | 39 |
-| Risk-test FAQ | All **29 questions under four groups**, collapsed answers, 34 headings, 102 links, embedded references and footnotes retained; final answer ending preserved. Empty controls/icons and hidden anti-spam marker excluded. | 97 |
-| Motivation | All 13 numbered tips, conclusion, editorial further-reading list and bibliography/update; 51 list items, 18 headings, 14 links. Thirteen decorative credit-only galleries and templated promotions excluded. | 24 |
-
-The FAQ's source repetitions and motivation text's adjacent bold-word spelling are
-preserved rather than edited. Media attributes were inspected offline. Classification now requires an exact
-positive signature; neither a copyright caption nor absence of “Infografik” suffices.
-No assumption that all five share the same substantive structure was used.
-
-## Exact immutable lineage and current corpus
-
-Saved batch: `t06-live-20260919T114133Z`.
-Final manifest: `corpus-manifest-ec0a9377dbd14090a7edf1cecfe51a9a850280a44dcc65097bed446d4e4b8545` — **incomplete**.
-Each parser-4 ArticleVersion uses its parser-3 ArticleVersion as predecessor;
-parser 3 already points to its corresponding original failed parser-1 version.
-Parser-3 manifest remains `corpus-manifest-056765aa650055fb61689247c4c3b31b620b5dea1b1e8295cf2558d0c359ac10`. Raw artifact ID, raw TextRecord ID and byte hash are unchanged;
-no capture, authorization, receipt or old output record was rewritten.
-
-### Driving
-
-URL: https://www.diabinfo.de/leben/diabetes-im-alltag/strassenverkehr.html
-
-- article_id: `corpus-article-f320f1f52eeccc98768df42e3504e9b1f0a5f8ded795cf8619531de6380dea34`
-- previous_version_id: `corpus-article-90e99e0d46bd0bf8d1a1883e703ce8180caa7503983f854a8fd2e0e0fd84dffd`
-- raw_artifact_id: `corpus-raw-html-b88fee4b5e77adbdb5abf43524b30e4fb892ef181f1cb18aa79c5c9e90b32e58`
-- raw_text_id: `corpus-raw-text-aca197e1cf4a01e042547d734632975d794736558978afcff80347ae32d719a0`
-- raw_sha256: `3f60f20f4c6ea60c422ef0d4f084bf1a7ce25b2ef9e4c99e8c85c05a56a28d99`
-- cleaned_text_id: `corpus-clean-text-3599dddfcc3152fe013ae46f7f9d6e16045b5f5d1d9785368ddb341bc71ae699`
-- cleaned_sha256: `2fdc2f33a8e94ed686a522b54db2b4d492aa9274be577524d671ae45b70182fb`
-- Status: usable; passages: 41.
+- URL: `https://www.diabinfo.de/leben/diabetes-im-alltag/strassenverkehr.html`
+- ArticleVersion: `corpus-article-b5ff7e8c4fc68d8feca70c71065de5700554256db55c635dc56af9683898a9de`
+- Parser-4 predecessor: `corpus-article-f320f1f52eeccc98768df42e3504e9b1f0a5f8ded795cf8619531de6380dea34`
+- Raw HTML artifact: `corpus-raw-html-b88fee4b5e77adbdb5abf43524b30e4fb892ef181f1cb18aa79c5c9e90b32e58`
+- Raw byte SHA-256: `3f60f20f4c6ea60c422ef0d4f084bf1a7ce25b2ef9e4c99e8c85c05a56a28d99`
+- Raw TextRecord: `corpus-raw-text-aca197e1cf4a01e042547d734632975d794736558978afcff80347ae32d719a0`
+- Cleaned TextRecord: `corpus-clean-text-e8fd4bad2f3ab8e7ad03c65c8e6db148bfa6ebc5f6a960e37f9e6dca4320b667`
+- Cleaned UTF-8 SHA-256: `2fdc2f33a8e94ed686a522b54db2b4d492aa9274be577524d671ae45b70182fb`
+- Passages: **41**; exact source coverage and all spans passed.
 
 ### Ramadan
 
-URL: https://www.diabinfo.de/leben/diabetes-im-alltag/ramadan.html
+- URL: `https://www.diabinfo.de/leben/diabetes-im-alltag/ramadan.html`
+- ArticleVersion: `corpus-article-64852ee4c0341e95b60af5e3cf7721e83cd7786e68d50c225b87c46862898f3d`
+- Parser-4 predecessor: `corpus-article-fce0eeaf180f7f607c2d99c558f77a0c7b85f25f73be37c677e65515f66d1bf1`
+- Raw HTML artifact: `corpus-raw-html-b20f8e3b1f9ab0f136d75089f503ec43eb717090a9b7e93a2652aa164cda39d2`
+- Raw byte SHA-256: `8730ea878ffba196a129c7feb6728ed92531b48a272ec01e9c98ffb37a331afd`
+- Raw TextRecord: `corpus-raw-text-f83dd0753620bbc2fc4d3b84f356ed3a717535096eb67be8a2f5269f8ee34243`
+- Cleaned TextRecord: `corpus-clean-text-143b34ad94f798e3dcb1e0daca756cedb7de3797543300c3031f1a4451a7e788`
+- Cleaned UTF-8 SHA-256: `c1695edce5958b17efa7660f3f03c2c24933521ecb599640c5360fe37c7725ee`
+- Passages: **27**; exact source coverage and all spans passed.
 
-- article_id: `corpus-article-fce0eeaf180f7f607c2d99c558f77a0c7b85f25f73be37c677e65515f66d1bf1`
-- previous_version_id: `corpus-article-f73f841a06718d9189c450b634b385f8c8c14dbbed5849054f4ce09611ad0617`
-- raw_artifact_id: `corpus-raw-html-b20f8e3b1f9ab0f136d75089f503ec43eb717090a9b7e93a2652aa164cda39d2`
-- raw_text_id: `corpus-raw-text-f83dd0753620bbc2fc4d3b84f356ed3a717535096eb67be8a2f5269f8ee34243`
-- raw_sha256: `8730ea878ffba196a129c7feb6728ed92531b48a272ec01e9c98ffb37a331afd`
-- cleaned_text_id: unavailable (unusable page)
-- cleaned_sha256: unavailable (unusable page)
-- Status: unusable; passages: 0.
+### Reisen
 
-### Travel
+- URL: `https://www.diabinfo.de/leben/diabetes-im-alltag/reisen.html`
+- ArticleVersion: `corpus-article-eb2af5d31e98eb7ff287db5e4fff8c56286245a87ecb3ed4a40edd2d3c1ece5f`
+- Parser-4 predecessor: `corpus-article-99fac2f987603b8e25ef3835afd9da73574c97351e56a697c79738f073f494bd`
+- Raw HTML artifact: `corpus-raw-html-50e27792b20ab24cd0e9f4bd68684187efe86308c81d554674000a9abdaad0a3`
+- Raw byte SHA-256: `e697d33561df1f21c894c9d1469e0587a340f2f39771f994ee7796869644b7a1`
+- Raw TextRecord: `corpus-raw-text-5df6e633623591daa8d744e5f92eaa818d19a410ee64b74a60f9bdcd213442b9`
+- Cleaned TextRecord: `corpus-clean-text-c8f7d258d0e8efc06921593b29c76bab9fe44022791586e6aa7a7b2157570c70`
+- Cleaned UTF-8 SHA-256: `2473123bd91a8d51bae07dc8f42e0b1ca0b5560af6e13f294b9f1d158e00b355`
+- Passages: **39**; exact source coverage and all spans passed.
 
-URL: https://www.diabinfo.de/leben/diabetes-im-alltag/reisen.html
+### FAQ
 
-- article_id: `corpus-article-99fac2f987603b8e25ef3835afd9da73574c97351e56a697c79738f073f494bd`
-- previous_version_id: `corpus-article-2c14816c92138f467ebb04a22d22e215dca69166901dc73704fd67a6743a4f64`
-- raw_artifact_id: `corpus-raw-html-50e27792b20ab24cd0e9f4bd68684187efe86308c81d554674000a9abdaad0a3`
-- raw_text_id: `corpus-raw-text-5df6e633623591daa8d744e5f92eaa818d19a410ee64b74a60f9bdcd213442b9`
-- raw_sha256: `e697d33561df1f21c894c9d1469e0587a340f2f39771f994ee7796869644b7a1`
-- cleaned_text_id: `corpus-clean-text-5c162cb5333448c8b0b076ce2292db279a8bce7769135602e6569d71697f4adc`
-- cleaned_sha256: `2473123bd91a8d51bae07dc8f42e0b1ca0b5560af6e13f294b9f1d158e00b355`
-- Status: usable; passages: 39.
+- URL: `https://www.diabinfo.de/vorbeugen/diabetes/wie-hoch-ist-mein-risiko-fuer-diabetes-typ-2/haeufig-gestellte-fragen.html`
+- ArticleVersion: `corpus-article-7a7e1fcc86535301fae3d0f16c735cb4a077d5459e2dd300c68703c0c2a2dd34`
+- Parser-4 predecessor: `corpus-article-f4c8c130bc6bf4b76cb1ce02d64a359ce7f7d448cf05c40f52ca03c618f74007`
+- Raw HTML artifact: `corpus-raw-html-252cad6f5db2f7a5b8eff062a091c652e38e3721df3320ac84b89a603d9b6e27`
+- Raw byte SHA-256: `e5e4d4e6958ff38b4a528d68686a3e81cacc025c5f740a1cb4ddfc3e24092c62`
+- Raw TextRecord: `corpus-raw-text-b9cc011b8dcbc840a4d8d5f63aec8b32c064d75cd603d7a46ab08ca792ca0caa`
+- Cleaned TextRecord: `corpus-clean-text-22a0d0a4ddd4d697fc734aac7d1ce27f5a98028696bf127a084779ce0e2852d2`
+- Cleaned UTF-8 SHA-256: `b6be1c8523262b3845ecd2421672b2e054c556dedf66cb5953c93b0ed9e7d888`
+- Passages: **97**; exact source coverage and all spans passed.
 
-### Risk-test FAQ
+### Ziele
 
-URL: https://www.diabinfo.de/vorbeugen/diabetes/wie-hoch-ist-mein-risiko-fuer-diabetes-typ-2/haeufig-gestellte-fragen.html
+- URL: `https://www.diabinfo.de/vorbeugen/was-kann-ich-tun/so-erreichen-sie-ihre-ziele.html`
+- ArticleVersion: `corpus-article-6dbb5c44ddcd66b55cab28c0ea733af8ea4279df56ef20a2557c6df19c37fd10`
+- Parser-4 predecessor: `corpus-article-423dc0fa3de666d289ed738473fc4cd490b0957d681c442eb7b637223cd12f04`
+- Raw HTML artifact: `corpus-raw-html-c37f0ac65e03161451e1116793642b06f68e3e82855a1c754f811428f8e643cb`
+- Raw byte SHA-256: `9b85cee3e71ee696a667dd23dcb81a708201b567d6f9503ccf087b16328c97f6`
+- Raw TextRecord: `corpus-raw-text-bb190c0d7719d3ee3ed960658b62a62d9d6174c9792bdd96b45607e7467df129`
+- Cleaned TextRecord: `corpus-clean-text-c1eb4abc61587e2a381a0a793e7c1cc347126cef14a2aa9aec7caa56b88494e9`
+- Cleaned UTF-8 SHA-256: `26b9956aa666b98f66aa2fdcd0ffc82fbe4809e4bda7d2d8e97c5a1e77b65e1c`
+- Passages: **24**; exact source coverage and all spans passed.
 
-- article_id: `corpus-article-f4c8c130bc6bf4b76cb1ce02d64a359ce7f7d448cf05c40f52ca03c618f74007`
-- previous_version_id: `corpus-article-f0fbe24c5e57b947a215f82c7129a871edfb777306cb7262c2a6841190d27423`
-- raw_artifact_id: `corpus-raw-html-252cad6f5db2f7a5b8eff062a091c652e38e3721df3320ac84b89a603d9b6e27`
-- raw_text_id: `corpus-raw-text-b9cc011b8dcbc840a4d8d5f63aec8b32c064d75cd603d7a46ab08ca792ca0caa`
-- raw_sha256: `e5e4d4e6958ff38b4a528d68686a3e81cacc025c5f740a1cb4ddfc3e24092c62`
-- cleaned_text_id: `corpus-clean-text-786141a37b519fbcc3cefec90ccf4a357a7b7159efdf8aa19c81998ef122c632`
-- cleaned_sha256: `b6be1c8523262b3845ecd2421672b2e054c556dedf66cb5953c93b0ed9e7d888`
-- Status: usable; passages: 97.
+## Media evidence and limitation
 
-### Motivation
-
-URL: https://www.diabinfo.de/vorbeugen/was-kann-ich-tun/so-erreichen-sie-ihre-ziele.html
-
-- article_id: `corpus-article-423dc0fa3de666d289ed738473fc4cd490b0957d681c442eb7b637223cd12f04`
-- previous_version_id: `corpus-article-c8cee093cf2d403c8045f2fb11a006267d2f6d9305d24a5aea15f418c9ccaf39`
-- raw_artifact_id: `corpus-raw-html-c37f0ac65e03161451e1116793642b06f68e3e82855a1c754f811428f8e643cb`
-- raw_text_id: `corpus-raw-text-bb190c0d7719d3ee3ed960658b62a62d9d6174c9792bdd96b45607e7467df129`
-- raw_sha256: `9b85cee3e71ee696a667dd23dcb81a708201b567d6f9503ccf087b16328c97f6`
-- cleaned_text_id: `corpus-clean-text-1096ebc5f68aad29aa5ecc76fb635bb5db5e32c60c8443a6f1bd320ecf6e212c`
-- cleaned_sha256: `26b9956aa666b98f66aa2fdcd0ffc82fbe4809e4bda7d2d8e97c5a1e77b65e1c`
-- Status: usable; passages: 24.
-
-Original failed manifest:
-`corpus-manifest-9b2788ec22042b1bdb1c0a93d3b8432348d61635f474d7c1d5b8e78fad415e6c`.
-
-Rejected diagnostic manifest (do not select as accepted corpus):
-`corpus-manifest-8368ed29181d0b1558acbe6a1269e9299d005d27c783a14065b3f20cf4c3d069`.
-
-Restricted T11A inspection artifact:
-`t06-live-20260919T114133Z.site-profile-review.v1` records the diagnostic rejection and
-then-current parser-3 blocked acceptance. New restricted companion
-`t06-live-20260919T114133Z.media-profile-review.v1` records parser-4 inspection,
-store verification and the then-inert SVG proposal (approval reference null). The
-subsequent consumed asset authorization/receipt chain uses `t06-ramadan-svg-1.*`;
-restricted `t06-ramadan-svg-1.inspection.v1` records its offline outcome. A stored
-diagnostic `ready` status is not an accepted inspection.
-
-## Reopen, integrity and network evidence
-
-Historical preservation checks retained 27 original records after parser 2 and
-277 then-existing records after parser 3. This turn retained all **494** pre-existing
-records unchanged while appending parser 4. All four cleaned texts are byte-identical
-to parser 3, with the same per-page passage counts and complete source/span coverage. The loader validated completion hashes,
-all shared links, raw/cleaned lineage, reconstructed structure/passages and the
-persisted authorization companion `t06-live-20260919T114133Z.authorization.v1`.
-Closing and reopening SQLite, loading, and rerunning the same final request returned
-identical records/manifest. The original failed corpus also still loads.
-
-A fresh process installed audit guards before imports: socket construction, DNS,
-bind/connect and other socket events raise. The dependency `urllib3` attempted only
-its import-time IPv6 capability probe; construction was blocked before any socket
-existed. No DNS or connection attempt occurred. This caught probe is recorded, not
-misreported as zero attempted socket construction. No model/resource download ran.
-The current scripts replay `acceptance-media-v1/request.json`; no page capture call is made.
-That private directory contains the new request/report, complete cleaned text/structure
-exports, verification script and store-integrity report. The SVG authorization,
-start, HTTP receipt, asset receipt, raw artifact and inspection companion all reopen
-and validate from the same store. Final verification found **717** immutable records,
-private permissions and SQLite integrity `ok`. Socket-blocked XML inspection and
-verification performed no request.
-
-## Remaining blocker and authorization boundary
-
-**live_acceptance_blocked**: Ramadan references the informational SVG described
-below. The asset is now captured, but it has no machine-readable text, title,
-description or accessibility wording. Treating its path-based graphics as text would
-require OCR or semantic inference, both excluded. Final parser reason remains
-`unsupported_informational_media`; the parser was not loosened to force readiness.
-
-The remaining gate is an explicit product decision: whether the five-page textual
-corpus may be considered usable when the informational visual is captured and
-preserved but has no deterministic textual representation. No further request is
-authorized or needed to establish this outcome. The prior page-capture allowance
-also remains consumed: exactly six historical GETs, all HTTP 200, under policy digest
-`78de13b54502cf2c8395d9be1301f66c74bbe0d8b8cf5a931f58e71c1aad5d18`.
-See [capture history](t06-live-capture.md) for exact receipt times and raw hashes.
-No merge, T07 work or MVP-completion claim.
-
-## Positive decorative-media policy
-
-Parser 3 allowed copyright-captioned media unless the alt began with “Infografik:”.
-That negative heuristic could silently remove an unrecognized diagram. Parser 4
-requires one of **16 exact per-page signatures** in `decorative_media_v1.json`:
-14 stock galleries (one Ramadan lamp/still-life and 13 motivation illustrations),
-one travel podcast icon gallery and one exact travel podcast audio module.
-Driving and FAQ have no removable galleries in their article roots.
-The motivation illustrations' metadata describes the specific tip illustrations,
-including the generic four-step motif and exact tip-8 alt; these reviewed cases
-are enumerated, not inferred from stock filenames, copyright, or nearby text.
-Stock-image bytes were not fetched or visually classified. The separately captured
-Ramadan SVG was inspected only for machine-readable XML text and metadata.
-
-Each signature hashes the complete ordered subtree: element names, **all attributes**
-(including both img/noscript src, alt, title, classes, dimensions and loading),
-caption/text and child structure. Only whitespace-only DOM nodes and text-node edge
-whitespace are ignored. URL and gallery/audio kind must also match. Attribute order
-is canonicalized; child order is retained. Unknown/changed src, alt, caption,
-structure, additional text/attributes/images and substantive captions fail
-`unsupported_informational_media`; no broad fallback. The Ramadan infographic has
-no allowed signature. Registry digest is
-`69f174a4a688b353bc94ca54209ef195b5b8ce3f317f3f96fe204aa9cdf6359a`,
-and is included in parser-4 identity. Versions 1–3 do not consult this registry.
-
-The registry contains reviewed metadata/digests, not raw captured HTML. Additional
-hand-authored fixtures exercise one exact stock pattern and the podcast pattern.
-Historical parser tests are explicitly pinned; new tests cover positive and negative
-media cases, legacy identities and immutable version chains. No existing test was
-weakened to permit unknown media.
-
-## Consumed exact SVG authorization and offline outcome
-
-See the complete policy and receipts in
-[t06-live-capture.md](t06-live-capture.md#one-svg-companion-policy-and-consumed-authorization).
-The helper is deliberately separate from five-page capture. It cannot add URLs,
-reuse the old allowance, follow a link or make a second attempt.
-
-- Exact URL: `https://www.diabinfo.de/fileadmin/diabinfo/Grafiken/0511_diabinfo_Ramadan_DE_ohne-Titel.svg`
-- Proposal format: `t06-ramadan-svg-proposal/1`; attempt: `t06-ramadan-svg-1`.
-- Frozen proposal/policy SHA-256: `e3d776762445657f46cb632f016b48e407837bc04430aa1ca83f515d9816aebf`.
-- One GET; concurrency 1; retries/redirects 0; no HEAD, cookies, auth, browser,
-  link-following, other assets or provider calls; TLS verification on; USD 0.
-- Connect 10 s, read 20 s, overall 30 s target with decreasing socket timeouts and
-  watchdog; 2,097,152-byte (2 MiB) body ceiling, identity encoding required.
-  One extra sentinel byte detects overflow and is retained only as incomplete
-  evidence. OS DNS resolution cannot be forcibly interrupted by the stdlib timeout.
-- Approval reference: `user-message-2026-09-19:I authorize; proposal-sha256=` plus
-  the proposal digest above. Authorization envelope SHA-256:
-  `e16566cd6c0960ee921d3172bf6cc65413f862e139d717b62d07ceff41209f3a`.
-- An uncertain/failed dispatch or abandoned start marker consumes the allowance.
-  A second attempt needs new authorization and a separately reviewed attempt;
-  the helper never automatically resets or retries.
-
-The single GET ran from `2026-09-19T13:36:24.997348Z` through
-`2026-09-19T13:36:25.317748Z`, returning complete HTTP 200 `image/svg+xml` bytes:
-
-- raw artifact:
-  `corpus-raw-svg-1201b0c36772982079a76330da05f79bf236b6f30105dda898a30bbd38ac33ad`;
-- bytes: **313,754**; SHA-256:
-  `36dac445d2a67c53105b125a86a576d597b3544ed3f634146466f0862fc909de`;
-- evidence: `t06-ramadan-svg-1.authorization.v1`, `.start.v1`, `.http.v1`,
-  `.receipt.v1`; all restricted and immutable;
-- inspection: `t06-ramadan-svg-1.inspection.v1`, SHA-256
+- Exact URL: `https://www.diabinfo.de/fileadmin/diabinfo/Grafiken/0511_diabinfo_Ramadan_DE_ohne-Titel.svg`.
+- Raw SVG: `corpus-raw-svg-1201b0c36772982079a76330da05f79bf236b6f30105dda898a30bbd38ac33ad`.
+- Complete body: **313,754 bytes**, SHA-256
+  `36dac445d2a67c53105b125a86a576d597b3544ed3f634146466f0862fc909de`.
+- Inspection: `t06-ramadan-svg-1.inspection.v1`, SHA-256
   `6f1f81165037e45c44b7851b4aec1b723dda4b944a909b73e998e22032a2e1c1`.
+- Evidence chain: `t06-ramadan-svg-1.authorization.v1`, `.start.v1`,
+  `.http.v1`, `.receipt.v1`; original page approval
+  `t06-live-20260919T114133Z.authorization.v1` remains linked.
+- Disposition: **captured_nontext_informational**.
+- Persisted limitation: “Informational visual captured and preserved; no deterministic
+  machine-readable text is extractable. Visual content is not represented by textual
+  passages. No OCR, image interpretation, SVG path inference or fabricated text.”
 
-Offline inspection found valid UTF-8 XML with 587 elements, but zero `<text>`,
-`<tspan>`, `<title>`, `<desc>`, ARIA text/role attributes or `href` references.
-DOCTYPE/entities, scripts and `foreignObject` are absent. No resource was loaded;
-no OCR or vector-path semantics were inferred. Outcome: **informational visual
-captured; no deterministic text extractable**. No asset TextRecord, parser-5 output
-or fabricated transcript was created. Parser-4 corpus identity and its incomplete
-manifest remain unchanged.
+The 587-element SVG contains no text/tspan/title/desc or accessibility wording.
+Its vectors were not interpreted. This is an explicit limitation of the textual
+corpus, not a claim that the visual lacks information. Both historical request
+allowances (six GETs plus one separate SVG GET) remain fully consumed.
+No further network request is authorized.
 
-## Regression checks and delivery
+## Complete inspection and replay
 
-The final locked setup, 217 corpus tests, lint, formatting (154 Python files),
-Pyright (zero errors/warnings), schema drift and both whitespace checks passed.
-The full suite passed: **804 tests**. All checks are offline;
-setup used `UV_OFFLINE=1`. No package downloads or real test network requests.
+Four explicit title/scientific-credit/introduction/article roots are unchanged.
+They bound `main#main > .container` rather than extracting the whole container.
+Navigation/sidebar/footer, TOC, related-news modules, approved decorative media and
+media controls are excluded. References, editorial links, qualifiers, heading
+ancestry, ordered/unordered nested lists and FAQ answer content remain.
 
-Final pre-validation fetch confirmed `origin/main` remains
-`80b35c95daaf06bfe9149551068d609e39d4ab58`; no merge is required. Exact commit,
-post-push ahead/behind and hosted exact-head CI status are recorded in the external
-final handoff. No merge is authorized. PR #7 remains draft; T06 is not accepted,
-and T07 is not started.
+The full Ramadan cleaned representation was read this turn: title and scientific
+credit, introduction, all six numbered sections, risk groups and nested therapies,
+risk assessment/control/nutrition/exercise/medication subsections, fasting-interruption
+thresholds and their warning, pregnancy, benefits/risks, sources and dated ending.
+Numbers, German qualifiers and punctuation remain unchanged apart from the existing
+deterministic structural whitespace/list markers. No visual wording was added.
+The other four complete representations were previously inspected; byte-for-byte
+cleaned-text equality and ordered passage-content equality were reverified.
+Driving retains its licence/risk sections and references; travel retains preparation,
+medication/time-zone guidance and references; FAQ preserves all 29 questions beneath
+four topic headings and all answers; goals retains its ordered steps, sublists,
+callouts and sources.
 
+Independent source-DOM coverage checks passed for all five: every retained nonblank
+text node belongs to exactly one block; wording matches after defined whitespace/
+list-marker treatment; original links match the structure companion. Every block,
+heading, list item, link and passage SpanRef slices exactly to the immutable clean
+TextRecord. Passages resolve to their ArticleVersion and heading ancestry. Only a
+colon-ended paragraph and following same-section list may form a joint passage.
 
-| Required command | Final result |
+SQLite was closed then reopened. Load and replay produced identical complete
+records/manifests with socket construction, DNS and connections blocked by a Python
+audit hook. Historical parsers 1–4 still load. The transitive urllib3 import attempted
+its local IPv6 capability probe; the hook blocked construction before any socket
+existed. No DNS or connection/request occurred. Tests also directly replace socket/
+DNS and asset-dispatch functions with failing stubs during reopen/replay.
+
+## Durable private preservation
+
+Continuing store:
+`/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`.
+
+Original quiescent source:
+`/tmp/binfocheck-t06-live-20260919T114133Z`.
+Its **29 files / 2,826,449 bytes** remain unchanged by complete membership, size and
+SHA-256 verification. Original durable payloads remain identical; all **717**
+preexisting records compare equal after deriving **246** new records (**963 total**).
+No capture, historical article or inspection record was rewritten.
+Parent/store directories remain 0700, all descendants have no group/other access.
+SQLite integrity check is `ok`. This is private local storage, not an off-machine backup.
+
+Private `acceptance-textual-v1/` holds exact `request.json`, full cleaned text and
+structure exports for all five pages, `report.json`, and `verification.json`.
+The earlier preservation and inspection files remain. No real HTML, SVG, private
+store or cleaned real article text enters Git; committed fixtures are hand-authored.
+
+## Validation and delivery
+
+All required checks passed on this derivation:
+
+| Command | Result |
 |---|---|
-| `uv sync --locked --dev` (`UV_OFFLINE=1`) | Passed; 103 packages audited |
-| `uv run --offline --locked pytest tests/corpus` | 217 passed |
-| `uv run --offline --locked pytest` | 804 passed |
+| `UV_OFFLINE=1 uv sync --locked --dev` | Passed; 103 locked packages, no downloads |
+| `uv run --offline --locked pytest tests/corpus` | **256 passed** |
+| `uv run --offline --locked pytest` | **843 passed** |
 | `uv run --offline --locked ruff check .` | Passed |
-| `uv run --offline --locked ruff format --check .` | Passed; 154 files |
-| `uv run --offline --locked pyright` | Zero errors/warnings |
-| `uv run --offline --locked python -m binfocheck.domain.export_schemas --check` | Schemas match |
-| `git diff --check` | Passed |
-| `git diff --cached --check` | Passed |
+| `uv run --offline --locked ruff format --check .` | Passed; 156 files |
+| `uv run --offline --locked pyright` | 0 errors / warnings |
+| `uv run --offline --locked python -m binfocheck.domain.export_schemas --check` | Passed |
+| `git diff --check` / `git diff --cached --check` | Passed |
 
-Remaining blocker: explicit product decision on textual-corpus acceptance for the
-captured informational Ramadan visual, which has no deterministic machine-readable
-text. No acceptance, additional request or merge.
+The `uv run` commands used the private temporary uv cache setting; all were locked
+and offline. Exact-head hosted CI is recorded separately in the final delivery
+handoff after push; local results do not imply a hosted CI result.
+New synthetic tests cover exact
+permission, missing/corrupt/wrong evidence and semantic chain mismatches, unrelated
+SVGs, no-text versus textual inspections, graph/companion corruption, preflight
+no-write recovery, immutable identities, historical replay and socket-blocked reopen.
+Existing fail-closed tests remain intact.
+
+Final synchronization currently finds main unchanged at
+`80b35c95daaf06bfe9149551068d609e39d4ab58`; no merge is necessary.
+No T06 acceptance blocker remains under the explicit product decision.
+The captured non-text visual limitation remains part of provenance.
+PR #7 stays draft; **do not merge**. No T07 work.

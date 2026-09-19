@@ -9,9 +9,10 @@ from bs4.element import NavigableString
 
 from binfocheck.domain.text import SpanRef
 
-from .config import ParserConfig, digest, identity
+from .config import URLS, ParserConfig, digest, identity
 from .diabinfo import validate_profile
 from .errors import CorpusError, check
+from .nontext import DISPOSITION, VerifiedMedia, matches_gallery, policy_sha256
 from .structure import Block, Exclusion, Heading, Link, ListItem, Structure
 
 SPACE = " \t\r\n\f"
@@ -167,6 +168,7 @@ def parse_html(
     raw_text_id: str,
     charset: str,
     config: ParserConfig,
+    media_evidence: VerifiedMedia | None = None,
 ) -> tuple[str, Structure]:
     soup = BeautifulSoup(html, "html5lib")
     tags = list(soup.find_all(True))
@@ -191,8 +193,15 @@ def parse_html(
         check(not any(p in roots for p in root.parents), "overlapping_article_roots")
     # Selected roots must retain document order, independent of selector order.
     roots.sort(key=lambda t: next(i for i, candidate in enumerate(tags) if candidate is t))
+    if config.site_profile == "diabinfo-pilot/4" and url == URLS[1]:
+        check(
+            media_evidence is not None
+            and media_evidence.policy_sha256 == policy_sha256()
+            and media_evidence.parent_html_text_sha256 == digest(html.encode()),
+            "nontext_evidence_required",
+        )
     if config.site_profile:
-        validate_profile(soup, roots, url, config)
+        validate_profile(soup, roots, url, config, media_evidence)
     root_locations = tuple(source_location(r) for r in roots)
     exclusions: list[Exclusion] = []
     for root in roots:
@@ -205,7 +214,14 @@ def parse_html(
                     and not removed.css.match(config.protected),
                     "chrome_contains_article_reference",
                 )
-                exclusions.append(Exclusion(locator=source_location(removed), rule=selector))
+                rule = (
+                    DISPOSITION
+                    if config.site_profile == "diabinfo-pilot/4"
+                    and selector == ".ce-gallery"
+                    and matches_gallery(removed, url)
+                    else selector
+                )
+                exclusions.append(Exclusion(locator=source_location(removed), rule=rule))
                 removed.decompose()
     gathered: list[tuple[str, Tag, int]] = []
 

@@ -6,8 +6,9 @@ from bs4.element import NavigableString
 from .config import URLS, ParserConfig, SiteProfile
 from .errors import check
 from .media import validate_media
+from .nontext import VerifiedMedia, matches_gallery
 
-PROFILE: SiteProfile = "diabinfo-pilot/3"
+PROFILE: SiteProfile = "diabinfo-pilot/4"
 CONTAINER = "main#main > .container"
 ROOTS = (
     CONTAINER + " > .frame:has(> header > h1)",
@@ -42,7 +43,13 @@ def pilot_profile(profile: SiteProfile = PROFILE) -> ParserConfig:
     )
 
 
-def validate_profile(soup: BeautifulSoup, roots: list[Tag], url: str, config: ParserConfig) -> None:
+def validate_profile(
+    soup: BeautifulSoup,
+    roots: list[Tag],
+    url: str,
+    config: ParserConfig,
+    media_evidence: VerifiedMedia | None = None,
+) -> None:
     """Check the observed layout and exclusion shapes before removing any nodes."""
     check(url in URLS, "site_profile_url_not_allowed")
     assert config.site_profile is not None
@@ -105,8 +112,9 @@ def validate_profile(soup: BeautifulSoup, roots: list[Tag], url: str, config: Pa
             or any(text in a.get_text() for a in anchors),
             "site_toc_unexpected_text",
         )
+    nontext_count = 0
     for root in roots:
-        if config.site_profile == "diabinfo-pilot/3":
+        if config.site_profile in {"diabinfo-pilot/3", "diabinfo-pilot/4"}:
             for image in root.select("img"):
                 check(
                     any(
@@ -121,8 +129,12 @@ def validate_profile(soup: BeautifulSoup, roots: list[Tag], url: str, config: Pa
                 "site_mail_marker_mismatch",
             )
         for gallery in root.select(".ce-gallery"):
-            if config.site_profile == "diabinfo-pilot/3":
-                validate_media(gallery, url, "gallery")
+            if config.site_profile in {"diabinfo-pilot/3", "diabinfo-pilot/4"}:
+                if config.site_profile == "diabinfo-pilot/4" and matches_gallery(gallery, url):
+                    check(media_evidence is not None, "nontext_evidence_required")
+                    nontext_count += 1
+                else:
+                    validate_media(gallery, url, "gallery")
             if config.site_profile == "diabinfo-pilot/2":
                 # Profile 1 is retained only to replay the unaccepted diagnostic
                 # candidate. Its broad image exclusion missed an informational SVG.
@@ -166,7 +178,7 @@ def validate_profile(soup: BeautifulSoup, roots: list[Tag], url: str, config: Pa
                 "site_media_mismatch",
             )
         for audio in root.select(".frame-type-gddiabinfo_diabinfoaudio"):
-            if config.site_profile == "diabinfo-pilot/3":
+            if config.site_profile in {"diabinfo-pilot/3", "diabinfo-pilot/4"}:
                 validate_media(audio, url, "audio")
             check(
                 bool(audio.select("audio > source")) and bool(audio.select("header > h2")),
@@ -196,6 +208,8 @@ def validate_profile(soup: BeautifulSoup, roots: list[Tag], url: str, config: Pa
                 ),
                 "site_news_mismatch",
             )
+    if config.site_profile == "diabinfo-pilot/4":
+        check(nontext_count == (1 if url == URLS[1] else 0), "nontext_gallery_mismatch")
     buttons = body.select("button.accordion-headline")
     check(bool(buttons) == (url == URLS[3]), "site_faq_presence_mismatch")
     if not buttons:

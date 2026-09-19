@@ -5,9 +5,9 @@ from bs4 import BeautifulSoup
 
 from binfocheck.corpus import StoredCorpusIngestor
 from binfocheck.corpus.artifacts import Store
-from binfocheck.corpus.config import URLS, ParserConfig
+from binfocheck.corpus.config import URLS, ParserConfig, SiteProfile
 from binfocheck.corpus.diabinfo import ROOTS
-from binfocheck.corpus.diabinfo import pilot_profile as current_profile
+from binfocheck.corpus.diabinfo import pilot_profile as latest_profile
 from binfocheck.corpus.errors import CorpusError, require
 from binfocheck.corpus.parsing import parse_html
 from binfocheck.corpus.passages import construct
@@ -16,6 +16,11 @@ from binfocheck.domain.interfaces import IngestionResult
 from binfocheck.storage import MemoryStore
 
 from .helpers import NOW, Transport, capture, request
+
+
+def current_profile(profile: SiteProfile = "diabinfo-pilot/3") -> ParserConfig:
+    # Preserve this suite's parser-4 regression coverage; parser 5 has its own suite.
+    return latest_profile(profile)
 
 
 def pilot_profile():

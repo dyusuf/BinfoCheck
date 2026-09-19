@@ -3,8 +3,9 @@
 The five URLs in `config.URLS` are fixed. One authorized six-GET capture completed
 with all HTTP 200 responses; see [live capture report](../../../docs/t06-live-capture.md).
 The legacy default profile finds no `<article>` roots. Explicit `pilot_profile()`
-now handles four pages; Ramadan remains unusable because its informational SVG is
-not in the saved capture. T06 live acceptance remains blocked; see the handoff.
+now handles all five pages under the approved textual-corpus rule. Ramadan's exact
+captured SVG has no deterministic text; its informational visual limitation is a
+required restricted provenance companion. See the final handoff.
 
 ## Interfaces and usage
 
@@ -193,10 +194,10 @@ publication interruptions, SQLite reopen, offline replay and model-free adapter.
 Mocks are not live integration proof.
 
 The bounded site profile has been tested on the saved batch with complete source
-coverage/span checks and socket-blocked reopen/replay. Four pages are usable; the
-remaining gate is separately authorized capture and offline inspection of the one
-Ramadan SVG described below. Do not label T06 accepted until all five pages meet
-acceptance. T07 remains outside scope.
+coverage/span checks and socket-blocked reopen/replay. All five pages are usable,
+with 228 passages, under D06's approved textual-corpus rule. The separately captured
+Ramadan visual is retained with an explicit no-text limitation. Both historical
+request allowances are consumed. T07 remains outside scope.
 
 
 ### Persisted authorization evidence
@@ -220,25 +221,26 @@ T00 schema change or live permission is introduced.
 
 Use `from binfocheck.corpus.diabinfo import pilot_profile`, then set
 `ReplaySettings(parser=pilot_profile(), batch_artifact_id=..., previous_version_ids=...)`.
-Pass the five parser-3 ArticleVersion IDs in URL order for this new derivation. The default stays
+Pass the five parser-4 ArticleVersion IDs in URL order for this new derivation. The generic default stays
 unchanged for historical replay; there is no automatic root fallback.
 
-Current `diabinfo-pilot/3` is parser version 4. It selects four unique regions
+Current `diabinfo-pilot/4` is parser version 5. It selects four unique regions
 (title, scientific credit, introduction text column, main article column) and
 validates TOC targets, reference structure and FAQ ARIA pairs before exclusions.
 FAQ question headings are level 3 under topics, and boxed headings end at the
 box boundary. Template news/sidebar/TOC, decorative media/controls and the exact
 hidden anti-spam marker are omitted; editorial links and references remain.
-Informational images without captured content fail `unsupported_informational_media`.
+Unknown informational images fail `unsupported_informational_media`; the single
+exact captured no-text visual requires the additional evidence rule below.
 
 A profile-1/parser-2 diagnostic candidate excluded the Ramadan infographic and was
 rejected during full inspection. It remains supported only for immutable replay;
-do not choose that profile to bypass the final blocker. The restricted inspection
+do not choose that profile to bypass evidence validation. The restricted inspection
 companion identifies both candidate and current manifests. No shared schema changed.
 
 Durable store: `/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`.
-Its `acceptance-media-v1/request.json` is the exact offline replay request. The final
-manifest is incomplete with 201 passages across four usable articles. The previous
+Its `acceptance-textual-v1/request.json` is the exact offline replay request. The final
+manifest is ready with 228 passages across five usable articles. The previous
 failed and rejected diagnostic corpora remain intact. Full inspection and exact IDs
 are recorded in [T06 handoff](../../../docs/t06-handoff.md). No further fetch is authorized.
 
@@ -270,4 +272,31 @@ and post-fetch SVG-text/provenance plan are in
 The exact request was authorized and consumed once after this helper was implemented.
 It returned a complete SVG, but socket-blocked inspection found no machine-readable
 text or accessibility wording. No SVG OCR/vector interpretation or T07 functionality
-is implemented; Ramadan remains unusable pending a product decision.
+is implemented. The subsequent explicit product approval is implemented below.
+
+### Captured non-text informational evidence
+
+D06 now defines usable as all deterministically extractable textual evidence being
+represented, while captured non-text informational visuals remain explicit audited
+limitations. Parser 5 does not call the SVG decorative or infer its meaning.
+`nontext_evidence_v1.json` pins 13 exact restricted artifact IDs and body hashes:
+parent HTML/batch/authorization/start/receipt/robots evidence plus SVG raw bytes,
+authorization/start/HTTP/asset receipts and inspection. `nontext.validate_evidence`
+checks these before any derived records are published, reuses `asset.load_asset`
+chain validation and requires the exact no-text inspection outcome. Policy identity
+also pins the inspected gallery structure and limitation; it participates in the
+parser hash. Unrelated SVGs, changed evidence and inspections containing text cannot
+use this exception. Missing evidence returns a failed ingestion Outcome before
+article publication, so later recovery cannot conflict with an immutable failed ID.
+
+Ramadan's restricted `<article-id>.media-evidence.v1` binds the ArticleVersion,
+parent HTML, original gallery locator, exact SVG URL, SVG/inspection artifacts,
+all evidence hashes and `captured_nontext_informational` disposition. Its limitation
+states that visual content is not represented by textual passages. The structure
+records that distinct disposition instead of the decorative gallery rule.
+The completion graph requires the companion and every pinned artifact; load checks
+the graph, revalidates the chain and reconstructs the same companion. Missing,
+corrupted or mismatched evidence makes a formerly ready corpus fail loading.
+No external XML resources, OCR, vision, path inference or model calls are involved.
+Parsers 1–4 retain their exact identities and replay behavior. The historical SVG
+inspection's blocked acceptance decision is preserved, not rewritten retroactively.

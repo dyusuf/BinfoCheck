@@ -1,13 +1,13 @@
 # T06 bounded live capture — 19 September 2026
 
-**Capture passed. Subsequent offline site-profile replay has four usable pages;
-Ramadan informational media remains an acceptance blocker.**
+**Capture and final textual-corpus acceptance passed. Parser 5 yields five usable
+pages and a ready manifest under the explicitly approved D06 visual-limitation rule.**
 
 Current durable private store:
 `/mnt/workspace/BinfoCheck-data/t06-live-20260919T114133Z`.
 The 29-file copy was verified by membership, byte size and SHA-256; the original
 source remains unchanged. See [current handoff](t06-handoff.md) for parser/version
-lineage and the final incomplete manifest. The default-profile outcomes below are
+lineage and the final ready manifest. The default-profile outcomes below are
 historical and immutable; no second capture occurred.
 
 The user authorized one robots GET plus up to five allowlisted page GETs under
@@ -223,7 +223,44 @@ extractable**.
 
 Outcome B therefore applies. No asset TextRecord or parser-5 article was fabricated.
 The parser-4 Ramadan ArticleVersion remains unusable and the manifest remains
-incomplete. T06 now needs an explicit product decision on whether a textual corpus
+incomplete at this historical gate. T06 then needed an explicit product decision on whether a textual corpus
 may be considered usable when an informational visual is captured and preserved but
 has no machine-readable textual representation. This report does not make that
 decision. No additional request or merge is authorized.
+
+### Final offline textual derivation after explicit product approval
+
+The user subsequently approved D06: usable means all deterministically extractable
+textual evidence is represented; captured non-text informational visuals remain
+explicit audited limitations. `diabinfo-pilot/4` / `t06-corpus-parser/5` implements
+this only for the exact existing Ramadan chain. It preflights 13 pinned restricted
+artifacts, validates the parent/asset/authorization/receipt chain and exact no-text
+inspection, then records `captured_nontext_informational` rather than decorative.
+The historical inspection is not rewritten. No SVG wording is manufactured.
+
+Same batch: `t06-live-20260919T114133Z`. Same durable store above. Parser-4 articles
+are predecessors; their raw HTML and all existing records remain unchanged.
+All five new articles are usable: driving 41, Ramadan 27, travel 39, FAQ 97 and goals
+24 passages (**228 total**). Four unaffected cleaned texts and passage contents are
+identical to parser 4. Final ready manifest:
+`corpus-manifest-cca67f16867a3a37e37252c360e364e597a2cab368ac6cc52ee5d6b693d41e69`.
+
+Required restricted Ramadan companion:
+`corpus-article-64852ee4c0341e95b60af5e3cf7721e83cd7786e68d50c225b87c46862898f3d.media-evidence.v1`.
+It links the article, parent HTML, exact gallery locator, SVG URL/raw artifact,
+inspection and full hashed evidence chain. Its limitation explicitly states that
+visual content is not represented by textual passages. Completion requires all
+evidence; missing, corrupt or mismatched dependencies fail replay/load closed.
+Unknown media remains blocked; OCR, image interpretation and SVG path inference
+remain prohibited.
+
+Full Ramadan text inspection, all-five DOM coverage/span/link checks and clean
+SQLite close/reopen identical replay passed with sockets/DNS/connections blocked.
+Original 29-file source inventory and original durable payloads remain unchanged;
+717 prior records remain equal, 246 derived records were appended, 963 records total.
+Private permissions and SQLite integrity passed. Reports and exact request are in
+`acceptance-textual-v1/`; full IDs and regression results are in the current handoff.
+This final derivation made **0 external corpus/provider/model requests**, cost USD 0.
+The historical seven total GETs and both consumed authorizations are unchanged.
+T06 is `live_acceptance_passed / merge_ready`; PR #7 remains draft and unmerged.
+No T07 work or further fetch is authorized.

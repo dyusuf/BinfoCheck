@@ -356,7 +356,7 @@ implementation details need no separate approval.
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
 | D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
 | D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
-| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 offline parser/passages resolved below; T07 German lexical settings, BM25 and RRF remain open | T02 choice recorded below; remaining choices before affected T06/T07 acceptance |
+| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 German lexical settings, BM25 and RRF remain open | T06 five-page acceptance passed; T07 choices remain open |
 | D07 | Prompts, rubrics, uncertainty policy and stage budgets | T04/T08/T09/T10 live use and T05 mapping acceptance; draft in the owning task. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
@@ -458,7 +458,7 @@ and shape-validated exclusions now implement the saved TYPO3 pilot layout.
 unchanged; the rejected diagnostic profile-1/parser-2 remains replayable history.
 FAQ questions use level 3 beneath topic headings; callout/question ancestry ends at
 its DOM boundary. Exact source wording and links remain; no broad fallback exists.
-The final saved-batch replay has four usable articles and 201 passages, but Ramadan
+That saved-batch replay has four usable articles and 201 passages, but Ramadan
 is unusable (`unsupported_informational_media`): an informational SVG is referenced
 but its contents were not captured. Acceptance remains blocked, not merge-ready.
 The initial diagnostic ready corpus is explicitly rejected in restricted inspection
@@ -481,10 +481,34 @@ no machine-readable text/title/description/accessibility wording, so no asset te
 parser-5 result was manufactured. The single allowance is consumed; the remaining
 gate is an explicit product decision on textual-corpus acceptance for the captured
 informational visual. No T00 schema change or merge is implied. T06 remains
-code_hardening_passed / live_acceptance_blocked.
+code_hardening_passed / live_acceptance_blocked at that historical gate.
+
+**D06 final textual-corpus decision — 19 September 2026:** the user explicitly
+approved that usable means **all deterministically extractable textual evidence is
+represented; captured non-text informational visuals remain explicit audited
+limitations**. This permits neither decorative reclassification nor OCR, image
+interpretation, SVG path inference or fabricated wording. `diabinfo-pilot/4` /
+`t06-corpus-parser/5` implements only the exact saved Ramadan visual case.
+Before any derived article writes, replay verifies pinned restricted parent HTML,
+batch/authorization/start/receipts, SVG bytes and inspection evidence. The complete
+asset chain must validate and the pinned inspection must report
+`no_deterministic_text_extractable` with no text/accessibility wording. The frozen
+policy and evidence identities participate in the parser hash, preventing an
+evidence-dependent failure from publishing a conflicting ArticleVersion.
+The restricted `<article-id>.media-evidence.v1` records
+`captured_nontext_informational`, exact HTML gallery locator, article/parent/SVG/
+inspection links and the visual limitation. Completion requires the companion and
+all pinned evidence; loading validates them again and fails closed on missing,
+corrupt or mismatched evidence. Unknown media still fails closed under the exact
+positive signatures. Parsers 1–4, rejected diagnostics and original captures are
+unchanged immutable history; the prior inspection's blocked decision is historical.
+Offline replay from parser-4 predecessors yields five usable articles, 228 passages
+and a ready manifest, with unchanged text/passages for the four unaffected pages.
+Socket-blocked close/reopen replay passed. No new network call, dependency, shared
+schema, T07 work or merge is introduced.
 See [corpus README](../src/binfocheck/corpus/README.md) and
-[T06 offline handoff](t06-handoff.md). T06 live acceptance and T07 lexical/BM25/RRF
-choices remain open; T02's recorded decision is unchanged.
+[T06 final handoff](t06-handoff.md). T07 lexical/BM25/RRF choices remain open;
+T02's recorded decision is unchanged.
 
 **D03 live authorization — 19 September 2026:** user explicitly authorized exactly one
 DataForSEO Google AI Mode Live Advanced request for the query

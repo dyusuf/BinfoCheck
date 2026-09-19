@@ -26,6 +26,7 @@ from .config import (
 from .decoding import decode_html
 from .errors import CorpusError, boundary, check, require
 from .llama_adapter import verify_nodes
+from .nontext import DISPOSITION, MediaEvidence, companion, validate_evidence
 from .parsing import parse_html
 from .passages import construct
 from .receipts import Batch, Receipt
@@ -75,6 +76,13 @@ class StoredCorpusIngestor:
             and len(set(batch.receipt_ids)) == 5,
             "invalid_capture_batch",
         )
+        # Missing/mismatched external evidence must never publish an unusable
+        # article under an ID that could later become usable on offline retry.
+        media_evidence = (
+            validate_evidence(self.store, batch)
+            if settings.parser.site_profile == "diabinfo-pilot/4"
+            else None
+        )
         articles: list[ArticleVersion] = []
         passages: list[Passage] = []
         # The graph tracks exactly this publication's dependencies, not all records in the store.
@@ -107,6 +115,9 @@ class StoredCorpusIngestor:
                 previous_graph(old.previous_version_id, url, seen)
 
         artifact(batch.id)
+        if media_evidence:
+            for member in media_evidence.members:
+                artifact(member.artifact_id)
         artifact(batch.id + ".start.v1")
         start = load_capture_start(self.store, batch)
         if start.authorization_artifact_id:
@@ -170,7 +181,14 @@ class StoredCorpusIngestor:
                         artifact_id=receipt.body_artifact_id or "missing",
                     )
                     text, structure = parse_html(
-                        html, url, article_id, receipt.id, raw_text.id, encoding, settings.parser
+                        html,
+                        url,
+                        article_id,
+                        receipt.id,
+                        raw_text.id,
+                        encoding,
+                        settings.parser,
+                        media_evidence,
                     )
                     cleaned = TextRecord(
                         id=structure.cleaned_text_id,
@@ -209,6 +227,16 @@ class StoredCorpusIngestor:
             save(article)
             articles.append(article)
             if structure and cleaned and status == "usable":
+                if media_evidence and url == URLS[1]:
+                    locations = [e.locator for e in structure.exclusions if e.rule == DISPOSITION]
+                    check(len(locations) == 1, "nontext_disposition_missing")
+                    media_id = article.id + ".media-evidence.v1"
+                    self.store.json(
+                        companion(article.id, locations[0], media_evidence),
+                        "media-evidence",
+                        media_id,
+                    )
+                    artifact(media_id)
                 structure_id = article.id + ".structure.v1"
                 self.store.json(structure, "structure", structure_id)
                 artifact(structure_id)
@@ -282,6 +310,11 @@ class StoredCorpusIngestor:
         check(result.manifest.status == expected, "invalid_readiness")
         batch = self.store.load(settings.batch_artifact_id, Batch)
         load_capture_start(self.store, batch)
+        media_evidence = (
+            validate_evidence(self.store, batch)
+            if settings.parser.site_profile == "diabinfo-pilot/4"
+            else None
+        )
         check(
             batch.id == settings.batch_artifact_id
             and batch.urls == URLS
@@ -381,9 +414,26 @@ class StoredCorpusIngestor:
             check(raw.text == html and encoding == structure.charset, "raw_text_bytes_mismatch")
             # Recompute metadata and spans from saved raw HTML; no trust in companion offsets.
             text, rebuilt = parse_html(
-                html, article.url, article.id, receipt.id, raw.id, encoding, settings.parser
+                html,
+                article.url,
+                article.id,
+                receipt.id,
+                raw.id,
+                encoding,
+                settings.parser,
+                media_evidence,
             )
             check(text == cleaned.text and rebuilt == structure, "structure_replay_mismatch")
+            if media_evidence and article.url == URLS[1]:
+                locations = [e.locator for e in rebuilt.exclusions if e.rule == DISPOSITION]
+                check(len(locations) == 1, "nontext_disposition_missing")
+                media_id = article.id + ".media-evidence.v1"
+                check(
+                    self.store.record(media_id, ArtifactRef).access == "restricted"
+                    and self.store.load(media_id, MediaEvidence)
+                    == companion(article.id, locations[0], media_evidence),
+                    "nontext_companion_mismatch",
+                )
             check(
                 construct(cleaned.text, structure, article.created_at) == members,
                 "passage_replay_mismatch",
@@ -398,6 +448,19 @@ class StoredCorpusIngestor:
         manifest = self.store.record(manifest_id, CorpusManifest)
         completion = self.store.load(manifest_id + ".completion.v1", Completion)
         check(completion.manifest == manifest, "completion_manifest_mismatch")
+        if completion.settings.parser.site_profile == "diabinfo-pilot/4":
+            batch = self.store.load(completion.settings.batch_artifact_id, Batch)
+            media = validate_evidence(self.store, batch)
+            required = {member.artifact_id for member in media.members}
+            for article_id in manifest.article_version_ids:
+                article = self.store.record(article_id, ArticleVersion)
+                if article.url == URLS[1] and article.status == "usable":
+                    required.add(article_id + ".media-evidence.v1")
+            check(
+                required <= set(completion.artifact_ids)
+                and required <= {member.id for member in completion.records},
+                "nontext_completion_dependencies_missing",
+            )
         graph: list[Record] = [manifest]
         for member in completion.records:
             record = require(self.store.records.get_record(IdRequest(id=member.id)))

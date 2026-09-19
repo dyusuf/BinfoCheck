@@ -1,7 +1,7 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 offline implementation passed; live acceptance blocked on uncaptured informational media.
+**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 five-page textual corpus live acceptance passed under the approved D06 visual-limitation rule; PR remains draft and unmerged.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -306,22 +306,23 @@ record rules removing navigation/consent banners while retaining article referen
 **Stop:** PDFs, video, whole-site crawling, rewriting, embeddings or selecting pages
 to manufacture positive findings.
 
-**T06 status — 19 September 2026: code_hardening_passed / live_acceptance_blocked.**
-The single authorized batch is consumed. The capture is now preserved and verified
-in a durable private T11A store. Offline `diabinfo-pilot/3` (parser 4) adaptation yields four
-usable pages and 201 passages; Ramadan remains unusable because a referenced
-informational SVG is not in the saved HTML. No refetch occurred. The rejected
-text-only diagnostic candidate is retained as immutable history, not acceptance.
-See [T06 handoff](t06-handoff.md) for IDs, complete inspection, tests and the blocker.
-Media removal now requires exact positive signatures; unknown media fails closed.
-The separate exact one-SVG companion was subsequently authorized once. Its bound
-authorization was persisted before dispatch; one GET returned a complete HTTP-200
-SVG (313,754 bytes, SHA-256 recorded in the T06 handoff), and the allowance is now
-consumed. Socket-blocked XML inspection found no machine-readable text, title,
-description or accessibility wording. No OCR or vector-path inference was used.
-Ramadan remains unusable pending an explicit product decision on textual-corpus
-acceptance for a captured informational visual without extractable text. T06 is not
-accepted or merge-ready. No T07 work or merge.
+**T06 status — 19 September 2026: live_acceptance_passed / merge_ready.**
+The original six-GET batch and separate one-SVG authorization are fully consumed.
+Both captures remain restricted in the durable private T11A store. The user approved
+D06's textual-corpus rule: all deterministically extractable text must be represented;
+captured non-text informational visuals remain explicit audited limitations.
+Offline `diabinfo-pilot/4` / parser 5 validates the exact parent/asset/authorization/
+receipt/no-text-inspection chain before writes, then derives five usable articles
+with 228 passages from parser-4 predecessors. Ramadan adds 27 textual passages and
+a required restricted `captured_nontext_informational` media-evidence companion.
+Its visual is not decorative; no text is inferred. The other four pages retain
+identical cleaned wording and passage contents. Completion/load require all media
+dependencies; missing/corrupt evidence fails closed. Unknown media remains blocked.
+Historical parsers 1–4, rejected diagnostics, and capture artifacts remain immutable.
+Source coverage, spans, full Ramadan text inspection and socket-blocked reopen/replay
+passed. No refetch, OCR, image interpretation, model calls, shared-schema change,
+T07 work or merge. See [T06 handoff](t06-handoff.md) for IDs and validation results.
+PR #7 remains draft; merge is a separate user action.
 
 ### T07 — Hybrid retrieval and context
 
