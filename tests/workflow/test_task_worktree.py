@@ -110,6 +110,21 @@ def test_dirty_worktree_refused(repo: Path, dirt: str) -> None:
     assert git(repo, "ls-remote", "--heads", "origin", "refs/heads/codex/task")
 
 
+def test_status_omits_ignored_files_but_cleanup_still_refuses(repo: Path) -> None:
+    helper(repo, "create")
+    publish_and_merge(repo)
+    task = task_path(repo)
+    (task / "private").mkdir()
+    (task / "private" / "evidence").write_text("preserve\n")
+
+    output = helper(repo, "status")
+    assert "private/evidence" not in output
+    assert "!!" not in output
+
+    assert "dirty or contains ignored" in helper(repo, "cleanup", success=False)
+    assert_preserved(repo)
+
+
 def test_unmerged_branch_refused(repo: Path) -> None:
     helper(repo, "create")
     commit_task(repo)
