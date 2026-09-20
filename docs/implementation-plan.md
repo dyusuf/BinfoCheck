@@ -350,12 +350,29 @@ record settings, path ranks/scores and truncation.
 **Stop:** Jev, query expansion, embedding comparisons or calibration.
 
 **T07 — 20 September 2026: offline implementation complete; local-model integration blocked.**
-The approved [T07 plan](t07-plan.md) and D05/D06 select pinned local Harrier,
+D05/D06 select pinned local Harrier,
 direct bm25s, independent top-50 paths and full-union RRF. Shared schemas are
 unchanged; T04 connects later in T11B. Offline checks and saved-corpus integration
-use synthetic embeddings. The pinned Harrier snapshot is absent locally; no model
-was downloaded or invoked. Real-model build/reload acceptance remains outstanding.
-See [T07 acceptance](t07-acceptance.md) for verification and the remaining setup step.
+use synthetic embeddings. The pinned Harrier snapshot and locked
+`local-model` software are absent from the task environment; no model was downloaded
+or invoked. Real-model build/reload acceptance remains outstanding. Setup and usage
+are in the [retrieval README](../src/binfocheck/retrieval/README.md).
+
+After syncing workflow-maintenance changes from main, 36 retrieval tests and
+`scripts/verify.sh` passed (977 full tests, lint/format/type/schema and whitespace
+checks). Retrieval tests cover routing, German numbers/units/negation, hand-calculated
+RRF, top-50/full union, preflight overflow, identity/dimension guards, missing/corrupt
+artifacts, contexts, reopen/rescore/replay and interrupted publication. Prior saved
+corpus validation used five articles / 228 passages and a traceable synthetic driving
+claim: 50 hits per path, 88 fused candidates, network-disabled reopen/reload/rescore/
+replay passed. This validates wiring, not Harrier inference or recall.
+
+Remaining acceptance: use the actual pinned tokenizer to preflight all dense corpus
+representations including special tokens before embedding; reject overflow with
+passage ID. Persist finite, non-zero 1024-dimensional corpus and diagnostic query
+vectors through T11A. Verify routing, path ranks/scores and candidate/context IDs;
+then remove model/network access and verify load_index, rescore, completed-cohort
+retrieve and replay from saved artifacts. Mark accepted only after this gate passes.
 
 
 ### T08 — Candidate verification and correspondence

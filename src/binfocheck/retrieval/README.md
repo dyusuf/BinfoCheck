@@ -4,7 +4,8 @@
 boundaries. `SavedContextExpander` exposes the same saved-context implementation.
 The implementation has no dependency on T04 and writes no StepAttempt records.
 D05/D06 are recorded in [the architecture](../../../docs/architecture.md);
-[the approved plan](../../../docs/t07-plan.md) defines this task.
+[the implementation plan](../../../docs/implementation-plan.md#t07--hybrid-retrieval-and-context)
+owns task scope and acceptance status.
 
 ## Operations
 
@@ -49,8 +50,9 @@ limit 32768 tokens including special tokens. Public sources inspected:
 [model card](https://huggingface.co/microsoft/harrier-oss-v1-0.6b/blob/f9b9dc8d367d443f2479d27aa5d8d2850c0774ee/README.md),
 [SentenceTransformers 5.2.0 source](https://github.com/huggingface/sentence-transformers/blob/v5.2.0/sentence_transformers/SentenceTransformer.py).
 
-Software pins: SentenceTransformers 5.2.0, Transformers 4.57.3, Torch 2.9.1;
-transitive versions and hashes are in `uv.lock`. These are an optional
+Software pins checked by the adapter: SentenceTransformers 5.2.0, Transformers
+4.57.3, Torch 2.9.1, tokenizers 0.22.2, huggingface-hub 0.36.2 and safetensors 0.8.0;
+all transitive versions and hashes are in `uv.lock`. These are an optional
 `local-model` extra, excluded from normal offline verification. Local-model
 acceptance is pending; synthetic tests do not validate real inference.
 
@@ -64,9 +66,13 @@ with `truncation=False`; inference disables default prompts, sets max sequence
 length to the pinned limit and checks the output dimension. Oversized inputs fail
 with the offending passage/claim ID; there is no chunking or silent truncation.
 
-This task did not download Harrier. A future setup step must provision the pinned
-snapshot and optional software, then perform real-model corpus build/query/reload
-acceptance. Offline installation after software has been cached uses
+The task environment currently lacks the pinned snapshot and all six checked
+packages above. Minimal provisioning is the complete exact snapshot in the cache
+layout above (including tokenizer, module/pooling configs and weights), plus the
+locked `local-model` extra. Network provisioning requires separate authorization;
+no download or installation is implicit in acceptance. After provisioning, perform
+real-model corpus build/query/reload acceptance. Offline installation after software
+has been cached uses
 `uv sync --offline --locked --dev --extra local-model`; the standard verify script
 uses the base environment, so re-sync the extra before real preparation.
 
@@ -151,6 +157,9 @@ identity/dimension/length failures, context clipping and T11A reopen/replay/resc
 
 Real-corpus acceptance uses the existing store/manifest in `docs/t06-handoff.md`.
 Copy its immutable dependency closure into a private acceptance store; prepare
-index/query explicitly and then close/reopen, `load_index`, `rescore`, and `replay`
-with sockets/model calls blocked. Synthetic real-corpus wiring is reported separately
-from Harrier acceptance, with no recall or benchmark claims.
+index/query explicitly using the actual tokenizer for all-input preflight, including
+special tokens. Save passage IDs/counts and the traceable diagnostic claim with the
+acceptance evidence. Then close/remove model access and reopen the store; exercise
+`load_index`, `rescore`, completed-cohort `retrieve` and `replay` with sockets,
+tokenization and model loading/encoding blocked. Synthetic real-corpus wiring is
+reported separately from Harrier acceptance, with no recall or benchmark claims.

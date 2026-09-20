@@ -382,8 +382,8 @@ and both paths' ranks/scores. Saved context is target plus eligible immediate
 same-section neighbors. T07 owns T11A artifacts, traces, failure and completion
 records; T11B owns StepAttempt/restart orchestration. Load/replay never downloads
 or invokes models. Shared wire contracts are unchanged. Exact software pins and
-configuration live in the lockfile and `src/binfocheck/retrieval/`; see
-[T07 plan](t07-plan.md).
+configuration live in the lockfile and
+[retrieval README](../src/binfocheck/retrieval/README.md).
 Real-model acceptance is separate from synthetic offline tests. This assignment
 allows no model download; an absent local model blocks only that acceptance.
 
