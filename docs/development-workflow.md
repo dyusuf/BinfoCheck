@@ -152,7 +152,9 @@ such as live/integration evidence, important artifact IDs or hashes, reproducibi
 details, or durable limitations. Do not create one merely to record routine
 development progress. Keep decisions in `docs/architecture.md`, task status and
 acceptance state in `docs/implementation-plan.md`, and component behavior/configuration
-in the component README rather than duplicating them in a committed handoff.
+in the component README. Those authoritative documents should summarize the durable
+result and may link to the committed handoff for detailed evidence instead of copying
+its audit trail, artifact inventory or reproduction details.
 
 Use the task ID or bounded maintenance name in the transient handoff heading. Default
 structure:
