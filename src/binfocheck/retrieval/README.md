@@ -166,26 +166,6 @@ acceptance evidence. Then close/remove model access and reopen the store; exerci
 tokenization and model loading/encoding blocked. Synthetic real-corpus wiring is
 reported separately from Harrier acceptance, with no recall or benchmark claims.
 
-Real Harrier acceptance on 20 September 2026 produced 228 corpus vectors and one
-traceable synthetic diagnostic-claim query vector, all finite/non-zero and 1024-D.
-Actual preflight counts include the tokenizer's one special token; the largest
-passage representation was 784 tokens, and the query was 32. Inference token IDs
-matched full representations exactly. A controlled oversized representation failed
-before embedding with its passage ID. The independent paths returned 50 hits each,
-with 83 union candidates (17 in both paths); exact RRF, path scores and saved context
-IDs were checked. A fresh process with model imports, tokenizer calls, model-cache
-reads and networking blocked passed load/rescore/completed retrieval/replay.
-
-The durable private T11A acceptance store and reproducible scripts are at
-`/mnt/workspace/BinfoCheck-data/t07-harrier-acceptance-20260920/`;
-`t07-real-model-report.json` contains IDs, token counts, versions and checks,
-`model-provision.json` records snapshot file hashes. The original T06 store is unchanged.
-The successful gate encoded 229 inputs locally; earlier failed local attempts did
-not publish a completed index and total local inference usage was not metered.
-No paid provider calls or provider cost occurred. These counts establish integration,
-not recall or retrieval quality.
-
-Transformers 4.57.3 emitted a Mistral-regex warning for this Qwen3 snapshot's 4.57.6
-configuration metadata. Its local detection branch was inspected; the exact pinned
-tokenizer was retained, with no Mistral rewrite. NVML and deprecated `torch_dtype`
-warnings did not prevent CPU acceptance.
+Real Harrier acceptance passed on the saved five-page corpus. The
+[durable T07 handoff](../../../docs/t07-handoff.md) records detailed results,
+artifact identities, private evidence locations and tokenizer-warning limitations.

@@ -350,28 +350,15 @@ record settings, path ranks/scores and truncation.
 **Stop:** Jev, query expansion, embedding comparisons or calibration.
 
 **T07 — 20 September 2026: accepted.**
-D05/D06 settings are unchanged. The exact pinned Harrier snapshot and locked local
-software were provisioned under user authorization. Real local acceptance passed on
-the existing five-page / 228-passage corpus and one traceable synthetic diagnostic
-claim: all 229 vectors are finite, non-zero and 1024-dimensional. Actual-tokenizer
-preflight included special tokens for every complete representation before embedding;
-the maximum passage count was 784 tokens. A controlled overflow failed before
-encoding with its passage ID. A discovered SentenceTransformers whitespace-stripping
-defect was fixed by sending exact tokenizer features through its forward/pooling
-pipeline; the private embedding identity versions this behavior.
+Pinned local Harrier acceptance passed on the ready five-page corpus, including
+input preflight, real vectors, routing/fusion/context checks and T11A persistence
+with model/network-disabled reload/rescore/retrieval/replay. D05/D06 settings and
+shared schemas are unchanged; T04 connects later in T11B.
 
-Semantic/lexical routing, independent 50/50 paths, the full 83-candidate union,
-per-path ranks/scores, RRF order and saved candidate/context IDs passed. T11A persisted
-the index, query and retrieval evidence. A fresh process with model packages,
-tokenization, model-cache reads and network disabled passed load_index, rescore,
-completed-cohort retrieve and replay. Shared schemas remain unchanged; T04 connects
-later in T11B. No Jev, benchmark, comparison or tuning was performed.
-
-Required validation: 36 offline retrieval tests and `scripts/verify.sh` passed
-(977 full tests plus lint/format/type/schema and whitespace checks). Real-model
-acceptance is integration evidence, not a quality/recall measurement. No paid provider
-calls or provider cost occurred. The [retrieval README](../src/binfocheck/retrieval/README.md)
-records configuration, durable private evidence location and reproduction details.
+Required validation passed: 36 offline retrieval tests and `scripts/verify.sh`
+(977 full tests plus lint/format/type/schema and whitespace checks). Detailed
+results, durable private evidence and limitations are in the
+[T07 handoff](t07-handoff.md). This is integration acceptance, not a quality benchmark.
 
 
 ### T08 — Candidate verification and correspondence

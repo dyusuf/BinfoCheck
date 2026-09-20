@@ -392,12 +392,9 @@ strips saved outer whitespace; `encoding=exact-tokenizer-forward/1` participates
 in private index/query identity. The model, representations and retrieval policy
 remain unchanged.
 
-T07 real-model acceptance passed on the five-page / 228-passage saved corpus and
-one traceable diagnostic claim: exact token inputs, overflow guard, 1024-D vectors,
-50/50 retrieval paths and saved-artifact replay were verified. Task acceptance and
-checks are recorded in the [implementation plan](implementation-plan.md#t07--hybrid-retrieval-and-context);
-private evidence and reproduction details are in the retrieval README. This is
-integration validation, not a retrieval-quality benchmark.
+T07 offline and real-model acceptance passed on the saved five-page corpus.
+See the [durable T07 handoff](t07-handoff.md) for detailed integration evidence,
+artifact identities and limitations; this is not a retrieval-quality benchmark.
 
 **D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
 of the revised T04 plan and subsequent offline implementation instruction. Scope is
