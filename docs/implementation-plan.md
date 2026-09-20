@@ -290,7 +290,11 @@ The offline runtime review found missing guided-decoding enforcement in vLLM
 0.10.2 V0. The versioned adapter fix now blocks V0 before dispatch and selects
 V1/XFORMERS_VLLM_V1 with a matching runtime manifest. Offline regressions cover
 installed V1 grammar attachment and masking; GPU/server activation and a genuine
-Claim remain unverified. Historical preparation/replay and evidence are preserved.
+Claim remain unverified. A subsequent GET-only V1 startup failed before readiness:
+9.72 GiB free was below the configured 20.63 GiB requirement; the historical V0
+worker remained after its listener was stopped. No restart or HTTP/model call
+followed. See the gate report for exact evidence. Historical preparation/replay
+and evidence are preserved.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction

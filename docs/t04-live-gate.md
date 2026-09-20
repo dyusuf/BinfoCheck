@@ -329,3 +329,30 @@ with network/model access disabled. The exact failed F request still rebuilds
 identically; the entire failed gate retains its hashes, mtimes and modes.
 New Jev/Qwen calls and incremental provider cost: zero. T04 remains unaccepted and
 T05 remains blocked by the absence of a genuine accepted Claim.
+
+### V1 GPU startup attempt — 20 September 2026
+
+The GET-only runtime assignment authorized one corrected startup, with no Jev,
+generation, gate or T05 execution. Evidence is in the separate private directory
+`/mnt/workspace/BinfoCheck-data/t04-local-runtime-v2-20260920/`.
+The exact historical listener PID 4147705 was terminated with SIGKILL to avoid
+appending shutdown output to its historical log. Its V0 worker PID 4147811 remained
+in that session, holding 21,290 MiB; identifying only the listener before startup
+was insufficient. Ollama and other GPU processes were not stopped.
+
+New API PID 31499 / V1 engine PID 31861 used the documented vLLM 0.10.2, pinned
+snapshot, FP16, XFORMERS_VLLM_V1, xgrammar/no-fallback and offline-loading settings.
+The logs confirm V1 initialization and `trust_remote_code=False`, but startup
+failed before readiness: 9.72 GiB free of 31.73 GiB was below the configured 0.65
+allocation (20.63 GiB). A preceding FlashAttention2 capability warning is retained;
+it does not establish an additional fatal cause. No settings or versions were
+changed and no restart was attempted after failure.
+
+There were zero HTTP requests, including zero chat-completion requests. `/version`,
+models/authentication checks and a verified running-runtime manifest are blocked.
+The separately named failed-startup manifest is evidence, not dispatch eligibility.
+The offline structured-output script passed with the exact saved F body/local
+tokenizer; 27 focused adapter/extraction tests passed. No genuine Claim or T05
+result was produced. The next runtime attempt must explicitly account for the
+remaining identified V0 worker while preserving historical files and unrelated
+processes; this failed attempt is not authorization to retry.
