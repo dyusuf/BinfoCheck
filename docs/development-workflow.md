@@ -138,6 +138,13 @@ Record the exact commit, changed files, validation, PR/CI state and fetched main
 comparison in the handoff. If main advances again before delivery, merge it and
 repeat validation and publication. Never merge the PR as part of standard delivery.
 
+For same-repository PRs authored by `dyusuf` from `codex/*` branches, the repository
+auto-merge workflow is the standing merge policy. Keep the PR draft until the task is
+accepted. Marking that PR **Ready for review** records merge authorization; GitHub may
+then merge it automatically only after the active `main` ruleset is satisfied,
+including the required `Offline quality checks` and up-to-date branch requirement.
+Draft PRs, other authors, forks and non-`codex/*` branches are never auto-enabled.
+
 ## Handoffs
 
 Overwrite `/tmp/binfocheck-<task>-handoff.txt`; do not append stale history.
