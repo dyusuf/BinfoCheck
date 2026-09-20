@@ -48,7 +48,9 @@ if [[ "$command" == status ]]; then
         printf 'Worktree path: present\n'
         if [[ "$registered_path" == "$worktree" ]]; then
             printf 'Worktree registration: matches branch (locked: %s)\n' "$locked"
-            git -C "$worktree" status --short --branch --untracked-files=all --ignored
+            # Keep status readable: show tracked/untracked changes, but omit ignored caches.
+            # Cleanup separately permits disposable caches and protects other ignored files.
+            git -C "$worktree" status --short --branch --untracked-files=all
         else
             printf 'Worktree registration: does not match branch\n'
         fi
@@ -93,12 +95,30 @@ if [[ "$command" == create ]]; then
     exit 0
 fi
 
-# All preconditions precede removal. Ignored files may contain private evidence.
+# All preconditions precede removal. Tracked/untracked changes always block cleanup.
+# Common Python/tooling caches are disposable; other ignored files may contain private evidence.
 exists "refs/heads/$branch" || fail 'Local branch is absent.'
 [[ "$registered_path" == "$worktree" && -d "$worktree" ]] || fail 'Worktree does not match the task branch.'
 [[ "$locked" == false ]] || fail 'Worktree is locked.'
-task_state=$(git -C "$worktree" status --porcelain --untracked-files=all --ignored)
+task_state=$(git -C "$worktree" status --porcelain --untracked-files=all)
 [[ -z "$task_state" ]] || fail 'Worktree is dirty or contains ignored files.'
+disposable_ignored=()
+protected_ignored=()
+while IFS= read -r -d '' entry; do
+    [[ ${entry:0:3} == '!! ' ]] || continue
+    ignored=${entry:3}
+    case "$ignored" in
+        .venv/|*/.venv/|__pycache__/|*/__pycache__/|.pytest_cache/|*/.pytest_cache/|.ruff_cache/|*/.ruff_cache/|*.pyc|*.pyo)
+            disposable_ignored+=("$ignored")
+            ;;
+        *) protected_ignored+=("$ignored") ;;
+    esac
+done < <(git -C "$worktree" status --porcelain=v1 -z --untracked-files=all --ignored=matching)
+if ((${#protected_ignored[@]})); then
+    printf 'Protected ignored files prevent cleanup:\n' >&2
+    printf '  %s\n' "${protected_ignored[@]}" >&2
+    fail 'Worktree is dirty or contains ignored files.'
+fi
 git merge-base --is-ancestor "refs/heads/$branch" refs/remotes/origin/main || fail 'Branch is not merged into origin/main.'
 remote_present=false
 if exists "refs/remotes/origin/$branch"; then
@@ -106,6 +126,12 @@ if exists "refs/remotes/origin/$branch"; then
     remote_tip=$(git rev-parse "refs/remotes/origin/$branch")
     [[ $(git rev-parse "refs/heads/$branch") == "$remote_tip" ]] || fail 'Local/remote branch differ; refusing unpushed commits or remote work.'
 fi
+# Only after all safety checks, remove the explicitly disposable ignored entries.
+for ignored in "${disposable_ignored[@]}"; do
+    rm -rf -- "$worktree/$ignored"
+done
+remaining_state=$(git -C "$worktree" status --porcelain --untracked-files=all --ignored)
+[[ -z "$remaining_state" ]] || fail 'Worktree changed during cleanup or contains remaining ignored files.'
 # If the task remote is already absent, ancestry in origin/main proves every commit is pushed.
 git worktree remove -- "$worktree"
 # Use the verified origin/main as the deletion safety check, without changing branch config.

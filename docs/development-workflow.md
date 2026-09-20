@@ -26,9 +26,12 @@ scripts/task-worktree.sh status codex/<task> ../BinfoCheck-<task>
 scripts/task-worktree.sh create codex/<task> ../BinfoCheck-<task>
 ```
 
-`status` is read-only: it reports path/registration and working-tree state, local
-branch existence, ahead/behind and merge ancestry against `origin/main`, and remote
-branch presence from the last fetch. Fetch first when fresh remote status is needed.
+`status` is read-only: it reports path/registration and tracked/untracked working-tree
+state, local branch existence, ahead/behind and merge ancestry against `origin/main`, and
+remote branch presence from the last fetch. Ignored files are intentionally omitted from
+the status listing to avoid cache noise. During `cleanup`, disposable Python/tooling caches
+(`__pycache__`, `*.pyc`, `*.pyo`, `.pytest_cache`, `.ruff_cache` and `.venv`) are removed
+by the helper and do not block worktree removal; other ignored content still does. Fetch first when fresh remote status is needed.
 `create` fetches origin, requires a clean main checkout (tracked/untracked files),
 refuses existing local/remote branches or worktree paths, and creates only the
 branch/worktree at current `origin/main`. It does not move local main, install an
@@ -195,9 +198,11 @@ scripts/task-worktree.sh cleanup codex/<task> ../BinfoCheck-<task>
 ```
 
 The helper fetches origin and checks all preconditions before removal: the path
-must be the registered task worktree, unlocked and clean, including ignored files.
-Preserve private evidence first and explicitly handle disposable caches/environments;
-the helper never removes them for you. The local branch must be an ancestor of
+must be the registered task worktree, unlocked and clean. Disposable Python/tooling
+caches/environments (`__pycache__`, `*.pyc`, `*.pyo`, `.pytest_cache`, `.ruff_cache`
+and `.venv`) are deleted by the helper only after the safety checks pass. Other ignored
+files—including `.env` and private evidence—still block cleanup and must be preserved
+or handled explicitly first. The local branch must be an ancestor of
 `origin/main`. If its remote branch exists, the two tips must match; if absent,
 ancestry in `origin/main` proves the commits are already pushed. Squash/rebase
 merges without that ancestry are refused and need manual review.
