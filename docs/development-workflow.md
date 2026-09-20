@@ -141,8 +141,23 @@ repeat validation and publication. Never merge the PR as part of standard delive
 ## Handoffs
 
 Overwrite `/tmp/binfocheck-<task>-handoff.txt`; do not append stale history.
-Handoffs are resumability records, not complete task histories. Use the task ID or
-bounded maintenance name in the heading. Default structure:
+This file is the mandatory transient resumability record for active development:
+current branch/HEAD/PR state, latest checks, temporary artifact locations, blockers
+and the immediate next step. It may be replaced as the task progresses and is not
+durable evidence storage.
+
+A committed `docs/tXX-handoff.md` is optional durable engineering evidence. Create
+one only when results must remain useful after the task worktree/session disappears,
+such as live/integration evidence, important artifact IDs or hashes, reproducibility
+details, or durable limitations. Do not create one merely to record routine
+development progress. Keep decisions in `docs/architecture.md`, task status and
+acceptance state in `docs/implementation-plan.md`, and component behavior/configuration
+in the component README. Those authoritative documents should summarize the durable
+result and may link to the committed handoff for detailed evidence instead of copying
+its audit trail, artifact inventory or reproduction details.
+
+Use the task ID or bounded maintenance name in the transient handoff heading. Default
+structure:
 
 ```text
 # TXX handoff
