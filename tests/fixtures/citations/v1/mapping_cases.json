@@ -1,0 +1,23 @@
+[
+  {"name":"single_sentence","text":"Äpfel sind rot. {cite}","quote":"Äpfel sind rot.","expected":"yes"},
+  {"name":"before_punctuation","text":"Äpfel sind rot {cite}.","quote":"Äpfel sind rot","expected":"yes"},
+  {"name":"nonfinal_sentence","text":"Äpfel sind rot. {cite} Birnen sind grün.","quote":"Äpfel sind rot.","expected":"yes"},
+  {"name":"paragraph_end_first","text":"Äpfel sind rot. Birnen sind grün. {cite}","quote":"Äpfel sind rot.","expected":"unclear"},
+  {"name":"paragraph_end_last","text":"Äpfel sind rot. Birnen sind grün. {cite}","quote":"Birnen sind grün.","expected":"unclear"},
+  {"name":"bullet_end","text":"- Äpfel sind rot. Birnen sind grün. {cite}","quote":"Birnen sind grün.","expected":"unclear"},
+  {"name":"single_bullet","text":"- Äpfel sind rot. {cite}","quote":"Äpfel sind rot.","expected":"yes"},
+  {"name":"separate_block","text":"Äpfel sind rot. Birnen sind grün. {cite}\n\nKirschen sind klein.","quote":"Kirschen sind klein.","expected":"no"},
+  {"name":"leading","text":"{cite} Äpfel sind rot.","quote":"Äpfel sind rot.","expected":"unclear"},
+  {"name":"internal","text":"Äpfel {cite} sind rot.","quote":"Äpfel sind rot.","span":"whole","expected":"unclear"},
+  {"name":"separated_groups","text":"Äpfel {cite} sind rot {cite}.","span":"whole","expected":"unclear"},
+  {"name":"whole_two_sentences_covered","text":"Äpfel sind rot. {cite}\n\nBirnen sind grün. {cite}","span":"whole","expected":"yes"},
+  {"name":"partial_coverage","text":"Äpfel sind rot. {cite} Birnen sind grün.","span":"whole","expected":"unclear"},
+  {"name":"no_capture_link","text":"Äpfel sind rot. [1](https://diabinfo.de/a)","quote":"Äpfel sind rot.","expected":"unclear"},
+  {"name":"opaque_quote","text":"> Äpfel sind rot. {cite}","quote":"Äpfel sind rot.","expected":"unclear"},
+  {"name":"code","text":"`Äpfel sind rot.` {cite}","quote":"Äpfel sind rot.","expected":"unclear"},
+  {"name":"html","text":"<b>Äpfel sind rot.</b> {cite}","quote":"Äpfel sind rot.","expected":"unclear"},
+  {"name":"unsupported_bold","text":"**Äpfel sind rot.** {cite}","quote":"Äpfel sind rot.","expected":"unclear"},
+  {"name":"qualifier_unicode","text":"Äpfel 🍎 sind manchmal grün. {cite}\r\n\r\nBirnen sind grün.","quote":"Äpfel 🍎 sind manchmal grün.","expected":"yes"},
+  {"name":"closer","text":"Äpfel sind rot {cite}.”","quote":"Äpfel sind rot","expected":"yes"},
+  {"name":"semicolon_not_terminal","text":"Äpfel sind rot {cite};","quote":"Äpfel sind rot","expected":"unclear"}
+]

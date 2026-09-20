@@ -291,6 +291,24 @@ versions. Never ask a model to verify the cited page's support.
 
 **Stop:** website support checks, extraction changes or general citation-quality analysis.
 
+**T05 — 20 September 2026: integration_blocked; offline implementation completed.**
+D07's approved T05 policy is implemented in `src/binfocheck/citations/` using the
+unchanged shared contracts and T11A. Deterministic sentence-local routing, conservative
+paragraph-end ambiguity, complete-capture absence, exact hostname allowlisting and
+versioned audit/replay are covered by 162 passing offline tests. The 543 affected
+contract/acquisition/text/claim/storage regressions also passed. `scripts/verify.sh`
+passed: 1,139 full tests, lint, formatting, types, schema drift and whitespace checks.
+
+Checks 1 and 2 pass offline; check 3's hostname/traceability fixtures pass. The genuine
+real-observation/claim portion of check 3 remains **blocked**: the inspected durable
+T04 live-gate store has no completed genuine Claim output. Synthetic claims and the
+network-disabled diagnostic's mocked wiring do not satisfy that requirement. No T04
+execution, live model/provider calls, source fetching or T08+ work was performed.
+T05 is not fully integrated/accepted. See the
+[citation component README](../src/binfocheck/citations/README.md) for configuration,
+behavior, replay and the saved-pair procedure. No durable T05 integration handoff is
+created because no genuine real-pair evidence exists.
+
 ### T06 — Usable five-page corpus
 
 **Build:** T00 + HTML fixtures. **Integrate:** T11A + five pilot pages. **Decisions:** D06.  

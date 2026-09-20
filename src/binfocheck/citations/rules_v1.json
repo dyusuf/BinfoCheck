@@ -1,0 +1,16 @@
+{
+  "name": "t05-citation-mapping",
+  "version": "1",
+  "scope_version": "sentence-terminal-full-coverage/1",
+  "host_version": "ascii-exact-allowlist/1",
+  "audit_version": "1",
+  "normalizer_name": "dataforseo-ai-mode-normalizer",
+  "normalizer_version": "1",
+  "allowed_hosts": ["diabinfo.de", "www.diabinfo.de"],
+  "schemes": ["http", "https"],
+  "horizontal_whitespace": " \t\u00a0",
+  "terminal_characters": ".!?…\"'”’»“",
+  "unsupported_characters": "[]<>`\\|*_",
+  "max_references": 10000,
+  "max_linked_records": 100000
+}

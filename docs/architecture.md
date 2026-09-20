@@ -357,7 +357,7 @@ implementation details need no separate approval.
 | D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
 | D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
-| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
+| D07 | T04 extraction and T05 citation mapping selected below; T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
@@ -395,6 +395,41 @@ remain unchanged.
 T07 offline and real-model acceptance passed on the saved five-page corpus.
 See the [durable T07 handoff](t07-handoff.md) for detailed integration evidence,
 artifact identities and limitations; this is not a retrieval-quality benchmark.
+
+**D07 T05 portion selected — 20 September 2026:** authorized by the user's
+explicit T05 implementation approval of the preserved planning handoff. Configuration
+is `src/binfocheck/citations/rules_v1.json`, version `t05-citation-mapping/1`; its
+canonical rules/contract-version SHA-256 is pinned in request settings and association
+rule versions. Shared wire schema 1/validation 1.1, T04 and downstream categories are
+unchanged. The narrow terminal-character set was explicitly delegated to implementation.
+
+Use captured T01 numbered-marker membership, exact original spans and raw metadata
+locations with a validated same-run T02 cohort. No established provider claim mapping
+is assumed. A single terminal group attaches to its supported sentence, except at
+the end of a multi-sentence paragraph/bullet, where scope remains ambiguous across
+the block. Leading/internal/multiple groups and unsupported structures remain unclear.
+Every non-whitespace original-span character needs clear target-citation coverage for
+yes; partial coverage is unclear. Independent full positive evidence can survive
+incomplete global capture; no requires complete capture and assessable absence.
+Unclear is excluded from definitely-uncited counts. Category 1 is presence only;
+no retrieval, website support, medical-truth or model checks are performed.
+
+Allow exact `diabinfo.de` and `www.diabinfo.de`, no wildcard. Parse HTTP(S) hosts,
+lowercase ASCII, strip one trailing ASCII dot, and validate explicit numeric ports
+1–65535 independently of host comparison. Userinfo, malformed/encoded authorities,
+controls, backslashes, Unicode hostnames and invalid IDNA remain unassessable.
+ASCII A-labels compare literally, without Unicode compatibility folding into trust;
+unlisted true subdomains remain unclear. Reject lookalike hosts. Exact lexical sets,
+including the conservative terminal suffix and unsupported-markup set, are versioned
+in the rules file and tested; see the [component README](../src/binfocheck/citations/README.md).
+
+T11A persists configuration/input/audit artifacts and the shared association with
+completion payload last. Deterministic identity pins request, inputs, cohort and
+configuration; exact-ID replay preserves originals. Association and claim share the
+existing run; T05 neither rewrites manifests nor clones claims into another run.
+The genuine-real-pair acceptance portion remains blocked by missing completed T04
+live output. Offline implementation is authorized independently; no live calls or
+T04/T08+ work are authorized by this decision.
 
 **D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
 of the revised T04 plan and subsequent offline implementation instruction. Scope is
