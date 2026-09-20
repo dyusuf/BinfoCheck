@@ -349,6 +349,15 @@ record settings, path ranks/scores and truncation.
 
 **Stop:** Jev, query expansion, embedding comparisons or calibration.
 
+**T07 — 20 September 2026: offline implementation complete; local-model integration blocked.**
+The approved [T07 plan](t07-plan.md) and D05/D06 select pinned local Harrier,
+direct bm25s, independent top-50 paths and full-union RRF. Shared schemas are
+unchanged; T04 connects later in T11B. Offline checks and saved-corpus integration
+use synthetic embeddings. The pinned Harrier snapshot is absent locally; no model
+was downloaded or invoked. Real-model build/reload acceptance remains outstanding.
+See [T07 acceptance](t07-acceptance.md) for verification and the remaining setup step.
+
+
 ### T08 — Candidate verification and correspondence
 
 **Build:** T00, T03 interface, candidate fixtures. **Integrate:** T03, T07, T11A.  
