@@ -225,9 +225,12 @@ caches/environments (`__pycache__`, `*.pyc`, `*.pyo`, `.pytest_cache`, `.ruff_ca
 and `.venv`) are deleted by the helper only after the safety checks pass. Other ignored
 files—including `.env` and private evidence—still block cleanup and must be preserved
 or handled explicitly first. The local branch must be an ancestor of
-`origin/main`. If its remote branch exists, the two tips must match; if absent,
-ancestry in `origin/main` proves the commits are already pushed. Squash/rebase
-merges without that ancestry are refused and need manual review.
+`origin/main`. If its remote branch exists and the tips differ, the remote tip must
+also be an ancestor of `origin/main`; this safely permits stale local or remote task
+refs after both histories are already integrated. Any local or remote tip outside
+`origin/main` is refused. If the remote branch is absent, local ancestry in
+`origin/main` proves the commits are already pushed. Squash/rebase merges without
+that ancestry are refused and need manual review.
 
 Cleanup then removes the worktree, deletes the local branch, deletes the remote
 branch if present, and verifies path, registration and branch absence. Underlying
