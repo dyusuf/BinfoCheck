@@ -111,16 +111,26 @@ class LocalHarrier:
     def encode(self, texts: Sequence[str]) -> list[list[float]]:
         preflight(self, [(str(i), text) for i, text in enumerate(texts)])
         check(self._model.max_seq_length == self.spec.max_tokens, "model_input_limit_mismatch")
-        values = self._model.encode(
-            list(texts),
-            batch_size=1,
-            prompt="",
-            show_progress_bar=False,
-            convert_to_numpy=True,
-            normalize_embeddings=True,
-            precision="float32",
-            device="cpu",
-        )
-        result = cast(list[list[float]], values.tolist())
+        torch = importlib.import_module("torch")
+        result: list[list[float]] = []
+        # SentenceTransformer.encode tokenization strips source whitespace. Feed exact
+        # tokenizer features to its forward/pooling pipeline instead, one input at a time.
+        with torch.inference_mode():
+            for text in texts:
+                features = self._model.tokenizer(
+                    text,
+                    add_special_tokens=True,
+                    truncation=False,
+                    padding=False,
+                    return_attention_mask=True,
+                    return_tensors="pt",
+                )
+                check(
+                    int(features["attention_mask"].sum()) == self.count_tokens(text),
+                    "embedding_token_count_mismatch",
+                )
+                values = self._model.forward(features)["sentence_embedding"]
+                values = torch.nn.functional.normalize(values, p=2, dim=1)
+                result.extend(cast(list[list[float]], values.cpu().tolist()))
         validate_vectors(result, len(texts), self.spec.dimensions)
         return result

@@ -44,27 +44,60 @@ def test_missing_local_model_never_imports_or_downloads(
         LocalHarrier.open(tmp_path)
 
 
-def test_local_adapter_counts_special_tokens_disables_truncation_and_hidden_prompt() -> None:
+def test_local_adapter_counts_special_tokens_disables_truncation_and_hidden_prompt(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from contextlib import nullcontext
+    from types import SimpleNamespace
+
+    import numpy as np
+
+    class Tensor:
+        def __init__(self, values: Any) -> None:
+            self.values = values
+
+        def cpu(self) -> "Tensor":
+            return self
+
+        def tolist(self) -> list[list[float]]:
+            return self.values.tolist()
+
     class FakeModel:
         max_seq_length = 32768
-        calls: list[dict[str, Any]] = []
+        calls: list[str] = []
 
-        def tokenizer(self, text: str, **kwargs: Any) -> dict[str, list[int]]:
-            assert kwargs == dict(
-                add_special_tokens=True,
-                truncation=False,
-                padding=False,
-                return_attention_mask=False,
-            )
-            return {"input_ids": list(range(len(text) + 2))}
+        def tokenizer(self, text: str, **kwargs: Any) -> dict[str, Any]:
+            assert kwargs["add_special_tokens"] is True
+            assert kwargs["truncation"] is False and kwargs["padding"] is False
+            ids = list(range(len(text) + 2))
+            if kwargs.get("return_tensors") == "pt":
+                self.calls.append(text)
+                assert kwargs["return_attention_mask"] is True
+                return {"input_ids": np.array([ids]), "attention_mask": np.ones((1, len(ids)))}
+            assert kwargs["return_attention_mask"] is False
+            return {"input_ids": ids}
 
-        def encode(self, texts: list[str], **kwargs: Any) -> Any:
-            import numpy as np
+        def encode(self, *args: object, **kwargs: object) -> None:
+            raise AssertionError("text wrapper would strip whitespace/apply prompts")
 
-            self.calls.append(kwargs)
-            assert kwargs["prompt"] == "" and kwargs["normalize_embeddings"] is True
-            return np.ones((len(texts), 1024))
+        def forward(self, features: dict[str, Any]) -> dict[str, Tensor]:
+            assert features["input_ids"].shape == (1, len(self.calls[-1]) + 2)
+            return {"sentence_embedding": Tensor(np.ones((1, 1024)))}
 
+    def normalize(value: Tensor, p: int, dim: int) -> Tensor:
+        assert (p, dim) == (2, 1)
+        return Tensor(value.values / np.linalg.norm(value.values, axis=1, keepdims=True))
+
+    torch = SimpleNamespace(
+        inference_mode=nullcontext,
+        nn=SimpleNamespace(functional=SimpleNamespace(normalize=normalize)),
+    )
+
+    def imported(name: str) -> Any:
+        assert name == "torch"
+        return torch
+
+    monkeypatch.setattr("binfocheck.retrieval.embeddings.importlib.import_module", imported)
     fake = FakeModel()
     adapter = LocalHarrier(fake)
     assert adapter.count_tokens("Äpfel") == 7
@@ -72,7 +105,10 @@ def test_local_adapter_counts_special_tokens_disables_truncation_and_hidden_prom
     with pytest.raises(RetrievalError, match="p"):
         preflight(adapter, [("p", "x" * 32767)])
     assert fake.calls == []
-    assert len(adapter.encode(["hello"])[0]) == 1024
+    text = "  Äpfel\n\xa0"
+    vector = adapter.encode([text])[0]
+    assert fake.calls == [text]
+    assert len(vector) == 1024 and abs(float(np.linalg.norm(vector)) - 1) < 1e-12
 
 
 def test_last_passage_overflow_prevents_all_embedding() -> None:

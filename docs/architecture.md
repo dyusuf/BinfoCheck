@@ -384,8 +384,13 @@ records; T11B owns StepAttempt/restart orchestration. Load/replay never download
 or invokes models. Shared wire contracts are unchanged. Exact software pins and
 configuration live in the lockfile and
 [retrieval README](../src/binfocheck/retrieval/README.md).
-Real-model acceptance is separate from synthetic offline tests. This assignment
-allows no model download; an absent local model blocks only that acceptance.
+Real-model acceptance is separate from synthetic offline tests. The subsequent
+user instruction authorized provisioning this exact snapshot and locked software
+for local acceptance, with no paid provider calls. Inference uses exact tokenizer
+features through SentenceTransformers forward/pooling because its text wrapper
+strips saved outer whitespace; `encoding=exact-tokenizer-forward/1` participates
+in private index/query identity. The model, representations and retrieval policy
+remain unchanged.
 
 **D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
 of the revised T04 plan and subsequent offline implementation instruction. Scope is

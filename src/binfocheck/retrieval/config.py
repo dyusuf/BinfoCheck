@@ -95,6 +95,7 @@ class EmbeddingSpec(Contract):
     device: str = "cpu"
     dtype: str = "float32"
     representation: Literal["t07-representation/1"] = "t07-representation/1"
+    encoding: Literal["exact-tokenizer-forward/1"] = "exact-tokenizer-forward/1"
 
     def validate_supported(self) -> None:
         from .errors import check
