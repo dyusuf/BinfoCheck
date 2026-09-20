@@ -355,8 +355,8 @@ implementation details need no separate approval.
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
 | D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
-| D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | Local real-model acceptance pending |
-| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline passed; local-model acceptance pending |
+| D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
+| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
 | D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
@@ -391,6 +391,13 @@ features through SentenceTransformers forward/pooling because its text wrapper
 strips saved outer whitespace; `encoding=exact-tokenizer-forward/1` participates
 in private index/query identity. The model, representations and retrieval policy
 remain unchanged.
+
+T07 real-model acceptance passed on the five-page / 228-passage saved corpus and
+one traceable diagnostic claim: exact token inputs, overflow guard, 1024-D vectors,
+50/50 retrieval paths and saved-artifact replay were verified. Task acceptance and
+checks are recorded in the [implementation plan](implementation-plan.md#t07--hybrid-retrieval-and-context);
+private evidence and reproduction details are in the retrieval README. This is
+integration validation, not a retrieval-quality benchmark.
 
 **D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
 of the revised T04 plan and subsequent offline implementation instruction. Scope is
