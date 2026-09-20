@@ -26,9 +26,11 @@ scripts/task-worktree.sh status codex/<task> ../BinfoCheck-<task>
 scripts/task-worktree.sh create codex/<task> ../BinfoCheck-<task>
 ```
 
-`status` is read-only: it reports path/registration and working-tree state, local
-branch existence, ahead/behind and merge ancestry against `origin/main`, and remote
-branch presence from the last fetch. Fetch first when fresh remote status is needed.
+`status` is read-only: it reports path/registration and tracked/untracked working-tree
+state, local branch existence, ahead/behind and merge ancestry against `origin/main`, and
+remote branch presence from the last fetch. Ignored files are intentionally omitted from
+the status listing to avoid cache noise; `cleanup` still checks them and refuses removal
+until they are handled. Fetch first when fresh remote status is needed.
 `create` fetches origin, requires a clean main checkout (tracked/untracked files),
 refuses existing local/remote branches or worktree paths, and creates only the
 branch/worktree at current `origin/main`. It does not move local main, install an

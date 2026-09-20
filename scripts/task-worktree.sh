@@ -48,7 +48,9 @@ if [[ "$command" == status ]]; then
         printf 'Worktree path: present\n'
         if [[ "$registered_path" == "$worktree" ]]; then
             printf 'Worktree registration: matches branch (locked: %s)\n' "$locked"
-            git -C "$worktree" status --short --branch --untracked-files=all --ignored
+            # Keep status readable: show tracked/untracked changes, but omit ignored caches.
+            # Cleanup still checks ignored files separately and will refuse to remove them.
+            git -C "$worktree" status --short --branch --untracked-files=all
         else
             printf 'Worktree registration: does not match branch\n'
         fi
