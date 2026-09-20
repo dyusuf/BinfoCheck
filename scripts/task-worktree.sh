@@ -138,8 +138,10 @@ remaining_state=$(git -C "$worktree" status --porcelain --untracked-files=all --
 [[ -z "$remaining_state" ]] || fail 'Worktree changed during cleanup or contains remaining ignored files.'
 # If the task remote is already absent, ancestry in origin/main proves every commit is pushed.
 git worktree remove -- "$worktree"
-# Use the verified origin/main as the deletion safety check, without changing branch config.
-git -c "branch.$branch.remote=origin" -c "branch.$branch.merge=refs/heads/main" branch -d -- "$branch"
+# Delete exactly the local tip that passed the ancestry check. A concurrent local
+# branch advance makes update-ref fail instead of discarding newly-created work.
+git update-ref -d "refs/heads/$branch" "$local_tip" ||
+    fail "Local branch changed during cleanup; worktree already removed. Inspect refs/heads/$branch before further cleanup."
 if [[ "$remote_present" == true ]]; then
     # An explicit expected SHA rejects concurrent remote updates, even after another fetch.
     git push --force-with-lease="refs/heads/$branch:$remote_tip" origin --delete "$branch" ||
