@@ -2,8 +2,9 @@
 
 Version 1 implements the approved extraction-only policy. The manifest in `v1/`
 pins exact prompt, output-schema and rubric bytes by SHA-256; resource loading fails
-on a mismatch. All examples and test responses are synthetic. None are evidence of
-accuracy or reproduction of Claimify performance.
+on a mismatch. Test responses are synthetic; v2 regression inputs include two
+explicitly authorized retained gate excerpts. None are evidence of accuracy or
+reproduction of Claimify performance.
 
 Generation prompts cover mixed-content rewriting, reference clarification and atomic
 German decomposition. They prohibit external facts, question-premise injection and
@@ -18,3 +19,9 @@ schema subset. Pattern validation remains. Business cross-field validation is se
 Do not change bytes under a released version. Freeze a new version and update the
 manifest, policy/configuration and consumer fixtures when behavior changes. No T05,
 T08, T09 or T10 resource is selected here. No live authorization is supplied.
+
+New T04 composition uses `v2/manifest.json`, which changes only the D rubric to
+`rubrics/extraction/v2/ambiguity.json`. All generation prompts, output schemas and
+B/H rubrics remain pinned to v1 bytes. Use `ExtractionResources(root, version="1")`
+to replay historical runs. Bundle identity changes the configuration hash; new
+v2 work requires a distinct run and separate live authorization.

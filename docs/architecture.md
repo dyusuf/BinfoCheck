@@ -446,6 +446,26 @@ T07 offline and real-model acceptance passed on the saved five-page corpus.
 See the [durable T07 handoff](t07-handoff.md) for detailed integration evidence,
 artifact identities and limitations; this is not a retrieval-quality benchmark.
 
+**D07 T04 Stage-D clarification — 20 September 2026:** the user authorized an
+offline versioned ambiguity fix after both retained gates returned `unresolved`.
+New composition defaults to `t04-extraction-resources/2`, pinned by
+`prompts/extraction/v2/manifest.json` (SHA-256
+`b8f1d4add7f7f569de3a81cdcb0e067168b6c4ff34d2f6b5a5d4f1d0585d13c3`).
+Only `t04-ambiguity/2` changes: reference means linguistic/anaphoric reference,
+not citations. No necessary reference to resolve, including generic/formal reader
+Sie/Ihnen/Ihr when identity is irrelevant, means `clear`. Missing context alone
+is not ambiguity. `resolvable_from_context` requires actually supplied context
+that uniquely resolves all necessary referents not already clear in the source;
+`unresolved` requires a meaning-critical referent that remains missing or ambiguous.
+B/F/H, labels, maximum-selection/tie rules, thresholds, provenance and target
+accounting remain unchanged. V1 resources and both unresolved runs remain immutable;
+reconstruct their composition with `ExtractionResources(root, version="1")`.
+V2 changes the configuration hash and must use a new run; v1 decisions cannot be
+reinterpreted or reused as v2 results. Regression labels specify intended behavior
+and test offline preparation/routing, not Jev accuracy. No live call is authorized
+by this change. Accepted Claim output and T05 remain integration-blocked pending
+separately authorized execution and genuine completed evidence.
+
 **D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
 of the revised T04 plan and subsequent offline implementation instruction. Scope is
 extraction only; T05 mapping and T08/T09/T10 rubrics/categories are untouched.

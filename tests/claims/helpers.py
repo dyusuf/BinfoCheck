@@ -2,6 +2,7 @@
 
 from collections.abc import Callable
 from pathlib import Path
+from typing import Literal
 
 from pydantic import JsonValue
 
@@ -131,8 +132,9 @@ def seed_extraction(
     target_orders: tuple[int, ...] | None = None,
     request_limit: int = 340,
     generation_config: ModelAdapterConfig | None = None,
+    resource_version: Literal["1", "2"] = "2",
 ) -> tuple[ExtractionRequest, StoredClaimExtractor, ScriptedModels]:
-    resources = ExtractionResources(ROOT)
+    resources = ExtractionResources(ROOT, version=resource_version)
     double = ScriptedModels(store, resources, reply)
     if generation_config is not None:
         double.gc = generation_config

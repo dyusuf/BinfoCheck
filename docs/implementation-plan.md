@@ -270,7 +270,11 @@ claims and separate rejected/unresolved issues.
 **Stop:** citation fidelity, corpus matching or claims of reproduced Claimify quality.
 
 **Status — 20 September 2026:** local Qwen3-4B-Instruct-2507/vLLM adapter implemented
-through T03/T04, with unchanged extraction policy/resources and shared contracts.
+through T03/T04, with unchanged extraction policy and shared contracts.
+The subsequent offline D07 fix versions only the D ambiguity rubric to v2, with
+regression coverage for both gate sentences and necessary pronoun resolution.
+V1 and both saved runs are preserved; v2 live behavior is unverified and no new
+live call is authorized.
 Both authorized retained gates ([0,63) and [2155,2338)) saved real B=factual and
 D=unresolved decisions, then correctly stopped with one unresolved issue and no
 Claim per run. Four Jev calls total were used, with no local F/H execution.
