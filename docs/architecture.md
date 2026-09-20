@@ -371,8 +371,9 @@ rejects v1/V0 and checks the hashed runtime manifest's relevant launch settings.
 Historical v1 configuration preparation, receipts and replay remain supported;
 old manifests and all failed/unresolved evidence remain immutable. Installed-runtime
 offline checks exercise V1 grammar attachment and token masking without generation.
-GPU startup and live acceptance remain unverified; the old server is not changed
-by this implementation. No new model-call authorization is implied.
+The later GET-only runtime acceptance started this configuration successfully on
+the V100, verified the authenticated loopback server and captured a new v2 manifest.
+It made no generation or Jev call. No model-call authorization is implied.
 
 **D04 local generation selected — 20 September 2026:** the current T04 assignment
 explicitly selects `Qwen/Qwen3-4B-Instruct-2507` for MVP generation; subsequent user

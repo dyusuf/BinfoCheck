@@ -210,8 +210,11 @@ vllm serve <verified-snapshot-directory>
 
 Context overflow is rejected, never silently truncated. Prefix caching, speculative
 models and quantization are disabled; the selected model is not benchmarked against
-alternatives. The V100 lacks BF16 support, so FP16 remains explicit. V1/XFORMERS_VLLM_V1 is the selected correction;
-GPU startup with these settings has not yet been verified.
+alternatives. The V100 lacks BF16 support, so FP16 remains explicit.
+V1/XFORMERS_VLLM_V1 is the selected correction. The GET-only runtime acceptance
+started this exact configuration successfully on the V100 and captured a new v2
+manifest; it did not call the generation endpoint. The private manifest path and
+hash are recorded in the T04 gate report.
 Do not substitute a newer vLLM release that dropped the V100's execution path.
 See [vLLM 0.10.2 CUDA requirements](https://github.com/vllm-project/vllm/blob/v0.10.2/requirements/cuda.txt)
 and [CUDA platform implementation](https://github.com/vllm-project/vllm/blob/v0.10.2/vllm/platforms/cuda.py).

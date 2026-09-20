@@ -356,3 +356,39 @@ tokenizer; 27 focused adapter/extraction tests passed. No genuine Claim or T05
 result was produced. The next runtime attempt must explicitly account for the
 remaining identified V0 worker while preserving historical files and unrelated
 processes; this failed attempt is not authorization to retry.
+
+### V1 GPU runtime accepted after orphan cleanup — 20 September 2026
+
+The user subsequently authorized the identified fix. PID 4147811 was reconfirmed as
+the orphaned worker of the historical V0 runtime and the only BinfoCheck process using
+GPU memory (21,290 MiB); it was terminated without affecting Ollama. Free GPU memory
+rose to 31,615 MiB. The resource tracker then appended a 242-byte leaked-semaphore
+warning to the historical log. Its original 10,350-byte prefix matched the retained
+SHA-256 exactly, so only that append was removed and the recorded timestamp restored.
+A complete rehash confirms the historical runtime's bytes, paths, modes, mtimes and
+symlinks again match its pre-attempt fingerprint.
+
+The unchanged documented V1 configuration then started successfully on the V100.
+API PID 38126 and engine PID 38272 use vLLM 0.10.2, FP16,
+XFORMERS_VLLM_V1, xgrammar with fallback disabled, eager execution, context 4096,
+one sequence and prefix caching disabled. Logs explicitly report the V1 engine,
+XFormers backend, `trust_remote_code=False`, local snapshot path and completed API
+startup. The V100's expected FlashAttention2 capability warning is retained; XFormers
+was selected successfully. No silent guided-decoding fallback appears.
+
+Exactly three HTTP requests were made, all GETs: `/version` returned vLLM 0.10.2;
+authenticated `/v1/models` returned exactly the pinned Qwen alias; unauthenticated
+`/v1/models` returned 401. No POST or `/v1/chat/completions` request occurred. The
+separate offline structured-output probe passed against the pinned tokenizer and
+exact saved historical F request, with sockets blocked and zero model calls.
+
+The new immutable manifest is
+`/mnt/workspace/BinfoCheck-data/t04-local-runtime-v2-20260920-attempt2/runtime-manifest.json`,
+SHA-256 `9d3b58c2caa263806cee5f52b70cdcc8e30abba0182123db74b7e9fd1734e5e4`.
+It records the actual command, selected environment, process session, GPU/driver,
+NVML hash, package versions, GET results and model-file hashes. A
+`LocalGenerationConfig` v2 bound to that hash passes `require_structured_runtime`.
+The isolated new Hugging Face cache contains no files, establishing that startup did
+not download model content. New Jev calls, Qwen generations, T04 gates and T05 runs:
+zero. This resolves the runtime blocker only; a genuine accepted Claim still requires
+separate live-call authorization.
