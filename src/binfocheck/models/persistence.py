@@ -21,6 +21,7 @@ from binfocheck.domain.text import ArtifactRef
 from .config import MODELS, LocalGenerationConfig, ModelAdapterConfig, config_version
 from .errors import ModelError, failure, require
 from .json import canonical, digest, object_value, parse, text_value
+from .local_runtime import require_structured_runtime
 from .receipt import ModelReceipt, PreparedRequest, role_id
 from .resources import ModelResources, resolve, schema_resource
 from .transport import ALLOWED_HEADERS, HttpResponse, ModelTransport
@@ -486,7 +487,6 @@ class ModelAdapter:
                 try:
                     if self.config.budget.request_limit != 1:
                         raise ModelError("request_limit_exhausted")
-                    approval = self.transport.check(self.config, outbound, prepared.work_key)
                     if isinstance(self.config, LocalGenerationConfig):
                         manifest = getattr(self.transport, "runtime_manifest", None)
                         if (
@@ -494,11 +494,13 @@ class ModelAdapter:
                             or digest(manifest) != self.config.runtime_manifest_sha256
                         ):
                             raise ModelError("local_runtime_manifest_mismatch")
+                        require_structured_runtime(self.config, manifest)
                         save(
                             self.artifacts,
                             artifact_ref(prepared.record_id, "runtime", manifest),
                             manifest,
                         )
+                    approval = self.transport.check(self.config, outbound, prepared.work_key)
                 except ModelError as caught:
                     preflight_error = caught.detail
             response = HttpResponse(None, None, dispatched=False, error=preflight_error)

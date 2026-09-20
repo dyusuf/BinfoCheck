@@ -362,6 +362,18 @@ implementation details need no separate approval.
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
 
+**D04 structured-output runtime correction — 20 September 2026:** the user
+requested implementation after the saved F failure review. Installed vLLM 0.10.2
+V0 accepted `response_format` but did not attach guided-decoding enforcement.
+New `t04-vllm-generation/2` configurations select V1, XFORMERS_VLLM_V1 and the same
+FP16 model, revision, schema, prompt and xgrammar/no-fallback settings. Live dispatch
+rejects v1/V0 and checks the hashed runtime manifest's relevant launch settings.
+Historical v1 configuration preparation, receipts and replay remain supported;
+old manifests and all failed/unresolved evidence remain immutable. Installed-runtime
+offline checks exercise V1 grammar attachment and token masking without generation.
+GPU startup and live acceptance remain unverified; the old server is not changed
+by this implementation. No new model-call authorization is implied.
+
 **D04 local generation selected — 20 September 2026:** the current T04 assignment
 explicitly selects `Qwen/Qwen3-4B-Instruct-2507` for MVP generation; subsequent user
 instruction selects vLLM serving. Model comparison remains Beyond MVP. The pinned
@@ -372,7 +384,7 @@ private runtime manifest hash, revision and serving settings. Historical
 No shared wire schema, extraction prompt, rubric, locating or target-accounting rule
 changes. T04 validates the two actually selected model identities in each run.
 
-The V100 uses vLLM 0.10.2, V0 engine, FP16, XFORMERS, eager execution, context limit
+The historical V100 deployment used vLLM 0.10.2, V0 engine, FP16, XFORMERS, eager execution, context limit
 4096, one sequence, tensor parallelism one, GPU memory fraction 0.65, no quantization,
 no prefix caching and no guided-decoding fallback. Exact server dependencies are in
 `models/vllm-runtime.lock`; its isolated Python 3.12 environment uses Torch 2.8.0 and

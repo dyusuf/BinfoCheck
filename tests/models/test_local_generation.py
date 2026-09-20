@@ -28,7 +28,33 @@ from binfocheck.storage import MemoryStore, SQLiteStore
 
 from .helpers import Clock, FakeTransport, generation_request, receipt, resources, seed
 
-MANIFEST = canonical({"origin": "synthetic runtime, no actual model"})
+MANIFEST = canonical(
+    {
+        "origin": "synthetic runtime, no actual model",
+        "model": MODELS["vllm"],
+        "server_version": {"version": "0.10.2"},
+        "environment": {
+            "VLLM_USE_V1": "1",
+            "VLLM_ATTENTION_BACKEND": "XFORMERS_VLLM_V1",
+            "HF_HUB_OFFLINE": "1",
+            "TRANSFORMERS_OFFLINE": "1",
+        },
+        "launch_arguments": [
+            "vllm",
+            "serve",
+            "/synthetic/snapshot",
+            "--guided-decoding-backend",
+            "xgrammar",
+            "--guided-decoding-disable-fallback",
+            "--dtype",
+            "float16",
+            "--served-model-name",
+            MODELS["vllm"],
+            "--max-model-len",
+            "4096",
+        ],
+    }
+)
 SCHEMA: dict[str, JsonValue] = {
     "type": "object",
     "properties": {"text": {"type": "string"}},
@@ -153,7 +179,7 @@ def test_local_requires_exact_authorization_and_manifest() -> None:
     assert transport.check(config, body, prepared.work_key) == authorization
     with pytest.raises(ModelError, match="live_request_not_authorized"):
         transport.check(config, body + b" ", prepared.work_key)
-    with pytest.raises(ModelError, match="live_request_not_authorized"):
+    with pytest.raises(ModelError, match="local_runtime_manifest_mismatch"):
         LocalVllmTransport("synthetic-key", authorization, b"wrong").check(
             config, body, prepared.work_key
         )

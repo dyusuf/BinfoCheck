@@ -299,3 +299,33 @@ Claim or used to bypass the T05 genuine-evidence prerequisite.
 Post-gate offline verification: 250 focused model/Claim tests passed;
 `scripts/verify.sh` passed all 1,029 tests plus lint, formatting, Pyright, schema
 and whitespace checks. No further live call occurred during verification.
+
+### Offline F runtime correction — 20 September 2026
+
+The retained prepared request rebuilt byte-identically, and the strict F JSON schema
+reached the saved outbound body unchanged. Installed vLLM 0.10.2 protocol parsing
+converted it to `guided_decoding.json`; the historical V0 engine installed no guided
+logits processors. The configured xgrammar compiler accepted the exact schema and
+rejected the failed content. The private diagnosis is preserved in the sibling
+`t04-qwen-v3-first-20260920-f-review/` directory; original evidence is unchanged.
+
+The authorized implementation introduces local configuration v2 (V1 with
+XFORMERS_VLLM_V1) and rejects legacy V0 calls before dispatch. Both adapter and
+transport validate the bound runtime manifest's relevant settings. Old configuration
+preparation and network/model-disabled replay remain supported. No F schema/prompt,
+Jev rubric, threshold, extraction methodology or T05 logic changed.
+
+The installed-environment offline regression uses the exact saved request and local
+tokenizer: V1 attaches a compiled grammar, masks invalid tokens, rejects a synthetic
+malformed shape, and accepts a schema-conforming unresolved control. No engine,
+weights or generation are initialized. xgrammar emits its existing non-ASCII
+negative-character-class warning; adapter schema validation remains mandatory.
+This demonstrates wiring/enforcement, not exhaustive JSON Schema fidelity or GPU
+serving acceptance. The old server and manifest remain untouched; corrected GPU
+startup and any newly authorized live gate are still outstanding.
+
+Both historical unresolved runs and the failed v3 run replayed after close/reopen
+with network/model access disabled. The exact failed F request still rebuilds
+identically; the entire failed gate retains its hashes, mtimes and modes.
+New Jev/Qwen calls and incremental provider cost: zero. T04 remains unaccepted and
+T05 remains blocked by the absence of a genuine accepted Claim.

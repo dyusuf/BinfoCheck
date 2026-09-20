@@ -7,9 +7,9 @@ from binfocheck.models.errors import ModelError
 from binfocheck.models.json import digest
 from binfocheck.models.local_transport import LocalVllmTransport
 
+from .test_local_generation import MANIFEST
 from .test_transport import mock_response
 
-MANIFEST = b'{"synthetic":true}'
 BODY = b'{"model":"synthetic-test-only"}'
 KEY = digest(b"synthetic-local-work")
 CONFIG = LocalGenerationConfig(runtime_manifest_sha256=digest(MANIFEST))

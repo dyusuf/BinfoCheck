@@ -6,6 +6,7 @@ import time
 from .config import MODELS, LocalAuthorization, LocalGenerationConfig, ModelAdapterConfig
 from .errors import ModelError
 from .json import digest
+from .local_runtime import require_structured_runtime
 from .transport import ALLOWED_HEADERS, HttpResponse
 
 
@@ -26,6 +27,7 @@ class LocalVllmTransport:
         if not isinstance(config, LocalGenerationConfig):
             raise ModelError("provider_mismatch")
         config = LocalGenerationConfig.model_validate_json(config.model_dump_json())
+        require_structured_runtime(config, self.runtime_manifest)
         approval = self._authorization
         if (
             approval.model != MODELS["vllm"]

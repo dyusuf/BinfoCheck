@@ -152,7 +152,7 @@ Use `LocalGenerationConfig`, `LocalVllmTransport` and the same ExtractionResourc
 as T04. The selected model is `Qwen/Qwen3-4B-Instruct-2507`, revision
 `cdbee75f17c01a7cc42f958dc650907174af0554`; the served/requested/returned model ID
 is the repository name followed by `@` and that revision. Local request settings
-use `t04-vllm-generation/1`; legacy Jev/OpenAI configuration and artifact identities
+use `t04-vllm-generation/2`; legacy Jev/OpenAI configuration and artifact identities
 remain unchanged. No shared schema changed and OpenAI is not a fallback.
 
 The local configuration includes the private runtime manifest SHA-256 and fixed
@@ -193,8 +193,8 @@ in [vllm-runtime.lock](vllm-runtime.lock); use Python 3.12 and `uv pip install -
 remain offline and require no serving environment.
 
 Provision the selected Hugging Face snapshot explicitly before serving; never let
-inference download models or remote code. Set `VLLM_USE_V1=0`,
-`VLLM_ATTENTION_BACKEND=XFORMERS`, `HF_HUB_OFFLINE=1`, `TRANSFORMERS_OFFLINE=1`,
+inference download models or remote code. Set `VLLM_USE_V1=1`,
+`VLLM_ATTENTION_BACKEND=XFORMERS_VLLM_V1`, `HF_HUB_OFFLINE=1`, `TRANSFORMERS_OFFLINE=1`,
 `HF_HUB_DISABLE_TELEMETRY=1`, `VLLM_NO_USAGE_STATS=1`, `DO_NOT_TRACK=1` and
 `OMP_NUM_THREADS=4`. Inject a private random server key through `VLLM_API_KEY`.
 The launch arguments are:
@@ -204,13 +204,14 @@ vllm serve <verified-snapshot-directory>
   --served-model-name Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554
   --host 127.0.0.1 --port 8004 --dtype float16 --max-model-len 4096
   --max-num-seqs 1 --gpu-memory-utilization 0.65 --enforce-eager
-  --generation-config vllm --disable-log-requests
+  --generation-config vllm --disable-log-requests --no-enable-prefix-caching
   --guided-decoding-backend xgrammar --guided-decoding-disable-fallback
 ```
 
 Context overflow is rejected, never silently truncated. Prefix caching, speculative
 models and quantization are disabled; the selected model is not benchmarked against
-alternatives. The V100 lacks BF16 support, so FP16 and V0/XFORMERS are explicit.
+alternatives. The V100 lacks BF16 support, so FP16 remains explicit. V1/XFORMERS_VLLM_V1 is the selected correction;
+GPU startup with these settings has not yet been verified.
 Do not substitute a newer vLLM release that dropped the V100's execution path.
 See [vLLM 0.10.2 CUDA requirements](https://github.com/vllm-project/vllm/blob/v0.10.2/requirements/cuda.txt)
 and [CUDA platform implementation](https://github.com/vllm-project/vllm/blob/v0.10.2/vllm/platforms/cuda.py).
@@ -221,3 +222,31 @@ server process's `LD_LIBRARY_PATH` repairs NVML without changing system packages
 rebooting. Keep this path scoped to the task and record its hash in the runtime
 manifest. Model/runtime evidence and the repair are preserved privately; details
 and remaining integration limits are in `docs/t04-live-gate.md`.
+
+### Structured-output runtime guard
+
+The saved F failure exposed that vLLM 0.10.2's V0 path accepted the JSON-schema
+request but installed no guided-decoding enforcement. Configuration version 2
+requires V1 with XFORMERS_VLLM_V1. Before dispatch, both the adapter and transport
+check the bound runtime manifest's engine/attention environment, server version,
+model alias, dtype, context limit, xgrammar backend and disabled fallback.
+A manifest hash alone is insufficient. Preserve the old inventory and create a
+new manifest from the actual corrected launch before authorizing new requests.
+The manifest is an auditable declaration, not independent server attestation.
+
+Explicit version 1/V0/XFORMERS configurations remain readable for exact preparation
+and replay, but cannot make new calls. Cached receipts remain replayable. New
+configuration identities differ even though the F prompt, response schema and
+HTTP generation body are unchanged. External adapter configuration remains v1.
+
+Run the optional offline runtime regression using the existing serving environment:
+
+```sh
+<server-env>/bin/python scripts/verify-vllm-structured-output.py --snapshot <verified-snapshot-directory>
+```
+
+An optional `--request <saved-outbound.json>` checks the exact saved request against
+the repository schema. This uses installed vLLM protocol, V1 request/grammar wiring,
+xgrammar compilation and token masking with the local tokenizer. Sockets are
+blocked; no engine, weights or generation are created. It is not GPU/server
+acceptance. Repository tests cover rejection before dispatch and legacy replay.

@@ -286,6 +286,11 @@ zero Claims and one failed issue, with two Jev calls and one local generation,
 zero retries, and network/model-disabled terminal replay passed. No G/H or T05
 execution occurred; the current blocker is local F schema compliance. This consumes
 the authorized v3 gate; no further live call is authorized.
+The offline runtime review found missing guided-decoding enforcement in vLLM
+0.10.2 V0. The versioned adapter fix now blocks V0 before dispatch and selects
+V1/XFORMERS_VLLM_V1 with a matching runtime manifest. Offline regressions cover
+installed V1 grammar attachment and masking; GPU/server activation and a genuine
+Claim remain unverified. Historical preparation/replay and evidence are preserved.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction

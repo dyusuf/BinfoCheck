@@ -21,11 +21,11 @@ MODELS = {
 HOSTS = {"jev": "api.typesafe.ai", "openai": "api.openai.com"}
 PATHS = {"jev": "/v1/systemone", "openai": "/v1/responses"}
 CONFIG_VERSION = VersionRef(name="t03-model-adapters", version="1")
-LOCAL_CONFIG_VERSION = VersionRef(name="t04-vllm-generation", version="1")
+LOCAL_CONFIG_VERSION = VersionRef(name="t04-vllm-generation", version="2")
 
 
 class ModelAdapterConfig(Contract):
-    version: Literal["1"] = "1"
+    version: Literal["1", "2"] = "1"
     provider: Provider
     budget: Budget = Budget(
         request_limit=1,
@@ -43,6 +43,8 @@ class ModelAdapterConfig(Contract):
     def bounded(self) -> Self:
         if self.provider == "vllm" and type(self) is ModelAdapterConfig:
             raise ValueError("local_configuration_required")
+        if self.provider != "vllm" and self.version != "1":
+            raise ValueError("unsupported_model_config_version")
         b = self.budget
         if (
             b.request_limit not in (0, 1)
@@ -58,6 +60,7 @@ class ModelAdapterConfig(Contract):
 class LocalGenerationConfig(ModelAdapterConfig):
     """Separate adapter format; legacy configuration bytes and work IDs stay unchanged."""
 
+    version: Literal["1", "2"] = "2"
     provider: Provider = "vllm"
     runtime_manifest_sha256: Digest
     server_version: Literal["0.10.2"] = "0.10.2"
@@ -66,8 +69,8 @@ class LocalGenerationConfig(ModelAdapterConfig):
         "http://127.0.0.1:8004/v1/chat/completions"
     )
     dtype: Literal["float16"] = "float16"
-    engine: Literal["V0"] = "V0"
-    attention_backend: Literal["XFORMERS"] = "XFORMERS"
+    engine: Literal["V0", "V1"] = "V1"
+    attention_backend: Literal["XFORMERS", "XFORMERS_VLLM_V1"] = "XFORMERS_VLLM_V1"
     max_model_len: Literal[4096] = 4096
     budget: Budget = Budget(
         request_limit=1,
@@ -80,6 +83,9 @@ class LocalGenerationConfig(ModelAdapterConfig):
 
     @model_validator(mode="after")
     def local_budget(self) -> Self:
+        expected = {"1": ("V0", "XFORMERS"), "2": ("V1", "XFORMERS_VLLM_V1")}
+        if (self.engine, self.attention_backend) != expected[self.version]:
+            raise ValueError("local_engine_version_mismatch")
         if self.provider != "vllm":
             raise ValueError("local_provider_required")
         if self.budget.cost_limit != 0:
@@ -91,7 +97,9 @@ AdapterConfig = LocalGenerationConfig | ModelAdapterConfig
 
 
 def config_version(config: ModelAdapterConfig) -> VersionRef:
-    return LOCAL_CONFIG_VERSION if config.provider == "vllm" else CONFIG_VERSION
+    if config.provider == "vllm":
+        return VersionRef(name=LOCAL_CONFIG_VERSION.name, version=config.version)
+    return CONFIG_VERSION
 
 
 class LocalAuthorization(Contract):
