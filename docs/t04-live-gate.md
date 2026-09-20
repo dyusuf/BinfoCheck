@@ -1,6 +1,8 @@
 # T04 bounded live-acceptance proposal
 
-Prepared offline from retained T01/T02 evidence. **No live authorization exists.**
+Historical frozen proposal prepared offline from retained T01/T02 evidence.
+The continuation below supersedes its model/access and approval policy for the current assignment.
+The original proposal and private bundle remain unchanged.
 This gate is a proposal for one saved target, not a benchmark, medical truth check,
 new capture, or permission to spend. The theoretical 340-call bound does not apply.
 
@@ -142,3 +144,50 @@ Generation credentials/API access remain unavailable from the recorded T03 statu
 were not probed. No live authorization exists; actual calls and spend here are zero.
 The conditional B/D/F bindings are prepared, while H bindings require a later real F
 result. T04 business logic, shared contracts, resources and downstream scope are unchanged.
+
+## Local Qwen/vLLM continuation — 20 September 2026
+
+The user selected local Qwen3-4B-Instruct-2507 and vLLM, then explicitly authorized
+at most five Jev calls, USD 0.05 total, 60-second timeout, concurrency one, zero
+retries. D04 records the pinned runtime and unchanged extraction constraints.
+Create a new diagnostic run/index on a complete private copy of this bundle; do not
+reuse or rewrite the frozen OpenAI run/configuration. Prepare each exact request
+from real upstream output and bind its authorization before dispatch. The scope
+remains [0,63), one candidate, B/D/F/three H stages, no C/E. One local F request has
+zero external-provider cost. No other paid call, fallback, extra target or benchmark.
+
+The runtime is provisioned privately at
+`/mnt/workspace/BinfoCheck-data/t04-local-runtime/`. Its hash-bound manifest captures
+model-file hashes, exact package versions, launch arguments, selected environment,
+GPU/driver, and authenticated server model/version checks. The task-local NVML fix
+uses NVIDIA's official 580.173.02 redistribution archive matching the loaded kernel
+module; system NVML is not replaced.
+
+Current Jev pricing was verified from [TypeSafe model documentation](https://docs.typesafe.ai/models):
+USD 0.042 per million input tokens, output free. A conservative full 65,536-token
+context costs at most USD 0.002752512, below each USD 0.01 reserved allowance.
+Actual reported usage and estimates remain separate from unknown billed cost.
+
+### Executed first gate: genuine unresolved result
+
+Private evidence: `/mnt/workspace/BinfoCheck-data/t04-qwen-acceptance-20260920/`.
+Original gate source/fingerprints and every copied original record remain unchanged.
+A preflight-only enum construction failure made zero calls and is preserved separately
+in the sibling `t04-qwen-acceptance-20260920-preflight-error` directory.
+
+- Run: `t04-local-qwen-gate-08196e14576b073dcd35df16d5d329dc15565801daac11136b5778ea42d57856`.
+- Same-run index: `text-index-3815c3dd8a32e7158134537b23439d44938837983f437cd5032f787b9e180440`.
+- Final audit: `extraction-final-de878643d405b8a9befa8f6cce2f5fb9602cf910e38fd13d6ee7d30621ab95e8`.
+- B: factual (0.97); D: unresolved (0.55, versus clear 0.42). These are model scores,
+  not accuracy estimates or invented explanations of model reasoning.
+- Two Jev calls, zero retries; 1,355 input / 101 output tokens reported. Estimated
+  provider cost USD 0.00005691; billed cost unknown. No F/H calls were made.
+- Boundary success means completed durable accounting: **zero Claims, one D.unresolved
+  issue**. It does not satisfy the nonempty-Claim integration gate or T05 prerequisite.
+- Two socket/DNS-blocked close/reopen cycles reproduced every decision and identical
+  extraction output without model execution. Linked records, terminal accounting and
+  source fingerprints passed; see private `offline-replay.json`.
+
+The original frozen B/D/F preparation bytes and work identities were independently
+reconstructed unchanged with the extended adapter code. Historical evidence remains
+replayable. No validation label was overridden and no generation was run past D.

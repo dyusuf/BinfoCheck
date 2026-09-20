@@ -9,14 +9,14 @@ from binfocheck.domain.common import Contract, Digest, ErrorDetail, Finite, Id, 
 from binfocheck.domain.interfaces import DecisionRequest, GenerationRequest
 from binfocheck.domain.text import ArtifactRef
 
-from .config import ModelAdapterConfig
+from .config import AdapterConfig
 from .json import canonical, digest
 
 
 class PreparedRequest(Contract):
     preparation_version: Literal["1"] = "1"
     request: DecisionRequest | GenerationRequest
-    config: ModelAdapterConfig
+    config: AdapterConfig
     body: dict[str, JsonValue]
     resource_bytes_base64: dict[str, str]
     input_hashes: dict[str, Digest]

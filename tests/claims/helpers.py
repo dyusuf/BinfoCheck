@@ -130,9 +130,12 @@ def seed_extraction(
     target_kind: str = "paragraph",
     target_orders: tuple[int, ...] | None = None,
     request_limit: int = 340,
+    generation_config: ModelAdapterConfig | None = None,
 ) -> tuple[ExtractionRequest, StoredClaimExtractor, ScriptedModels]:
     resources = ExtractionResources(ROOT)
     double = ScriptedModels(store, resources, reply)
+    if generation_config is not None:
+        double.gc = generation_config
     models = T03Models(store, store, double, double, resources, double.dc, double.gc)
     temporary = MemoryStore()
     indexed, answer = seed(temporary, content)
@@ -146,7 +149,7 @@ def seed_extraction(
             record = record.model_copy(
                 update={
                     "configuration": models.configuration,
-                    "model_ids": tuple(MODELS.values()),
+                    "model_ids": (MODELS[double.dc.provider], MODELS[double.gc.provider]),
                     "prompt_versions": models.prompts,
                     "rubric_versions": models.rubrics,
                     "budget": record.budget.model_copy(

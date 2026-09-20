@@ -52,7 +52,7 @@ do not silently change vendors or allow library defaults to make extra model cal
 |---|---|
 | `ObservationProvider` | Python HTTP adapter → DataForSEO Google AI Mode SERP API [1] |
 | `AnswerIndexer`, `ContextBuilder` | Python; spaCy German tokenizer + rule-based Sentencizer proposed [5] |
-| `ClaimExtractor` | Claimify-inspired stages: Jev decisions + hosted LLM generation [3] |
+| `ClaimExtractor` | Claimify-inspired stages: Jev decisions + local Qwen generation through vLLM [3] |
 | `CitationMapper` | Code using citation metadata and versioned mapping rules |
 | `CorpusIngestor` | Code for fetching/parsing/versioning; LlamaIndex ingestion [4] |
 | `ClaimRetriever` | LlamaIndex vector retrieval, local Harrier embeddings, direct German-configured bm25s (D05/D06) |
@@ -165,10 +165,10 @@ This adapts Claimify's method; it does not reproduce its published results. [3]
 |---|---|
 | Prepare context | Code selects target, neighbors and headings; context may span sentences. |
 | Select factual content | Jev: factual / nonfactual / mixed / uncertain; retain exclusions and issues. |
-| Handle mixed text | Hosted LLM retains factual content in derived wording; adds no facts. |
+| Handle mixed text | Local GenerationModel retains factual content in derived wording; adds no facts. |
 | Assess ambiguity | Jev: clear / resolvable from supplied context / unresolved. |
-| Clarify | Hosted LLM resolves references from that context, not external knowledge. |
-| Decompose | Hosted LLM returns standalone German claims with original quotes/source-unit references. |
+| Clarify | Local GenerationModel resolves references from that context, not external knowledge. |
+| Decompose | Local GenerationModel returns standalone German claims with original quotes/source-unit references. |
 | Locate sources | Code validates exact locations; rejects invented or ambiguous quotes. |
 | Validate extraction | Jev separately checks faithfulness, atomicity and self-containment; uncertainty allowed. |
 | Assemble | Code saves accepted claims and separate issues with decision/version IDs. |
@@ -354,13 +354,54 @@ implementation details need no separate approval.
 | D01 | Python schema/runtime/test dependencies | T00 acceptance |
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
-| D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
+| D04 | Jev `jev-1.13.0`; MVP GenerationModel is local Qwen3-4B-Instruct-2507 served by vLLM, selected below. Historical OpenAI adapter retained for replay | Local T04 integration in progress; bounded Jev authorization recorded below |
 | D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
-| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
+| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Original bounded gate returned D.unresolved; accepted Claim output remains blocked. Further gate scope/budget requires authorization. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
+
+**D04 local generation selected — 20 September 2026:** the current T04 assignment
+explicitly selects `Qwen/Qwen3-4B-Instruct-2507` for MVP generation; subsequent user
+instruction selects vLLM serving. Model comparison remains Beyond MVP. The pinned
+snapshot is `cdbee75f17c01a7cc42f958dc650907174af0554`. The separate
+`t04-vllm-generation/1` adapter configuration in `models/config.py` binds the complete
+private runtime manifest hash, revision and serving settings. Historical
+`t03-model-adapters/1` Jev/OpenAI prepared bytes and replay identities remain unchanged.
+No shared wire schema, extraction prompt, rubric, locating or target-accounting rule
+changes. T04 validates the two actually selected model identities in each run.
+
+The V100 uses vLLM 0.10.2, V0 engine, FP16, XFORMERS, eager execution, context limit
+4096, one sequence, tensor parallelism one, GPU memory fraction 0.65, no quantization,
+no prefix caching and no guided-decoding fallback. Exact server dependencies are in
+`models/vllm-runtime.lock`; its isolated Python 3.12 environment uses Torch 2.8.0 and
+Transformers 4.57.3. It does not alter T07's locked Torch 2.9.1 environment. A verified
+process-local NVML 580.173.02 library matches this host's loaded driver; no system
+library replacement, driver unload or reboot is needed for serving.
+
+The authenticated loopback-only endpoint is `http://127.0.0.1:8004/v1/chat/completions`.
+Requests bind the exact model/revision alias, unchanged extraction prompt and input,
+strict JSON Schema, temperature 0, top_p 1, seed 0, n=1, max_tokens<=512, no tools,
+no streaming. Input overflow fails; it is never truncated. Model weights/tokenizer
+are pre-provisioned, inference runs with offline Hugging Face settings and usage
+telemetry disabled. Exact runtime inventory, launch settings and model-file hashes
+are retained privately and snapshotted with T03 model evidence. Actual vLLM raw chat
+responses remain separate from validated canonical structured output; finish reasons
+other than `stop`, malformed/schema-invalid JSON and identity mismatch fail without
+repair. The response model alias alone does not authenticate weights; retained launch
+and snapshot evidence establish the local origin. Replay requires no server or GPU.
+
+The user subsequently authorized at most **five Jev calls / USD 0.05 total** for the
+retained gate, concurrency one, timeout 60 seconds each, zero retries. Exact request
+bindings are prepared from actual stage inputs under this bounded authorization;
+B/D selection and three independent H validations remain unchanged. Other paid model
+calls are prohibited. One local F operation uses a zero external-provider allowance;
+local infrastructure cost is unknown. The original gate bundle is immutable; create
+a new same-observation diagnostic run/index/configuration in a private copy. Gate
+scope stays first sentence [0,63), B/D/F/H only, no C/E or alternative targets.
+This supersedes the old OpenAI-access and separate H-approval proposal for this
+assignment only. Outcomes and actual usage must be recorded before acceptance.
 
 **D05/D06 T07 selected — 20 September 2026:** authorized by the user's final
 T07 implementation decisions. Dense retrieval uses local SentenceTransformers with

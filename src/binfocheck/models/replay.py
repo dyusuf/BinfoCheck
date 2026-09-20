@@ -8,6 +8,7 @@ from binfocheck.domain.common import Outcome
 from binfocheck.domain.decisions import DecisionRecord
 from binfocheck.domain.storage import ArtifactStore, IdRequest, RecordStore
 
+from .config import LocalGenerationConfig
 from .errors import ModelError, failure, require
 from .json import canonical, digest
 from .persistence import load, normalize, record_outcome, usage_metadata
@@ -28,6 +29,10 @@ def replay(
         ):
             raise ModelError("replay_receipt_mismatch")
         prepared = PreparedRequest.model_validate_json(load(artifacts, receipt.prepared_artifact))
+        if isinstance(prepared.config, LocalGenerationConfig) and receipt.dispatched:
+            runtime = require(artifacts.get_artifact(IdRequest(id=role_id(record_id, "runtime"))))
+            if digest(load(artifacts, runtime.ref)) != prepared.config.runtime_manifest_sha256:
+                raise ModelError("local_runtime_manifest_mismatch")
         if (
             prepared.record_id != record_id
             or receipt.prepared_artifact.id != role_id(record_id, "prepared")

@@ -144,3 +144,80 @@ No exactly-once external billing, distributed transaction, recovery of bytes los
 before persistence, power-loss durability or multi-worker orchestration is claimed.
 T11B owns coordination. Real access/API compatibility remains unverified; offline
 tests prove wiring/validation, not German model accuracy or provenance.
+
+## MVP local generation — D04 continuation
+
+`LocalVllmGenerationModel.generate` implements the same GenerationModel protocol.
+Use `LocalGenerationConfig`, `LocalVllmTransport` and the same ExtractionResources
+as T04. The selected model is `Qwen/Qwen3-4B-Instruct-2507`, revision
+`cdbee75f17c01a7cc42f958dc650907174af0554`; the served/requested/returned model ID
+is the repository name followed by `@` and that revision. Local request settings
+use `t04-vllm-generation/1`; legacy Jev/OpenAI configuration and artifact identities
+remain unchanged. No shared schema changed and OpenAI is not a fallback.
+
+The local configuration includes the private runtime manifest SHA-256 and fixed
+vLLM/version/device settings. Before execution, inspect and hash the actual model
+snapshot, tokenizer files, installed package inventory, launch arguments and selected
+(non-secret) environment. Verify `/version` is 0.10.2, authenticated `/v1/models`
+returns only the selected alias and unauthenticated `/v1/models` fails. These GETs
+make no generation calls. The manifest records that a model alias alone is not proof
+of weights; retain the independently provisioned snapshot/launch evidence.
+
+Construct `LocalAuthorization` from an actual approved request's work key, outbound
+hash and runtime-manifest hash, then inject it with the loopback server key and
+manifest bytes into `LocalVllmTransport`. Keys are never serialized. The transport
+has no environment credential loading, redirects, proxies or external endpoint
+configuration. One request, 60 seconds, concurrency one, zero retries, at most 16384
+request bytes for T04, 2 MiB response bytes and 512 output tokens. Local external
+provider allowance is zero; infrastructure cost remains unmeasured. Missing token
+usage remains unknown. Actual vLLM `prompt_tokens` / `completion_tokens` are retained;
+estimates never replace billed-usage fields.
+
+Preparation maps the existing instruction and exact state to system/user messages,
+with strict JSON Schema, temperature 0, top_p 1, seed 0, n=1, no tools or streaming.
+The schema guides generation but adapter validation is still mandatory. Only a
+single assistant choice with finish_reason `stop` and the exact model ID is accepted.
+Truncation, refusal/tool output, malformed JSON, duplicate keys and schema violations
+fail without repair, coercion or another request. Raw vLLM chat envelopes are stored
+unchanged, separately from canonical validated JSON. T03 also snapshots a restricted
+`runtime` artifact and verifies its configured hash during offline replay. No
+server/GPU/model import is needed for replay.
+
+### Isolated vLLM server on the V100
+
+This serving dependency has a separate environment because vLLM 0.10.2 requires
+Torch 2.8.0, whereas T07's optional local-model environment pins Torch 2.9.1. It is
+not part of the repository test toolchain. Exact installed server dependencies are
+in [vllm-runtime.lock](vllm-runtime.lock); use Python 3.12 and `uv pip install --python
+<server-env>/bin/python -r src/binfocheck/models/vllm-runtime.lock`. Ordinary tests
+remain offline and require no serving environment.
+
+Provision the selected Hugging Face snapshot explicitly before serving; never let
+inference download models or remote code. Set `VLLM_USE_V1=0`,
+`VLLM_ATTENTION_BACKEND=XFORMERS`, `HF_HUB_OFFLINE=1`, `TRANSFORMERS_OFFLINE=1`,
+`HF_HUB_DISABLE_TELEMETRY=1`, `VLLM_NO_USAGE_STATS=1`, `DO_NOT_TRACK=1` and
+`OMP_NUM_THREADS=4`. Inject a private random server key through `VLLM_API_KEY`.
+The launch arguments are:
+
+```text
+vllm serve <verified-snapshot-directory>
+  --served-model-name Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554
+  --host 127.0.0.1 --port 8004 --dtype float16 --max-model-len 4096
+  --max-num-seqs 1 --gpu-memory-utilization 0.65 --enforce-eager
+  --generation-config vllm --disable-log-requests
+  --guided-decoding-backend xgrammar --guided-decoding-disable-fallback
+```
+
+Context overflow is rejected, never silently truncated. Prefix caching, speculative
+models and quantization are disabled; the selected model is not benchmarked against
+alternatives. The V100 lacks BF16 support, so FP16 and V0/XFORMERS are explicit.
+Do not substitute a newer vLLM release that dropped the V100's execution path.
+See [vLLM 0.10.2 CUDA requirements](https://github.com/vllm-project/vllm/blob/v0.10.2/requirements/cuda.txt)
+and [CUDA platform implementation](https://github.com/vllm-project/vllm/blob/v0.10.2/vllm/platforms/cuda.py).
+
+The acceptance host had a loaded NVIDIA driver 580.173.02 but NVML 580.178.04.
+A checksum-verified NVIDIA 580.173.02 redistribution library loaded through the
+server process's `LD_LIBRARY_PATH` repairs NVML without changing system packages or
+rebooting. Keep this path scoped to the task and record its hash in the runtime
+manifest. Model/runtime evidence and the repair are preserved privately; details
+and remaining integration limits are in `docs/t04-live-gate.md`.

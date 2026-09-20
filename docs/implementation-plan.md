@@ -221,7 +221,7 @@ in the draft PR and final delivery handoff. No new provider call is authorized.
 
 ### T03 — Decision and generation adapters
 
-**Build:** T00 + request/response doubles. **Integrate:** T11A + Jev + hosted LLM.  
+**Build:** T00 + request/response doubles. **Integrate:** T11A + Jev + selected GenerationModel.
 **Decisions:** D04 + live budget. **Tools / files:** selected HTTP/SDK integrations;
 `models/decision.py`, `models/generation.py`, adapter tests/configuration.
 
@@ -244,13 +244,15 @@ with exactly one authorized request and zero retries using `jev-1.13.0`.
 OpenAI Responses `gpt-4.1-mini-2025-04-14` remains offline-tested only: live
 integration is blocked because credentials/API access are unavailable, and the
 user explicitly skipped that live smoke. T03 remains partially integrated, with
-OpenAI as an outstanding integration dependency; it is not fully live-accepted.
+OpenAI as the then-outstanding integration dependency; it was not fully live-accepted.
+The 20 September T04 assignment supersedes MVP OpenAI generation with local Qwen/vLLM
+under D04; historical adapter evidence remains unchanged.
 **Handoff:** [T03 files, checks, frozen smoke payloads and limitations](t03-handoff.md).
 
 ### T04 — Claimify-inspired ClaimExtractor
 
 **Build:** T00, T02, T03 contracts/doubles. **Integrate:** T01, T03 live, T11A.  
-**Decisions:** D07. **Tools / files:** code/Jev/hosted LLM per Architecture Section 4;
+**Decisions:** D07. **Tools / files:** code/Jev/selected GenerationModel per Architecture Section 4;
 `claims/`, `prompts/extraction/`, `rubrics/extraction/`, extraction tests.
 
 Implement selection, ambiguity handling, clarification and decomposition. Code
@@ -267,10 +269,14 @@ claims and separate rejected/unresolved issues.
 
 **Stop:** citation fidelity, corpus matching or claims of reproduced Claimify quality.
 
-**Status:** Offline implementation and acceptance fixtures completed. Live integration
-is blocked by unavailable GenerationModel access and absent request-bound authorization.
-Check 3 remains outstanding; T04 is not fully accepted. Shared contracts and T03 remain
-unchanged; extraction-only D07 resources are selected.
+**Status — 20 September 2026:** local Qwen3-4B-Instruct-2507/vLLM adapter implemented
+through T03/T04, with unchanged extraction policy/resources and shared contracts.
+The authorized retained [0,63) gate saved real B=factual and D=unresolved decisions,
+then correctly stopped with one unresolved issue and no Claim. Check 3's genuine
+Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
+bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
+model adapter, its configuration/runtime inventory and affected adapter/extraction
+tests; it does not change T05 logic or start T08+.
 
 ### T05 — Citation mapping and routing
 

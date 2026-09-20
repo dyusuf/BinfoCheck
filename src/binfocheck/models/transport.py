@@ -8,7 +8,15 @@ from typing import Protocol
 
 from binfocheck.domain.common import ErrorDetail
 
-from .config import HOSTS, MODELS, PATHS, LiveAuthorization, ModelAdapterConfig, ModelCredentials
+from .config import (
+    HOSTS,
+    MODELS,
+    PATHS,
+    LiveAuthorization,
+    LocalAuthorization,
+    ModelAdapterConfig,
+    ModelCredentials,
+)
 from .errors import ModelError
 from .json import digest
 
@@ -40,7 +48,7 @@ class HttpResponse:
 class ModelTransport(Protocol):
     def check(
         self, config: ModelAdapterConfig, body: bytes, work_key: str
-    ) -> LiveAuthorization | None: ...
+    ) -> LiveAuthorization | LocalAuthorization | None: ...
     def post(self, config: ModelAdapterConfig, body: bytes, work_key: str) -> HttpResponse: ...
 
 
@@ -53,6 +61,8 @@ class FixedHttpsTransport:
         self._used = False
 
     def check(self, config: ModelAdapterConfig, body: bytes, work_key: str) -> LiveAuthorization:
+        if config.provider == "vllm":
+            raise ModelError("local_provider_requires_local_transport")
         config = ModelAdapterConfig.model_validate_json(config.model_dump_json())
         approval = self._authorization
         if approval is None:

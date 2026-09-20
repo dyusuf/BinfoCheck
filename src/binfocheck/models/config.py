@@ -10,11 +10,18 @@ from pydantic import Field, SecretStr, model_validator
 from binfocheck.domain.common import Contract, Digest, NonEmpty, VersionRef
 from binfocheck.domain.runs import Budget
 
-Provider = Literal["jev", "openai"]
-MODELS = {"jev": "jev-1.13.0", "openai": "gpt-4.1-mini-2025-04-14"}
+Provider = Literal["jev", "openai", "vllm"]
+QWEN_REVISION = "cdbee75f17c01a7cc42f958dc650907174af0554"
+QWEN_MODEL = "Qwen/Qwen3-4B-Instruct-2507"
+MODELS = {
+    "jev": "jev-1.13.0",
+    "openai": "gpt-4.1-mini-2025-04-14",
+    "vllm": QWEN_MODEL + "@" + QWEN_REVISION,
+}
 HOSTS = {"jev": "api.typesafe.ai", "openai": "api.openai.com"}
 PATHS = {"jev": "/v1/systemone", "openai": "/v1/responses"}
 CONFIG_VERSION = VersionRef(name="t03-model-adapters", version="1")
+LOCAL_CONFIG_VERSION = VersionRef(name="t04-vllm-generation", version="1")
 
 
 class ModelAdapterConfig(Contract):
@@ -34,6 +41,8 @@ class ModelAdapterConfig(Contract):
 
     @model_validator(mode="after")
     def bounded(self) -> Self:
+        if self.provider == "vllm" and type(self) is ModelAdapterConfig:
+            raise ValueError("local_configuration_required")
         b = self.budget
         if (
             b.request_limit not in (0, 1)
@@ -46,6 +55,55 @@ class ModelAdapterConfig(Contract):
         return self
 
 
+class LocalGenerationConfig(ModelAdapterConfig):
+    """Separate adapter format; legacy configuration bytes and work IDs stay unchanged."""
+
+    provider: Provider = "vllm"
+    runtime_manifest_sha256: Digest
+    server_version: Literal["0.10.2"] = "0.10.2"
+    model_revision: Literal["cdbee75f17c01a7cc42f958dc650907174af0554"] = QWEN_REVISION
+    endpoint: Literal["http://127.0.0.1:8004/v1/chat/completions"] = (
+        "http://127.0.0.1:8004/v1/chat/completions"
+    )
+    dtype: Literal["float16"] = "float16"
+    engine: Literal["V0"] = "V0"
+    attention_backend: Literal["XFORMERS"] = "XFORMERS"
+    max_model_len: Literal[4096] = 4096
+    budget: Budget = Budget(
+        request_limit=1,
+        cost_limit=0,
+        currency="USD",
+        timeout_seconds=60,
+        concurrency=1,
+        retry_limit=0,
+    )
+
+    @model_validator(mode="after")
+    def local_budget(self) -> Self:
+        if self.provider != "vllm":
+            raise ValueError("local_provider_required")
+        if self.budget.cost_limit != 0:
+            raise ValueError("local_provider_cost_must_be_zero")
+        return self
+
+
+AdapterConfig = LocalGenerationConfig | ModelAdapterConfig
+
+
+def config_version(config: ModelAdapterConfig) -> VersionRef:
+    return LOCAL_CONFIG_VERSION if config.provider == "vllm" else CONFIG_VERSION
+
+
+class LocalAuthorization(Contract):
+    approval_reference: NonEmpty
+    provider: Literal["vllm"] = "vllm"
+    model: NonEmpty
+    work_key: Digest
+    request_sha256: Digest
+    runtime_manifest_sha256: Digest
+    cost_ceiling_usd: Literal[0] = 0
+
+
 class ModelCredentials(Contract):
     api_key: SecretStr
 
@@ -53,6 +111,8 @@ class ModelCredentials(Contract):
     def from_environment(cls, provider: Provider, dotenv_path: Path = Path(".env")) -> Self:
         from .errors import ModelError
 
+        if provider == "vllm":
+            raise ModelError("local_credentials_require_explicit_injection")
         load_dotenv(dotenv_path=dotenv_path, override=False, interpolate=False)
         key = os.environ.get("TYPESAFE_API_KEY" if provider == "jev" else "OPENAI_API_KEY", "")
         if not key.strip() or "\n" in key or "\r" in key:
