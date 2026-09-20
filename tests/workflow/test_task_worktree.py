@@ -31,7 +31,9 @@ def repo(tmp_path: Path) -> Path:
     run(tmp_path, "git", "clone", str(remote), str(main))
     git(main, "config", "user.name", "Workflow Test")
     git(main, "config", "user.email", "workflow@example.invalid")
-    (main / ".gitignore").write_text("private/\n")
+    (main / ".gitignore").write_text(
+        "private/\n.env\n.venv/\n__pycache__/\n*.py[cod]\n.pytest_cache/\n.ruff_cache/\n"
+    )
     git(main, "add", ".gitignore")
     git(main, "commit", "-m", "Initial")
     git(main, "push", "-u", "origin", "main")
@@ -108,6 +110,36 @@ def test_dirty_worktree_refused(repo: Path, dirt: str) -> None:
     assert "dirty or contains ignored" in helper(repo, "cleanup", success=False)
     assert_preserved(repo)
     assert git(repo, "ls-remote", "--heads", "origin", "refs/heads/codex/task")
+
+
+def test_disposable_python_caches_do_not_block_cleanup(repo: Path) -> None:
+    helper(repo, "create")
+    publish_and_merge(repo)
+    task = task_path(repo)
+    (task / "tests" / "storage" / "__pycache__").mkdir(parents=True)
+    (task / "tests" / "storage" / "__pycache__" / "test_sqlite.pyc").write_bytes(b"cache")
+    (task / "root.pyc").write_bytes(b"cache")
+    (task / ".pytest_cache").mkdir()
+    (task / ".pytest_cache" / "README.md").write_text("cache\n")
+    (task / ".ruff_cache").mkdir()
+    (task / ".ruff_cache" / "state").write_text("cache\n")
+    (task / ".venv" / "bin").mkdir(parents=True)
+    (task / ".venv" / "bin" / "python").write_text("disposable venv\n")
+
+    assert "Cleanup verified" in helper(repo, "cleanup")
+    assert not task.exists()
+
+
+def test_env_file_still_blocks_cleanup(repo: Path) -> None:
+    helper(repo, "create")
+    publish_and_merge(repo)
+    task = task_path(repo)
+    (task / ".env").write_text("SECRET=preserve\n")
+
+    output = helper(repo, "cleanup", success=False)
+    assert "Protected ignored files prevent cleanup" in output
+    assert ".env" in output
+    assert_preserved(repo)
 
 
 def test_status_omits_ignored_files_but_cleanup_still_refuses(repo: Path) -> None:
