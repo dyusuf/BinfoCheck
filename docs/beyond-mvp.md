@@ -1,6 +1,6 @@
 # BinfoCheck — Beyond MVP
 
-**Version:** 1.1 · 18 September 2026  
+**Version:** 1.2 · 20 September 2026  
 **Status:** Backlog, not a schedule or part of [MVP completion](mvp.md#8-completion-criteria).
 
 The MVP supplies observations and editor decisions for later evaluation. Those
@@ -18,6 +18,18 @@ records are not automatically a validated benchmark or a representative sample.
 | Correspondence/classification | Compare Jev and other judges on match labels, evidence categories and unresolved decisions. |
 | Alternatives | Test what captured excerpts establish; add targeted web search if needed. |
 | Probabilities | Calibrate thresholds; check confident errors, review workload and performance on unseen topics. |
+
+### T07 retrieval follow-ups
+
+- **Embedding-model evaluation:** build a manually reviewed German health retrieval
+  benchmark and compare the MVP Harrier model with strong multilingual alternatives.
+  Include paraphrases, negation, numbers/units, qualifiers and contradictory evidence.
+- **Sub-passage chunking:** if future corpora contain passages that exceed the embedding
+  model's supported input length, evaluate deterministic sub-passage chunking while
+  keeping the original passage as the authoritative evidence unit.
+- **Retrieval-depth tuning:** compare candidate depths such as 20, 50 and 100 for the
+  semantic and lexical paths. Measure relevant-passage recall against Jev calls,
+  latency and cost rather than tuning top-k during the MVP.
 
 Keep development and held-out examples separate. Review some unflagged cases to
 find missed matches. Prevent repeated wording and copies of an article from leaking
