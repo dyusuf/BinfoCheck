@@ -241,7 +241,7 @@ git merge-base --is-ancestor codex/<task> origin/main
 # Save the remote tip when verifying that it matches the local branch.
 remote_tip=$(git rev-parse refs/remotes/origin/codex/<task>)
 git worktree remove ../BinfoCheck-<task>
-git -c branch.codex/<task>.remote=origin -c branch.codex/<task>.merge=refs/heads/main branch -d codex/<task>
+git update-ref -d refs/heads/codex/<task> "$local_tip"
 git push --force-with-lease="refs/heads/codex/<task>:$remote_tip" origin --delete codex/<task>
 git worktree list
 git branch --list codex/<task>
@@ -254,10 +254,12 @@ it refuses a changed remote tip and never falls back to unconditional force.
 On rejection, the worktree/local branch are already removed, but the remote work
 remains intact; fetch and inspect it before any further cleanup.
 
-The temporary branch configuration makes Git's non-forced deletion check use the
-verified `origin/main` even when local main is stale; no stored configuration is
-changed. The helper never targets `main`, uses force deletion, or closes a Codex
-session. Run lifecycle operations without concurrent edits/pushes to the same task.
+Local branch deletion uses the exact SHA captured during verification:
+`git update-ref -d <ref> <expected-old-sha>`. If that local ref advances concurrently,
+deletion is refused rather than discarding new work. Remote deletion independently
+uses its exact expected-SHA lease. The helper never targets `main`, performs an
+unconditional branch deletion, or closes a Codex session. Run lifecycle operations
+without concurrent edits/pushes to the same task.
 Failures stop immediately; cleanup is not transactional, so inspect `status` and
 finish any remaining authorized steps manually after a partial failure. Paths
 requiring Git's quoted porcelain encoding are refused for manual handling.
