@@ -119,12 +119,16 @@ if ((${#protected_ignored[@]})); then
     printf '  %s\n' "${protected_ignored[@]}" >&2
     fail 'Worktree is dirty or contains ignored files.'
 fi
-git merge-base --is-ancestor "refs/heads/$branch" refs/remotes/origin/main || fail 'Branch is not merged into origin/main.'
+local_tip=$(git rev-parse "refs/heads/$branch")
+git merge-base --is-ancestor "$local_tip" refs/remotes/origin/main || fail 'Branch is not merged into origin/main.'
 remote_present=false
 if exists "refs/remotes/origin/$branch"; then
     remote_present=true
     remote_tip=$(git rev-parse "refs/remotes/origin/$branch")
-    [[ $(git rev-parse "refs/heads/$branch") == "$remote_tip" ]] || fail 'Local/remote branch differ; refusing unpushed commits or remote work.'
+    if [[ "$local_tip" != "$remote_tip" ]]; then
+        git merge-base --is-ancestor "$remote_tip" refs/remotes/origin/main ||
+            fail 'Local/remote branch differ and remote work is not merged into origin/main.'
+    fi
 fi
 # Only after all safety checks, remove the explicitly disposable ignored entries.
 for ignored in "${disposable_ignored[@]}"; do
