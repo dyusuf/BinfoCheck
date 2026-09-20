@@ -20,8 +20,8 @@ class Entry(Contract):
 
 
 class ExtractionResources:
-    def __init__(self, root: Path, version: Literal["1", "2"] = "2") -> None:
-        check(version in ("1", "2"), "unsupported_resource_version")
+    def __init__(self, root: Path, version: Literal["1", "2", "3"] = "3") -> None:
+        check(version in ("1", "2", "3"), "unsupported_resource_version")
         raw = (root / f"prompts/extraction/v{version}/manifest.json").read_bytes()
         entries = TypeAdapter(tuple[Entry, ...]).validate_json(raw)
         self.refs: dict[str, VersionRef] = {}

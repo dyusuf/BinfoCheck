@@ -273,7 +273,9 @@ claims and separate rejected/unresolved issues.
 through T03/T04, with unchanged extraction policy and shared contracts.
 The subsequent offline D07 fix versions only the D ambiguity rubric to v2, with
 regression coverage for both gate sentences and necessary pronoun resolution.
-V1 and both saved runs are preserved; v2 live behavior is unverified and no new
+The subsequent Jev skill review adds D v3 field targeting and exact-heading
+regression coverage; see [review](t04-stage-d-review.md).
+V1/v2 and both saved runs are preserved; v2/v3 live behavior is unverified and no new
 live call is authorized.
 Both authorized retained gates ([0,63) and [2155,2338)) saved real B=factual and
 D=unresolved decisions, then correctly stopped with one unresolved issue and no

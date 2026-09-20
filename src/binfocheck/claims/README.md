@@ -8,13 +8,17 @@ T03 preparation. Only that module imports provider-specific adapter facilities.
 It does not instantiate a transport, load credentials or grant live authorization.
 
 Load `ExtractionResources(repository_root)` from a trusted checkout containing
-`prompts/extraction/v2/manifest.json` (only D uses a v2 rubric).
-For historical runs, explicitly load `ExtractionResources(root, version="1")`;
-never apply v2 to a v1 run or overwrite its decisions. Supply the SAME immutable adapter configs and
+`prompts/extraction/v3/manifest.json` (only D uses a v3 rubric).
+For historical runs, explicitly load `ExtractionResources(root, version="1")`
+or `version="2"` to match the recorded resource bundle;
+never apply a newer bundle to an older run or overwrite its decisions. Supply the
+SAME immutable adapter configs and
 resource registry to T03 adapters and `T03Models`; the run must pin the composition's
 `configuration`, `prompts`, `rubrics` and model IDs. Use request bytes <=16384, output
-<=512 tokens, retries zero and concurrency one as recorded under D07. The local generation adapter is selected under D04; shared contracts and extraction
-policy remains unchanged; only the D ambiguity rubric is versioned to v2.
+<=512 tokens, retries zero and concurrency one as recorded under D07. The local
+generation adapter is selected under D04; shared contracts and extraction policy
+remain unchanged. Only the D ambiguity rubric is versioned to v3 with explicit
+state-field targeting.
 
 Create a diagnostic/reanalysis RunManifest first, then index the saved original in
 that same run with T02. `ExtractionSettings` names the complete T02 index, 1–20 ordered

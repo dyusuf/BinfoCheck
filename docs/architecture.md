@@ -446,6 +446,17 @@ T07 offline and real-model acceptance passed on the saved five-page corpus.
 See the [durable T07 handoff](t07-handoff.md) for detailed integration evidence,
 artifact identities and limitations; this is not a retrieval-quality benchmark.
 
+**D07 T04 Jev skill review — 20 September 2026:** the user authorized an offline
+review of D against the globally installed TypeSafe/Jev skill and current docs.
+D v3 adds explicit state-field targeting and a direct question; all v2 criteria
+and semantic instructions remain intact. New composition uses resource bundle v3;
+v1/v2 remain explicitly loadable and unchanged. The second historical state was
+reconstructed exactly, including its supplied heading; fixtures now cover that
+heading and unique/irrelevant heading contexts. State selection, labels, tie rules,
+B/F/H/T05 and uncertainty handling are unchanged. See the
+[review findings and verification limits](t04-stage-d-review.md). No live calls
+are authorized; historical unresolved results and the Claim integration blocker remain.
+
 **D07 T04 Stage-D clarification — 20 September 2026:** the user authorized an
 offline versioned ambiguity fix after both retained gates returned `unresolved`.
 New composition defaults to `t04-extraction-resources/2`, pinned by

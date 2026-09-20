@@ -20,3 +20,10 @@ Expected labels describe the corrected rubric; they are not new Jev observations
 Synthetic storage IDs and scripted decisions test exact v2 preparation, E/F/H
 routing, unresolved stopping and historical version separation. A generic synthetic
 question, when selected by existing context logic, supplies no missing antecedent.
+
+The Jev skill review corrects the second regression input to include its actual
+heading, `### 3. Besonderheiten bei schwerer Unterzuckerung`. Test IDs/offsets remain
+synthetic; exact historical state reconstruction is verified separately against the
+private prepared request. Cases run with both v2 and v3. The internal-pronoun case
+omits unrelated “hier”; additional headings distinguish unique from irrelevant
+context. Neither expected labels nor synthetic responses replace saved decisions.

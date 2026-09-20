@@ -132,7 +132,7 @@ def seed_extraction(
     target_orders: tuple[int, ...] | None = None,
     request_limit: int = 340,
     generation_config: ModelAdapterConfig | None = None,
-    resource_version: Literal["1", "2"] = "2",
+    resource_version: Literal["1", "2", "3"] = "3",
 ) -> tuple[ExtractionRequest, StoredClaimExtractor, ScriptedModels]:
     resources = ExtractionResources(ROOT, version=resource_version)
     double = ScriptedModels(store, resources, reply)

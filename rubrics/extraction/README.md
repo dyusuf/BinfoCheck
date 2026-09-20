@@ -20,3 +20,7 @@ context must uniquely resolve a necessary referent for `resolvable_from_context`
 meaning-critical unresolved referents alone justify `unresolved`. B and H retain
 v1 bytes. The v2 manifest pins the new D rubric and all unchanged v1 resources.
 V1 remains available for historical replay. This offline change authorizes no calls.
+
+Version 3 adds the explicit judgment and JSON field paths recommended by the Jev
+skill review. It preserves v2 criteria and all semantic instructions. Both earlier
+versions remain immutable. See [the review](../../docs/t04-stage-d-review.md).
