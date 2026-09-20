@@ -55,7 +55,7 @@ do not silently change vendors or allow library defaults to make extra model cal
 | `ClaimExtractor` | Claimify-inspired stages: Jev decisions + hosted LLM generation [3] |
 | `CitationMapper` | Code using citation metadata and versioned mapping rules |
 | `CorpusIngestor` | Code for fetching/parsing/versioning; LlamaIndex ingestion [4] |
-| `ClaimRetriever` | LlamaIndex, selected embeddings, German-configured BM25Retriever [4], [6] |
+| `ClaimRetriever` | LlamaIndex vector retrieval, local Harrier embeddings, direct German-configured bm25s (D05/D06) |
 | Rank fusion, `ContextExpander` | Code merges ranks and attaches saved source context |
 | `CandidateVerifier`, `CorrespondenceJudge` | Jev through `DecisionModel` [2] |
 | `AlternativeSourceAnalyzer` | Code selects captured excerpts; Jev compares them |
@@ -212,12 +212,12 @@ Original span    → BM25 top-k ─────┴→ deduplicate → rank fusio
                                     → saved context → verification → correspondence
 ```
 
-Equal-weight reciprocal-rank fusion is proposed, not calibrated. Store path scores,
-ranks, fusion parameters and truncation. Never sum raw BM25/vector scores. Pin
+Equal-weight reciprocal-rank fusion is selected under D06, not calibrated. Store
+path scores, ranks, fusion parameters and truncation. Never sum raw BM25/vector scores. Pin
 embedding model, dimensions and language settings; disable implicit model calls or
 query expansion. [4], [6]
 
-Develop retrieval with fixture claims; live extraction is an integration dependency.
+Develop retrieval with fixture claims; T04 connects later in T11B.
 A verifier cannot recover a passage retrieval missed.
 
 ## 6. Decision rubrics and evidence classification
@@ -355,12 +355,46 @@ implementation details need no separate approval.
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
 | D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
-| D05 | LlamaIndex/BM25 selected; embeddings, dimensions, index persistence open | T07 real-index integration |
-| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 German lexical settings, BM25 and RRF remain open | T06 five-page acceptance passed; T07 choices remain open |
+| D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
+| D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
 | D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
+
+**D05/D06 T07 selected — 20 September 2026:** authorized by the user's final
+T07 implementation decisions. Dense retrieval uses local SentenceTransformers with
+`microsoft/harrier-oss-v1-0.6b` revision
+`f9b9dc8d367d443f2479d27aa5d8d2850c0774ee`, 1024 dimensions, no Ollama.
+The fixed query instruction is “Given a German health claim, retrieve passages
+relevant to evaluating the claim.” The versioned representation uses
+`Instruct: {instruction}\nQuery: {Claim.normalized_claim}`. Dense documents prepend
+saved heading ancestry (newline-separated, then a blank line) to exact passage text.
+One T06 Passage remains one retrieval unit and authoritative evidence. Tokenize
+all complete inputs before embedding, including special tokens; reject overflow
+beyond 32768 tokens with the passage ID. No silent truncation or sub-passage chunks.
+
+Lexical retrieval uses **bm25s directly**, exact original claim span against exact
+passage text, German blank-spaCy tokenization, NFC/lower, no stemming or stopwords,
+protected numbers/units/negations, Lucene BM25 k1=1.2 and b=0.75. Paths independently
+retain top 50, ties use passage ID; equal-weight RRF c=60 retains the full union
+and both paths' ranks/scores. Saved context is target plus eligible immediate
+same-section neighbors. T07 owns T11A artifacts, traces, failure and completion
+records; T11B owns StepAttempt/restart orchestration. Load/replay never downloads
+or invokes models. Shared wire contracts are unchanged. Exact software pins and
+configuration live in the lockfile and
+[retrieval README](../src/binfocheck/retrieval/README.md).
+Real-model acceptance is separate from synthetic offline tests. The subsequent
+user instruction authorized provisioning this exact snapshot and locked software
+for local acceptance, with no paid provider calls. Inference uses exact tokenizer
+features through SentenceTransformers forward/pooling because its text wrapper
+strips saved outer whitespace; `encoding=exact-tokenizer-forward/1` participates
+in private index/query identity. The model, representations and retrieval policy
+remain unchanged.
+
+T07 offline and real-model acceptance passed on the saved five-page corpus.
+See the [durable T07 handoff](t07-handoff.md) for detailed integration evidence,
+artifact identities and limitations; this is not a retrieval-quality benchmark.
 
 **D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
 of the revised T04 plan and subsequent offline implementation instruction. Scope is
@@ -549,8 +583,9 @@ and a ready manifest, with unchanged text/passages for the four unaffected pages
 Socket-blocked close/reopen replay passed. No new network call, dependency, shared
 schema, T07 work or merge is introduced.
 See [corpus README](../src/binfocheck/corpus/README.md) and
-[T06 final handoff](t06-handoff.md). T07 lexical/BM25/RRF choices remain open;
-T02's recorded decision is unchanged.
+[T06 final handoff](t06-handoff.md). T07 lexical/BM25/RRF choices were still open
+at this handoff; they are now selected in the T07 D05/D06 entry above. T02's
+recorded decision is unchanged.
 
 **D03 live authorization — 19 September 2026:** user explicitly authorized exactly one
 DataForSEO Google AI Mode Live Advanced request for the query

@@ -349,6 +349,18 @@ record settings, path ranks/scores and truncation.
 
 **Stop:** Jev, query expansion, embedding comparisons or calibration.
 
+**T07 — 20 September 2026: accepted.**
+Pinned local Harrier acceptance passed on the ready five-page corpus, including
+input preflight, real vectors, routing/fusion/context checks and T11A persistence
+with model/network-disabled reload/rescore/retrieval/replay. D05/D06 settings and
+shared schemas are unchanged; T04 connects later in T11B.
+
+Required validation passed: 36 offline retrieval tests and `scripts/verify.sh`
+(977 full tests plus lint/format/type/schema and whitespace checks). Detailed
+results, durable private evidence and limitations are in the
+[T07 handoff](t07-handoff.md). This is integration acceptance, not a quality benchmark.
+
+
 ### T08 — Candidate verification and correspondence
 
 **Build:** T00, T03 interface, candidate fixtures. **Integrate:** T03, T07, T11A.  
