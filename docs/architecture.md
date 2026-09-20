@@ -357,7 +357,7 @@ implementation details need no separate approval.
 | D04 | Jev `jev-1.13.0`; MVP GenerationModel is local Qwen3-4B-Instruct-2507 served by vLLM, selected below. Historical OpenAI adapter retained for replay | Local T04 integration in progress; bounded Jev authorization recorded below |
 | D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
-| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Original bounded gate returned D.unresolved; accepted Claim output remains blocked. Further gate scope/budget requires authorization. Category changes require explicit scope authorization. |
+| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Both authorized retained gates returned D.unresolved; accepted Claim output remains blocked. Further execution requires new scope authorization. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
@@ -402,6 +402,15 @@ a new same-observation diagnostic run/index/configuration in a private copy. Gat
 scope stays first sentence [0,63), B/D/F/H only, no C/E or alternative targets.
 This supersedes the old OpenAI-access and separate H-approval proposal for this
 assignment only. Outcomes and actual usage must be recorded before acceptance.
+
+**D04/T04 bounded continuation authorization — 20 September 2026:** after the first
+gate returned D.unresolved, the user approved exactly the additional retained
+sentence [2155,2338) under the [gate policy](t04-live-gate.md). At most five further
+Jev calls are allowed (seven calls/USD 0.07 session ceiling), one local Qwen F call,
+60-second timeouts, concurrency one and zero retries. All extraction rules remain
+unchanged; the original result is preserved and a distinct run/index is required.
+This additional gate also returned B=factual and D=unresolved, stopping before F/H.
+Four Jev calls total were used; no accepted Claim exists and no further gate is authorized.
 
 **D05/D06 T07 selected — 20 September 2026:** authorized by the user's final
 T07 implementation decisions. Dense retrieval uses local SentenceTransformers with

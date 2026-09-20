@@ -115,9 +115,10 @@ Jev and Qwen model IDs in the new run. The runtime-manifest hash participates in
 configuration identity, so the historical OpenAI gate requires a new diagnostic run
 and same-run index. Do not relabel existing claims, decisions or model outputs.
 
-The retained [0,63) gate was executed with real Jev B/D decisions. B selected factual;
-D selected unresolved, so the unchanged extractor correctly stopped before F/H and
-saved a completed audit with one unresolved issue and zero Claims. Offline close/reopen,
+The retained [0,63) gate and authorized additional [2155,2338) gate were executed
+with real Jev B/D decisions. Both selected B=factual and D=unresolved, so the
+unchanged extractor correctly stopped before F/H and saved a completed audit with
+one unresolved issue and zero Claims per run. Offline close/reopen,
 model-disabled replay, linked records and original preservation passed. This is a
 genuine unresolved result, not successful Claim integration. T04/T05 acceptance stays
 blocked until an authorized gate produces genuine validated Claim output.

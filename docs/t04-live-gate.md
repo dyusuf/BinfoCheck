@@ -191,3 +191,45 @@ in the sibling `t04-qwen-acceptance-20260920-preflight-error` directory.
 The original frozen B/D/F preparation bytes and work identities were independently
 reconstructed unchanged with the extended adapter code. Historical evidence remains
 replayable. No validation label was overridden and no generation was run past D.
+
+### Authorized additional gate — 20 September 2026
+
+The user explicitly approved one additional gate on the retained sentence at
+**[2155,2338)**, target
+`text-unit-476f64c946df226da997df354a55876a1a7c879c52f906bb6dcce9db54ef77f0`.
+This allows at most five further Jev calls, giving a session ceiling of seven calls
+and USD 0.07, with 60-second timeouts, concurrency one and zero retries. One local
+Qwen F generation, the same prompts/rubrics and all three independent H checks remain
+required. There is no further target expansion or retry authorization.
+
+Copy the first completed gate store, preserving its original decisions/issues/audit,
+then create a distinct diagnostic run whose identity includes the new target and a
+new same-run T02 index. No prior result is rewritten. Private continuation location:
+`/mnt/workspace/BinfoCheck-data/t04-qwen-followup-20260920/`.
+
+### Additional gate result: genuine unresolved output
+
+The additional gate executed once through the unchanged T04/T03 implementation.
+B selected factual (1.0); D selected unresolved (0.47, versus clear 0.38 and
+resolvable_from_context 0.15). The exact source sentence and stored heading were
+provided by the existing context-selection code. Inspection confirmed their saved
+text/offsets; no model reasoning or explanation for the label is inferred.
+
+- Run: `t04-local-qwen-followup-adf23c2a7856afc86e2042f35782ca92ba91c60a7235efd39ed47107b9267750`.
+- Same-run index: `text-index-3db7f0015f3cbc2ab26ab412938dc3dfb198f1d98517f32e9f656bbc9c73ff6c`.
+- Final audit: `extraction-final-9dc86c02c76512de2de111213b974027e9e0f0f162611184bf23739dc51646bb`.
+- Result: zero Claims and one `D.unresolved` issue with complete target accounting.
+  No local F or H operations occurred. There were two additional Jev calls and zero
+  retries, reporting 1,564 input / 101 output tokens; estimated cost USD 0.000065688.
+- Session total: **four Jev calls**, 2,919 input / 202 output tokens, estimated cost
+  **USD 0.000122598**. Billed cost remains unknown. No other paid model call occurred.
+- The store includes both runs and their original decisions/issues/audits.
+  Network/model-disabled close/reopen replay, linked records, target accounting and
+  unchanged predecessor-store fingerprints passed; private `offline-replay.json`
+  and `execution.log` preserve the checks.
+
+This consumes the authorized additional-gate attempt. Unused numeric allowance is
+not authorization to retry, select another target or override D. T04 remains
+**integration_blocked**; Qwen serving is ready but no real F request was reached.
+The existing T05 saved-pair diagnostic was not run because there is no genuine
+accepted Claim ID to supply. No T05 logic or provenance guard was changed.

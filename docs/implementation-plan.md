@@ -271,9 +271,10 @@ claims and separate rejected/unresolved issues.
 
 **Status — 20 September 2026:** local Qwen3-4B-Instruct-2507/vLLM adapter implemented
 through T03/T04, with unchanged extraction policy/resources and shared contracts.
-The authorized retained [0,63) gate saved real B=factual and D=unresolved decisions,
-then correctly stopped with one unresolved issue and no Claim. Check 3's genuine
-Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
+Both authorized retained gates ([0,63) and [2155,2338)) saved real B=factual and
+D=unresolved decisions, then correctly stopped with one unresolved issue and no
+Claim per run. Four Jev calls total were used, with no local F/H execution.
+Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction
 tests; it does not change T05 logic or start T08+.
