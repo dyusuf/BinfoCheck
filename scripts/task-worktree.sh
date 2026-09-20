@@ -95,12 +95,27 @@ if [[ "$command" == create ]]; then
     exit 0
 fi
 
-# All preconditions precede removal. Ignored files may contain private evidence.
+# All preconditions precede removal. Tracked/untracked changes always block cleanup.
+# Common Python/tooling caches are disposable; other ignored files may contain private evidence.
 exists "refs/heads/$branch" || fail 'Local branch is absent.'
 [[ "$registered_path" == "$worktree" && -d "$worktree" ]] || fail 'Worktree does not match the task branch.'
 [[ "$locked" == false ]] || fail 'Worktree is locked.'
-task_state=$(git -C "$worktree" status --porcelain --untracked-files=all --ignored)
+task_state=$(git -C "$worktree" status --porcelain --untracked-files=all)
 [[ -z "$task_state" ]] || fail 'Worktree is dirty or contains ignored files.'
+protected_ignored=()
+while IFS= read -r -d '' entry; do
+    [[ ${entry:0:3} == '!! ' ]] || continue
+    ignored=${entry:3}
+    case "$ignored" in
+        __pycache__/|*/__pycache__/|.pytest_cache/|*/.pytest_cache/|.ruff_cache/|*/.ruff_cache/|*.pyc|*.pyo) ;;
+        *) protected_ignored+=("$ignored") ;;
+    esac
+done < <(git -C "$worktree" status --porcelain=v1 -z --untracked-files=all --ignored=matching)
+if ((${#protected_ignored[@]})); then
+    printf 'Protected ignored files prevent cleanup:\n' >&2
+    printf '  %s\n' "${protected_ignored[@]}" >&2
+    fail 'Worktree is dirty or contains ignored files.'
+fi
 git merge-base --is-ancestor "refs/heads/$branch" refs/remotes/origin/main || fail 'Branch is not merged into origin/main.'
 remote_present=false
 if exists "refs/remotes/origin/$branch"; then
