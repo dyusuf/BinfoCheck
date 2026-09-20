@@ -102,12 +102,15 @@ exists "refs/heads/$branch" || fail 'Local branch is absent.'
 [[ "$locked" == false ]] || fail 'Worktree is locked.'
 task_state=$(git -C "$worktree" status --porcelain --untracked-files=all)
 [[ -z "$task_state" ]] || fail 'Worktree is dirty or contains ignored files.'
+disposable_ignored=()
 protected_ignored=()
 while IFS= read -r -d '' entry; do
     [[ ${entry:0:3} == '!! ' ]] || continue
     ignored=${entry:3}
     case "$ignored" in
-        __pycache__/|*/__pycache__/|.pytest_cache/|*/.pytest_cache/|.ruff_cache/|*/.ruff_cache/|*.pyc|*.pyo) ;;
+        .venv/|*/.venv/|__pycache__/|*/__pycache__/|.pytest_cache/|*/.pytest_cache/|.ruff_cache/|*/.ruff_cache/|*.pyc|*.pyo)
+            disposable_ignored+=("$ignored")
+            ;;
         *) protected_ignored+=("$ignored") ;;
     esac
 done < <(git -C "$worktree" status --porcelain=v1 -z --untracked-files=all --ignored=matching)
@@ -123,6 +126,12 @@ if exists "refs/remotes/origin/$branch"; then
     remote_tip=$(git rev-parse "refs/remotes/origin/$branch")
     [[ $(git rev-parse "refs/heads/$branch") == "$remote_tip" ]] || fail 'Local/remote branch differ; refusing unpushed commits or remote work.'
 fi
+# Only after all safety checks, remove the explicitly disposable ignored entries.
+for ignored in "${disposable_ignored[@]}"; do
+    rm -rf -- "$worktree/$ignored"
+done
+remaining_state=$(git -C "$worktree" status --porcelain --untracked-files=all --ignored)
+[[ -z "$remaining_state" ]] || fail 'Worktree changed during cleanup or contains remaining ignored files.'
 # If the task remote is already absent, ancestry in origin/main proves every commit is pushed.
 git worktree remove -- "$worktree"
 # Use the verified origin/main as the deletion safety check, without changing branch config.
