@@ -134,3 +134,9 @@ scope, actual usage and private artifact locations. The old frozen OpenAI propos
 historical; current bounded authorization and selected local model are recorded in
 D04. No citation fidelity, retrieval, medical truth checking, model comparison,
 worker, API or UI work is included.
+
+The authorized fresh v3 gate on the first retained target passed B/D but its one
+local Qwen F response failed the unchanged output schema. It saved F.model_failed
+with zero Claims; G/H and the T05 saved-pair diagnostic were not reached. Failed-F
+and terminal-extraction replay passed offline; both historical v1 runs remain
+unchanged. See [gate evidence](../../../docs/t04-live-gate.md#fresh-v3-gate-on-the-original-first-target--20-september-2026).

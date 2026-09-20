@@ -357,7 +357,7 @@ implementation details need no separate approval.
 | D04 | Jev `jev-1.13.0`; MVP GenerationModel is local Qwen3-4B-Instruct-2507 served by vLLM, selected below. Historical OpenAI adapter retained for replay | Local T04 integration in progress; bounded Jev authorization recorded below |
 | D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
-| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Both authorized retained gates returned D.unresolved; accepted Claim output remains blocked. Further execution requires new scope authorization. Category changes require explicit scope authorization. |
+| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Historical v1 gates returned D.unresolved; fresh v3 first-target gate passed D but stopped at F schema failure. Accepted Claim output remains blocked; further execution requires new authorization. Category changes require explicit scope authorization. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
@@ -445,6 +445,18 @@ remain unchanged.
 T07 offline and real-model acceptance passed on the saved five-page corpus.
 See the [durable T07 handoff](t07-handoff.md) for detailed integration evidence,
 artifact identities and limitations; this is not a retrieval-quality benchmark.
+
+**D07 T04 v3 first-target live gate — 20 September 2026:** explicitly authorized
+one fresh gate on retained [0,63), at most five Jev calls and one local Qwen
+request, concurrency one, 60-second timeout, zero retries. Existing USD 0.01/request
+and USD 0.05/gate caps retained. B=factual and D v3=clear; the single local F
+response failed the unchanged output schema. Execution stopped with zero Claims
+and a persisted F.model_failed issue; no G/H or T05 execution. Two Jev calls and
+one local generation used, zero retries, estimated Jev cost USD 0.00008589; billed
+and infrastructure costs unknown. Both historical v1 runs and v1/v2/v3 resources
+remain unchanged; network/model-disabled terminal replay passed. The gate is
+terminal and the current blocker is F schema compliance. See
+[exact gate evidence](t04-live-gate.md#fresh-v3-gate-on-the-original-first-target--20-september-2026).
 
 **D07 T04 Jev skill review — 20 September 2026:** the user authorized an offline
 review of D against the globally installed TypeSafe/Jev skill and current docs.

@@ -233,3 +233,69 @@ not authorization to retry, select another target or override D. T04 remains
 **integration_blocked**; Qwen serving is ready but no real F request was reached.
 The existing T05 saved-pair diagnostic was not run because there is no genuine
 accepted Claim ID to supply. No T05 logic or provenance guard was changed.
+
+### Fresh v3 gate on the original first target — 20 September 2026
+
+The user authorized one fresh v3-bound run on the existing **[0,63)** target only:
+at most five Jev calls and one local Qwen generation, concurrency one, 60-second
+timeouts, zero retries, no external paid generation, and immediate stopping on a
+non-required label, malformed output, uncertain dispatch, location/budget problem
+or validation failure. Existing cost caps were retained: USD 0.01 per Jev request,
+USD 0.05 for this gate. Current Jev pricing was checked again against the official
+model documentation. No prompt, rubric, threshold, state-selection or B/F/H/T05
+logic changed during execution.
+
+Execution used code `e89fa5493aef77bec911347215815c58902c1337`, immutable bundle v3
+(`8d34d05c57578b2eed05e383102420df97aacb512069c541854cc337fb36168d`), and the
+same pinned Qwen/vLLM runtime. Authentication, model-file hashes and server version
+passed read-only checks without generation. The source was a copy of the **first**
+historical gate store; both original historical stores remained unchanged.
+Every dispatched request's exact prepared bytes and approval hash were saved before
+dispatch and bound to the new run/configuration. A one-shot marker prevents re-entry.
+
+Private evidence: `/mnt/workspace/BinfoCheck-data/t04-qwen-v3-first-20260920/`.
+
+- Run: `t04-local-qwen-v3-first-gate-74cd3db88bdefc6122af0d17f49dfd7cd34670f52d1601f77e7209d098d35255`.
+- Index: `text-index-1c29edeaa1a5a96bf8d2315b192211941e356678bce2a6f8eccccf220032d6d4`.
+- Final audit: `extraction-final-d03c1cd22b43a160345b4b1015ee9bf8fa95dc31afa5151c87be7ed9b489d1e4`.
+- B: **factual (0.97)**; D v3: **clear (1.0)**. These are reported model scores,
+  not measured accuracy. Historical v1 unresolved outcomes were not reinterpreted.
+- F: one local request, complete HTTP 200, normal stop; adapter normalization failed
+  with **`schema_validation_failed`**. The JSON omitted `status` and
+  `normalized_claim`, used an unexpected `text` key, and supplied strings where
+  `anchor` and `required_support` entries require objects. Raw response, exact
+  schema, receipt and schema-error inspection are preserved; no output repair or
+  additional generation was attempted.
+- F record: `model-generation-f00fd00955fd7b4b4ee93010df58702e97da7520535b2324c5e3f58c0ab51389`.
+- Terminal result: **zero Claims, one `F.model_failed` issue**. G/H were not reached.
+  The extraction boundary completed terminal accounting; this is not live acceptance.
+- Calls: **two Jev, one local Qwen**, zero retries, zero uncertain dispatches.
+  Jev reported 2,045 input / 98 output tokens; estimated USD **0.00008589**.
+  Local Qwen reported 577 input / 92 output tokens; external provider cost zero,
+  infrastructure cost unknown. Session totals: six Jev calls, one local generation,
+  4,964 Jev input / 300 output tokens, estimated Jev cost **USD 0.000208488**.
+  Billed cost is unknown; estimates are separate from provider billing.
+- Replay passed twice after close/reopen with sockets/DNS/model operations blocked,
+  reproducing the two successful decisions, failed F record and identical extraction
+  output. Linked records, original records, complete target accounting and source
+  fingerprints passed. Both historical stores retained hashes, mtimes and modes.
+- T05 saved-pair diagnostic: **not run**, because no genuine accepted Claim exists.
+  No T05 code changed. This gate is terminal; remaining numeric allowance is not
+  permission to retry or dispatch H after failed F.
+
+Pre-dispatch problems made zero model calls and are retained in private logs:
+automatic approval review rejected an initial source-copy choice that included both
+historical runs; using the first store directly and proving the exact target resolved
+that concern. A runner-only assertion incorrectly expected a hash on the adapter's
+version reference; it was replaced with canonical adapter-version and run-binding
+checks. A saved fingerprint needed JSON-list-to-tuple restoration before comparison.
+Both checks were corrected before any request dispatch, with the same run and frozen
+resources. They are not model retries; original scripts and failure logs remain saved.
+
+The current integration blocker is local F schema compliance. Any follow-up diagnosis
+or execution must be separately scoped; the failed output must not be promoted to a
+Claim or used to bypass the T05 genuine-evidence prerequisite.
+
+Post-gate offline verification: 250 focused model/Claim tests passed;
+`scripts/verify.sh` passed all 1,029 tests plus lint, formatting, Pyright, schema
+and whitespace checks. No further live call occurred during verification.

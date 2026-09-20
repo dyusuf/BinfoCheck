@@ -275,11 +275,17 @@ The subsequent offline D07 fix versions only the D ambiguity rubric to v2, with
 regression coverage for both gate sentences and necessary pronoun resolution.
 The subsequent Jev skill review adds D v3 field targeting and exact-heading
 regression coverage; see [review](t04-stage-d-review.md).
-V1/v2 and both saved runs are preserved; v2/v3 live behavior is unverified and no new
-live call is authorized.
-Both authorized retained gates ([0,63) and [2155,2338)) saved real B=factual and
+V1/v2/v3 and both historical runs are preserved. Both historical v1 gates
+([0,63) and [2155,2338)) saved real B=factual and
 D=unresolved decisions, then correctly stopped with one unresolved issue and no
-Claim per run. Four Jev calls total were used, with no local F/H execution.
+Claim per run. Those two historical gates used four Jev calls and no local F/H
+execution.
+A fresh authorized v3 gate on the original first target subsequently returned
+B=factual and D=clear, then failed local F output-schema validation. It preserved
+zero Claims and one failed issue, with two Jev calls and one local generation,
+zero retries, and network/model-disabled terminal replay passed. No G/H or T05
+execution occurred; the current blocker is local F schema compliance. This consumes
+the authorized v3 gate; no further live call is authorized.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction
