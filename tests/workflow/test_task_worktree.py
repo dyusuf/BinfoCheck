@@ -166,14 +166,29 @@ def test_unmerged_branch_refused(repo: Path) -> None:
     assert_preserved(repo)
 
 
-def test_unpushed_task_commit_refused_even_when_on_main(repo: Path) -> None:
+def test_local_only_tip_already_on_main_does_not_block_cleanup(repo: Path) -> None:
     helper(repo, "create")
     git(task_path(repo), "push", "-u", "origin", "codex/task")
     commit_task(repo)
     git(repo, "merge", "codex/task")
     git(repo, "push", "origin", "main")
-    assert "Local/remote branch differ" in helper(repo, "cleanup", success=False)
-    assert_preserved(repo)
+    assert "Cleanup verified" in helper(repo, "cleanup")
+    assert not task_path(repo).exists()
+
+
+def test_remote_ahead_tip_already_on_main_does_not_block_cleanup(repo: Path) -> None:
+    helper(repo, "create")
+    commit_task(repo)
+    publish_and_merge(repo)
+    local_tip = git(task_path(repo), "rev-parse", "HEAD")
+    git(repo, "push", "origin", "main:refs/heads/codex/task")
+    git(repo, "fetch", "origin")
+    remote_tip = git(repo, "rev-parse", "refs/remotes/origin/codex/task")
+    assert local_tip != remote_tip
+    assert git(repo, "merge-base", "--is-ancestor", local_tip, "origin/main") == ""
+    assert git(repo, "merge-base", "--is-ancestor", remote_tip, "origin/main") == ""
+    assert "Cleanup verified" in helper(repo, "cleanup")
+    assert not task_path(repo).exists()
 
 
 @pytest.mark.parametrize("command", ["create", "status", "cleanup"])
