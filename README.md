@@ -41,20 +41,20 @@ official acceptance state maintained in the [implementation plan](docs/implement
 <!-- TASK-STATUS:START -->
 | Task | Component | Status |
 |---|---|---|
-| T00 | Contracts, scaffold and CI | ✅ Accepted |
-| T11A | Shared storage | ✅ Accepted |
-| T01 | Google AI Mode acquisition | ✅ Accepted |
-| T02 | Answer indexing/context | ✅ Accepted |
-| T03 | Model adapters | 🟡 Integration blocked |
-| T04 | Claim extraction | 🟡 Integration blocked |
-| T05 | Citation mapping | 🟡 Integration blocked |
-| T06 | diabinfo.de corpus | ✅ Accepted |
-| T07 | Hybrid retrieval | ✅ Accepted |
-| T08 | Candidate verification | ⚪ Not started |
-| T09 | Alternative-source analysis | ⚪ Not started |
-| T10 | Evidence classification | ⚪ Not started |
-| T11B | Pipeline execution | ⚪ Not started |
-| T12 | API | ⚪ Not started |
-| T13 | Editorial dashboard | ⚪ Not started |
-| T14 | End-to-end/deployment | ⚪ Not started |
+| T00 | [Contracts, scaffold and CI](docs/implementation-plan.md#t00) | ✅ Accepted |
+| T11A | [Shared storage](docs/implementation-plan.md#t11a) | ✅ Accepted |
+| T01 | [Google AI Mode acquisition](docs/implementation-plan.md#t01) | ✅ Accepted |
+| T02 | [Answer indexing/context](docs/implementation-plan.md#t02) | ✅ Accepted |
+| T03 | [Model adapters](docs/implementation-plan.md#t03) | 🟡 Integration blocked |
+| T04 | [Claim extraction](docs/implementation-plan.md#t04) | 🟡 Integration blocked |
+| T05 | [Citation mapping](docs/implementation-plan.md#t05) | 🟡 Integration blocked |
+| T06 | [diabinfo.de corpus](docs/implementation-plan.md#t06) | ✅ Accepted |
+| T07 | [Hybrid retrieval](docs/implementation-plan.md#t07) | ✅ Accepted |
+| T08 | [Candidate verification](docs/implementation-plan.md#t08) | ⚪ Not started |
+| T09 | [Alternative-source analysis](docs/implementation-plan.md#t09) | ⚪ Not started |
+| T10 | [Evidence classification](docs/implementation-plan.md#t10) | ⚪ Not started |
+| T11B | [Pipeline execution](docs/implementation-plan.md#t11b) | ⚪ Not started |
+| T12 | [API](docs/implementation-plan.md#t12) | ⚪ Not started |
+| T13 | [Editorial dashboard](docs/implementation-plan.md#t13) | ⚪ Not started |
+| T14 | [End-to-end/deployment](docs/implementation-plan.md#t14) | ⚪ Not started |
 <!-- TASK-STATUS:END -->
