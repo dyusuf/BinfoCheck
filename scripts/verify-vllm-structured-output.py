@@ -10,6 +10,7 @@ import importlib.metadata
 import json
 import os
 import socket
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 from pathlib import Path
@@ -41,6 +42,9 @@ def main():
         os.environ.pop("VLLM_ATTENTION_BACKEND", None)
         os.environ.pop("VLLM_USE_V1", None)
     root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "src"))
+    from binfocheck.models.local_guidance import xgrammar_schema
+
     schema = json.loads((root / "prompts/extraction/v1/decompose.output.schema.json").read_bytes())
     body = (
         json.loads(args.request.read_bytes())
@@ -152,9 +156,14 @@ def main():
             )
             assert engine_args.attention_backend == "TRITON_ATTN"
             assert engine_args.structured_outputs_config.backend == "xgrammar"
+            body = deepcopy(body)
+            guidance_schema = xgrammar_schema(schema)
+            body["response_format"]["json_schema"]["schema"] = guidance_schema
+            assert schema != guidance_schema
+            assert body["response_format"]["json_schema"]["schema"] == guidance_schema
             parsed = ChatCompletionRequest.model_validate(body)
             params = parsed.to_sampling_params(512, {})
-            assert params.structured_outputs.json == schema
+            assert params.structured_outputs.json == guidance_schema
             settings = StructuredOutputsConfig(backend="xgrammar")
             params._validate_structured_outputs(settings, tokenizer)
             assert params.structured_outputs._backend == "xgrammar"
@@ -211,13 +220,79 @@ def main():
         assert grammar.matcher.accept_string(
             '{"candidates":[],"reason_code":"cannot_extract","status":"unresolved"}'
         )
+        if version == "0.19.0":
+            from jsonschema import Draft202012Validator
+
+            def candidate(claim, quote):
+                return {
+                    "candidates": [
+                        {
+                            "anchor": {
+                                "end": len(quote),
+                                "quote": quote,
+                                "source_unit_ids": ["unit-1"],
+                                "start": 0,
+                            },
+                            "consumed_binding_indices": [],
+                            "normalized_claim": claim,
+                            "required_support": [],
+                        }
+                    ],
+                    "reason_code": "none",
+                    "status": "candidates",
+                }
+
+            valid = [
+                candidate("S", "J"),
+                candidate(
+                    "Menschen mit Diabetes dürfen grundsätzlich Auto fahren.",
+                    "grundsätzlich dürfen Sie mit Diabetes Auto fahren",
+                ),
+                candidate(
+                    "Ja, grundsätzlich dürfen Sie mit Diabetes Auto fahren.",
+                    "Ja, grundsätzlich",
+                ),
+            ]
+            for value in valid:
+                grammar.reset()
+                encoded = json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+                assert grammar.matcher.accept_string(encoded)
+                assert Draft202012Validator(schema).is_valid(value)
+
+            for value in (candidate("", "Zitat"), candidate("Behauptung", "")):
+                grammar.reset()
+                assert not grammar.matcher.accept_string(
+                    json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+                )
+            whitespace_guidance: dict[tuple[str, str], bool] = {}
+            for claim, quote in ((" ", "Zitat"), ("Behauptung", " "), ("\t\n", "Zitat")):
+                value = candidate(claim, quote)
+                grammar.reset()
+                whitespace_guidance[(claim, quote)] = grammar.matcher.accept_string(
+                    json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+                )
+                assert not Draft202012Validator(schema).is_valid(value)
+            # At least ordinary spaces pass the weaker guidance constraint. This
+            # proves the unchanged canonical validator remains security-relevant.
+            assert whitespace_guidance[(" ", "Zitat")]
+            assert whitespace_guidance[("Behauptung", " ")]
+
+            malformed = candidate("Vollständige Behauptung.", "Zitat")
+            del malformed["reason_code"]
+            grammar.reset()
+            assert not grammar.matcher.accept_string(
+                json.dumps(malformed, ensure_ascii=False, separators=(",", ":"))
+            )
     print(
         json.dumps(
             {
                 "status": "passed",
                 "vllm": version,
                 "xgrammar": importlib.metadata.version("xgrammar"),
-                "schema_preserved": True,
+                "canonical_schema_preserved": True,
+                "guidance_compatibility_applied": version == "0.19.0",
+                "multi_character_strings_accepted": version == "0.19.0",
+                "canonical_post_validation_required": version == "0.19.0",
                 "v0_unenforced_control": version == "0.10.2",
                 "explicit_backend_no_fallback": version == "0.19.0",
                 "v1_grammar_attached": True,

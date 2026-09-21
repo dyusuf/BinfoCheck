@@ -21,11 +21,11 @@ MODELS = {
 HOSTS = {"jev": "api.typesafe.ai", "openai": "api.openai.com"}
 PATHS = {"jev": "/v1/systemone", "openai": "/v1/responses"}
 CONFIG_VERSION = VersionRef(name="t03-model-adapters", version="1")
-LOCAL_CONFIG_VERSION = VersionRef(name="t04-vllm-generation", version="3")
+LOCAL_CONFIG_VERSION = VersionRef(name="t04-vllm-generation", version="4")
 
 
 class ModelAdapterConfig(Contract):
-    version: Literal["1", "2", "3"] = "1"
+    version: Literal["1", "2", "3", "4"] = "1"
     provider: Provider
     budget: Budget = Budget(
         request_limit=1,
@@ -60,7 +60,7 @@ class ModelAdapterConfig(Contract):
 class LocalGenerationConfig(ModelAdapterConfig):
     """Separate adapter format; legacy configuration bytes and work IDs stay unchanged."""
 
-    version: Literal["1", "2", "3"] = "3"
+    version: Literal["1", "2", "3", "4"] = "4"
     provider: Provider = "vllm"
     runtime_manifest_sha256: Digest
     server_version: Literal["0.10.2", "0.19.0"] = "0.19.0"
@@ -87,6 +87,7 @@ class LocalGenerationConfig(ModelAdapterConfig):
             "1": ("V0", "XFORMERS", "0.10.2"),
             "2": ("V1", "XFORMERS_VLLM_V1", "0.10.2"),
             "3": ("V1", "TRITON_ATTN", "0.19.0"),
+            "4": ("V1", "TRITON_ATTN", "0.19.0"),
         }
         if (self.engine, self.attention_backend, self.server_version) != expected[self.version]:
             raise ValueError("local_engine_version_mismatch")

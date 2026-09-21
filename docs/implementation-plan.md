@@ -320,6 +320,15 @@ resolved for this request; usable F output remains blocked. One local call,
 zero Jev calls and no G/H/I or T05 execution; evidence and offline replay are
 preserved in the gate report. Investigate grammar compatibility before another
 live call. T04's official status remains `integration_blocked`.
+The subsequent offline compatibility fix versions local generation to v4 and
+changes only the schema copy sent to xgrammar: exact nonblank patterns become
+`minLength: 1`. The canonical schema resource, prompt and post-generation validation
+are unchanged. Pinned installed-runtime tests now accept realistic multi-character
+German claims/quotes and complete sentences while rejecting empty strings and
+malformed structure; whitespace-only values remain rejected by mandatory canonical
+validation. Historical v1–v3 preparation/replay and live evidence are preserved.
+No model, Jev, server or T05 call occurred, so Check 3 remains blocked pending a
+separately authorized v4 live gate.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction

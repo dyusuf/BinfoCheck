@@ -152,7 +152,7 @@ Use `LocalGenerationConfig`, `LocalVllmTransport` and the same ExtractionResourc
 as T04. The selected model is `Qwen/Qwen3-4B-Instruct-2507`, revision
 `cdbee75f17c01a7cc42f958dc650907174af0554`; the served/requested/returned model ID
 is the repository name followed by `@` and that revision. Local request settings
-use `t04-vllm-generation/3`; legacy Jev/OpenAI configuration and artifact identities
+use `t04-vllm-generation/4`; legacy Jev/OpenAI configuration and artifact identities
 remain unchanged. No shared schema changed and OpenAI is not a fallback.
 
 The local configuration includes the private runtime manifest SHA-256 and fixed
@@ -175,7 +175,10 @@ estimates never replace billed-usage fields.
 
 Preparation maps the existing instruction and exact state to system/user messages,
 with strict JSON Schema, temperature 0, top_p 1, seed 0, n=1, no tools or streaming.
-The schema guides generation but adapter validation is still mandatory. Only a
+For v4 only, the provider schema copy replaces exact `pattern: "\\S"` string nodes
+with `minLength: 1`, avoiding xgrammar 0.2.3's one-character miscompilation. The
+canonical schema resource is stored unchanged and remains the mandatory
+post-generation validator, including its rejection of whitespace-only strings. Only a
 single assistant choice with finish_reason `stop` and the exact model ID is accepted.
 Truncation, refusal/tool output, malformed JSON, duplicate keys and schema violations
 fail without repair, coercion or another request. Raw vLLM chat envelopes are stored
@@ -183,19 +186,20 @@ unchanged, separately from canonical validated JSON. T03 also snapshots a restri
 `runtime` artifact and verifies its configured hash during offline replay. No
 server/GPU/model import is needed for replay.
 
-### Current v3 runtime: vLLM 0.19.0 / Triton
+### Current v4 guidance / v3 runtime: vLLM 0.19.0 / Triton
 
 Live status: the 21 September F-only diagnostic passed GPU decoding and adapter
 schema validation, but the generated object fails T04's unchanged decomposition
-contract. Offline controls show the installed grammar rejects multi-character
-claim/quote strings allowed by the exact schema. Do not treat startup or grammar
-compilation success as usable F acceptance; see the
+contract. The subsequent offline v4 compatibility fix makes the provider grammar
+accept realistic multi-character claim/quote strings while retaining canonical
+validation after generation. No v4 live call has run. See the
 [gate report](../../../docs/t04-live-gate.md#v3-runtime-f-only-diagnostic--21-september-2026).
 
-New `LocalGenerationConfig` defaults to `t04-vllm-generation/3`, vLLM 0.19.0,
-V1 and TRITON_ATTN. V1/v2 configurations remain readable for preparation and
-saved replay, but cannot dispatch new requests. The pinned Qwen revision, F prompt,
-response schema and HTTP request construction are unchanged.
+New `LocalGenerationConfig` defaults to `t04-vllm-generation/4`, vLLM 0.19.0,
+V1 and TRITON_ATTN. V1/v2/v3 configurations remain readable for their original
+preparation and saved replay, but cannot dispatch new requests. The pinned Qwen
+revision, F prompt and canonical response schema are unchanged. V4 changes only
+the compatible schema copy carried in the HTTP request.
 
 Provision a separate **durable** Python 3.12 environment (outside `/tmp`) with
 `uv pip sync --python <server-env>/bin/python src/binfocheck/models/vllm-runtime-v3.lock`.
@@ -205,7 +209,7 @@ Never modify shared BinfoNet or Ollama environments. Run the optional verifier b
 with the new environment and exact saved F outbound request before server startup.
 It supports both locked versions and never initializes a model engine.
 
-The v3 launch command is:
+The v4 launch command remains:
 
 ```text
 vllm serve <verified-snapshot-directory>

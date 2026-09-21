@@ -387,6 +387,22 @@ local allowance is consumed; zero Jev calls were made. See the
 [T04 gate report](t04-live-gate.md#v3-runtime-f-only-diagnostic--21-september-2026)
 for exact evidence, offline replay and restored shared services.
 
+**D04 xgrammar compatibility — 21 September 2026:** the saved F evidence and
+installed-runtime controls establish that xgrammar 0.2.3 miscompiles the canonical
+unanchored string pattern `\S`: it admits an empty string and constrains nonempty
+values to one character. Local generation configuration v4 therefore copies the
+already validated canonical schema for the provider request and replaces only exact
+`type: string` / `pattern: "\\S"` nodes with `minLength: 1`. This is a guidance-side
+compatibility relaxation, not a canonical contract change. The immutable schema
+resource remains in each prepared record and the adapter still validates every
+returned value against that exact resource, so blank and whitespace-only strings
+fail as before. V1–v3 preparation/replay and all saved gate evidence remain
+unchanged; only v4 may dispatch a new local request. Offline tests with the pinned
+vLLM/xgrammar environment accept multi-character German claims and quotes, reject
+empty strings and malformed structure, and demonstrate that whitespace admitted by
+the weaker guidance is rejected by canonical post-validation. No live calls or
+server startup were made for this correction.
+
 **D04 structured-output runtime correction — 20 September 2026:** the user
 requested implementation after the saved F failure review. Installed vLLM 0.10.2
 V0 accepted `response_format` but did not attach guided-decoding enforcement.

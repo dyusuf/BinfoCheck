@@ -6,7 +6,7 @@ from .json import digest, object_value, parse
 
 
 def require_structured_runtime(config: LocalGenerationConfig, manifest: bytes) -> None:
-    if config.version != "3" or config.engine != "V1":
+    if config.version != "4" or config.engine != "V1":
         raise ModelError("local_structured_output_unavailable")
     if digest(manifest) != config.runtime_manifest_sha256:
         raise ModelError("local_runtime_manifest_mismatch")

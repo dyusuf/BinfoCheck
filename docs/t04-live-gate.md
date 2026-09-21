@@ -531,3 +531,34 @@ inventory is in `/mnt/workspace/BinfoCheck-data/t04-f-runtime-v3-20260921T090302
 Original gate fingerprints are unchanged. The one generation allowance is now
 consumed. The remaining blocker is usable, contract-valid F output; no further
 live generation or Jev call is authorized by this diagnostic.
+
+### Offline xgrammar compatibility fix — 21 September 2026
+
+No generation, Jev, server startup, gate or T05 call was authorized or performed.
+The saved F evidence remains unchanged. Direct compiler controls in the pinned
+vLLM 0.19.0 / xgrammar 0.2.3 environment reproduce the defect: canonical
+`pattern: "\\S"` accepts an empty string, accepts a one-character string, and
+rejects realistic multi-character text. This is xgrammar behavior; independent
+Draft 2020-12 validation applies the intended unanchored non-whitespace rule.
+
+Local configuration v4 applies the smallest deterministic provider-only fix. After
+the canonical schema has passed the repository's conservative schema validation,
+the adapter deep-copies it for guidance and replaces only exact string
+`pattern: "\\S"` constraints with `minLength: 1`. The response-format schema sent
+to xgrammar is therefore structurally constraining and permits normal text. The
+canonical schema bytes remain stored in `PreparedRequest.resource_bytes_base64`
+and normalization uses those exact bytes for mandatory post-generation validation.
+Whitespace-only values that the weaker guidance may admit consequently remain
+invalid, with no repair or coercion.
+
+The installed-runtime verifier, with sockets blocked and without engine/model
+initialization, now proves that the actual vLLM protocol carries the compatibility
+schema into explicit xgrammar; the grammar accepts a single-character control,
+multi-character German claims/quotes and a complete German sentence. It rejects an
+empty constrained string and a structurally malformed object. Separate canonical
+checks accept the realistic values and reject empty/whitespace-only strings.
+Repository adapter tests also prove that a whitespace-only guided value fails
+canonical normalization. V1–v3 request construction/replay remains versioned and
+unchanged; only v4 can dispatch after a future fresh manifest binding. T04 retains
+zero accepted Claims and T05 remains blocked until a separately authorized live
+gate succeeds.

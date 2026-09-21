@@ -21,6 +21,7 @@ from binfocheck.domain.text import ArtifactRef
 from .config import MODELS, LocalGenerationConfig, ModelAdapterConfig, config_version
 from .errors import ModelError, failure, require
 from .json import canonical, digest, object_value, parse, text_value
+from .local_guidance import xgrammar_schema
 from .local_runtime import require_structured_runtime
 from .receipt import ModelReceipt, PreparedRequest, role_id
 from .resources import ModelResources, resolve, schema_resource
@@ -200,6 +201,7 @@ def prepare(
             "max_output_tokens": config.max_output_tokens,
         }
         if isinstance(config, LocalGenerationConfig):
+            guidance_schema = xgrammar_schema(schema) if config.version == "4" else schema
             body = {
                 "model": request.requested_model_id,
                 "messages": [
@@ -211,7 +213,7 @@ def prepare(
                     "json_schema": {
                         "name": "t04_" + digest(canonical(schema))[:32],
                         "strict": True,
-                        "schema": schema,
+                        "schema": guidance_schema,
                     },
                 },
                 "temperature": 0,
