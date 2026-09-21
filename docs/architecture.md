@@ -354,10 +354,10 @@ implementation details need no separate approval.
 | D01 | Python schema/runtime/test dependencies | T00 acceptance |
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
-| D04 | Jev `jev-1.13.0`; MVP GenerationModel is local Qwen3-4B-Instruct-2507 served by vLLM, selected below. Historical OpenAI adapter retained for replay | Local T04 integration in progress; bounded Jev authorization recorded below |
+| D04 | Jev `jev-1.13.0`; MVP GenerationModel is local Qwen3-4B-Instruct-2507 served by vLLM, selected below. Historical OpenAI adapter retained for replay | Local T04 integration accepted on the retained real target; T05 remains separate |
 | D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
-| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Historical v1 gates returned D.unresolved; fresh v3 first-target gate passed D but stopped at F schema failure. Accepted Claim output remains blocked; further execution requires new authorization. Category changes require explicit scope authorization. |
+| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | T04 accepted with one genuine retained-target Claim under resources v4/local config v5. T05 and category work remain separate. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
@@ -559,6 +559,20 @@ The gate stopped with zero Claims after two Jev calls and one local generation;
 no H/I or T05 ran and offline replay passed. The remaining blocker is useful,
 contract-valid F output. No threshold, prompt, extraction policy or T05 behavior
 changed.
+
+**D07 T04 v5 acceptance gate — 21 September 2026:** the explicitly bounded fresh
+gate used local configuration v5, extraction resources v4 and F prompt v2 on the
+retained `[0,63)` target. B=`factual` (0.98), D v3=`clear` (1.0), and F returned a
+coherent candidate whose null guided offsets were resolved by unchanged location
+code to the exact immutable span `[0,63)`. H independently returned
+`faithful` (0.90), `atomic` (0.94) and `self_contained` (0.85), each with a unique
+maximum. I persisted genuine Claim
+`claim-2370b9001cd29251fa839f0ed558b73b3594754200aae7a3b0187db5cac2ba40`
+with no issues. Five Jev calls and one local generation were used, with zero retries
+and no uncertain dispatch. Close/reopen replay with network and model operations
+blocked passed twice; complete target accounting and historical preservation passed.
+This satisfies T04's real saved-answer integration check. T05 was neither executed
+nor modified and remains a separate decision/task.
 
 **D07 T04 Stage-D clarification — 20 September 2026:** the user authorized an
 offline versioned ambiguity fix after both retained gates returned `unresolved`.

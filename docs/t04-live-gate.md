@@ -623,3 +623,35 @@ replay and all saved live evidence remain unchanged. A fresh v5 manifest-bound g
 requires separate authorization.
 Malformed or missing F source-unit state fails before dispatch; v5 never silently
 falls back to the weaker v4 guidance schema.
+
+### Fresh v5 acceptance gate — 21 September 2026
+
+The user authorized one fresh manifest-bound gate on retained target `[0,63)` with
+at most five Jev calls (USD 0.05 total), one local Stage F generation, concurrency
+one, 60-second timeouts, zero retries and no uncertain-dispatch retry. The new run
+used exactly `t04-vllm-generation/5`, `t04-extraction-resources/4`,
+`t04-decompose/2`, the pinned Qwen revision and a new actual-process manifest.
+
+B returned `factual` (0.98) and D v3 returned `clear` (1.0). F returned HTTP 200
+with `status=candidates`, `reason_code=none`, one candidate, valid supplied unit IDs
+and null offsets. The unchanged locator resolved its exact quote and support to the
+immutable answer span `[0,63)`. H returned `faithful` (0.90), `atomic` (0.94) and
+`self_contained` (0.85), each with a unique maximum. I persisted genuine Claim
+`claim-2370b9001cd29251fa839f0ed558b73b3594754200aae7a3b0187db5cac2ba40`,
+normalized as “Ja, grundsätzlich dürfen Sie mit Diabetes Auto fahren.”, with no
+issues and complete target accounting.
+
+Actual use was five Jev calls (4,230 input and 235 output tokens; estimated USD
+0.00017766, billed cost unknown) and one local Qwen call (684 prompt and 179
+completion tokens; external provider cost USD 0). There were zero retries and no
+uncertain dispatch. Close/reopen replay with sockets, DNS and model operations
+blocked reproduced all six decisions twice and preserved linked records, source
+fingerprints and target accounting.
+
+Private evidence is
+`/mnt/workspace/BinfoCheck-data/t04-qwen-v5-first-20260921T110920Z/`; the new runtime
+manifest SHA-256 is
+`76309bfa3d15b222ff9a00a30632bdbc142c5bcdf0f38a6db84cafc6c9eaf71c`.
+Both shared BinfoNet vLLM services were restored and passed GET model checks;
+Ollama remained active and task-local port 8004 is free. T04 is accepted. T05 was
+not run or modified and remains a separate task.

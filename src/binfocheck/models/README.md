@@ -196,12 +196,11 @@ server/GPU/model import is needed for replay.
 
 ### Current v5 guidance / v3 runtime: vLLM 0.19.0 / Triton
 
-Live status: the 21 September F-only diagnostic passed GPU decoding and adapter
-schema validation, but the generated object fails T04's unchanged decomposition
-contract. The subsequent v4 gate proved multi-character guidance live, then failed
-on a coherence/offset combination absent from the provider schema. V5 encodes those
-rules in guidance while retaining canonical validation. No v5 live call has run.
-See the [gate report](../../../docs/t04-live-gate.md#fresh-v4-gate-on-the-original-first-target--21-september-2026).
+Live status: accepted on the retained first target on 21 September. The fresh v5
+gate produced one coherent, exactly located candidate and passed all three Jev H
+validations, yielding one genuine Claim with no issues. The run used five Jev calls,
+one local generation, zero retries and no uncertain dispatch; offline replay passed.
+See the [gate report](../../../docs/t04-live-gate.md#fresh-v5-acceptance-gate--21-september-2026).
 
 New `LocalGenerationConfig` defaults to `t04-vllm-generation/5`, vLLM 0.19.0,
 V1 and TRITON_ATTN. V1–v4 configurations remain readable for their original

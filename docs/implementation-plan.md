@@ -1,7 +1,8 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 five-page textual corpus live acceptance passed under the approved D06 visual-limitation rule; PR #7 is merged.
+**Status:** T00, T01, T02, T04, T06, T07 and T11A are accepted. T04 has genuine
+saved Claim evidence from the retained real target; T05 remains a separate task.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -277,7 +278,7 @@ claims and separate rejected/unresolved issues.
 
 **Stop:** citation fidelity, corpus matching or claims of reproduced Claimify quality.
 
-**Status — 20 September 2026:** local Qwen3-4B-Instruct-2507/vLLM adapter implemented
+**Status — 21 September 2026: accepted.** Local Qwen3-4B-Instruct-2507/vLLM adapter implemented
 through T03/T04, with unchanged extraction policy and shared contracts.
 The subsequent offline D07 fix versions only the D ambiguity rubric to v2, with
 regression coverage for both gate sentences and necessary pronoun resolution.
@@ -325,7 +326,7 @@ and quote strings permitted by the schema. The attention-kernel blocker is
 resolved for this request; usable F output remains blocked. One local call,
 zero Jev calls and no G/H/I or T05 execution; evidence and offline replay are
 preserved in the gate report. Investigate grammar compatibility before another
-live call. T04's official status remains `integration_blocked`.
+live call. At that point T04 remained `integration_blocked`.
 The subsequent offline compatibility fix versions local generation to v4 and
 changes only the schema copy sent to xgrammar: exact nonblank patterns become
 `minLength: 1`. The canonical schema resource, prompt and post-generation validation
@@ -351,12 +352,17 @@ offsets so code locates exact quotes in immutable source text. The F prompt stat
 the same rules. The canonical schema, Pydantic coherence validator, exact locator,
 B/D/H/T05 semantics and thresholds are unchanged. Pinned xgrammar tests accept
 coherent resolved/unresolved outputs and reject the saved v4 incoherent shape and
-numeric offsets. No live call occurred; Check 3 remains blocked pending a separately
-authorized v5 gate.
-Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
-bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
-model adapter, its configuration/runtime inventory and affected adapter/extraction
-tests; it does not change T05 logic or start T08+.
+numeric offsets. No live call occurred in that implementation step.
+The subsequently authorized fresh v5 gate used the retained first target and a new
+manifest-bound run/store. B=`factual`, D v3=`clear`, F produced one coherent
+candidate with an exact immutable-source location, and H returned `faithful`,
+`atomic` and `self_contained`, each with a unique maximum. I persisted genuine
+Claim `claim-2370b9001cd29251fa839f0ed558b73b3594754200aae7a3b0187db5cac2ba40`
+with span `[0,63)` and no issues. The gate used five Jev calls and one local Qwen
+generation, zero retries and no uncertain dispatch; network/model-disabled replay
+passed twice. Check 3 is satisfied and T04 is accepted. T05 was not executed or
+modified and remains a separate task. Detailed bounds and evidence are in the
+[gate report](t04-live-gate.md).
 
 <a id="t05"></a>
 ### T05 — Citation mapping and routing
