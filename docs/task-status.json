@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "tasks": [
+    {"id": "T00", "component": "Contracts, scaffold and CI", "status": "accepted"},
+    {"id": "T11A", "component": "Shared storage", "status": "accepted"},
+    {"id": "T01", "component": "Google AI Mode acquisition", "status": "accepted"},
+    {"id": "T02", "component": "Answer indexing/context", "status": "accepted"},
+    {"id": "T03", "component": "Model adapters", "status": "integration_blocked"},
+    {"id": "T04", "component": "Claim extraction", "status": "integration_blocked"},
+    {"id": "T05", "component": "Citation mapping", "status": "integration_blocked"},
+    {"id": "T06", "component": "diabinfo.de corpus", "status": "accepted"},
+    {"id": "T07", "component": "Hybrid retrieval", "status": "accepted"},
+    {"id": "T08", "component": "Candidate verification", "status": "not_started"},
+    {"id": "T09", "component": "Alternative-source analysis", "status": "not_started"},
+    {"id": "T10", "component": "Evidence classification", "status": "not_started"},
+    {"id": "T11B", "component": "Pipeline execution", "status": "not_started"},
+    {"id": "T12", "component": "API", "status": "not_started"},
+    {"id": "T13", "component": "Editorial dashboard", "status": "not_started"},
+    {"id": "T14", "component": "End-to-end/deployment", "status": "not_started"}
+  ]
+}

@@ -112,6 +112,11 @@ a parallel toolchain or claim a command ran when it did not.
 Run task acceptance and affected regression tests plus `scripts/verify.sh`.
 Review the diff for unrelated changes, secrets, schema drift and missing tests.
 
+When an assigned task's official status recorded in `docs/implementation-plan.md`
+changes, update `docs/task-status.json` and regenerate the README task-status table
+with `scripts/update-readme-status.py`. Do not infer task status from test counts,
+CI or PR state; use the task's acceptance requirements.
+
 Overwrite `/tmp/binfocheck-<task>-handoff.txt` using the concise
 [handoff guidance](docs/development-workflow.md#handoffs).
 Report offline, live and deployed checks separately, including blockers, essential
