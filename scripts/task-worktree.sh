@@ -119,12 +119,16 @@ if ((${#protected_ignored[@]})); then
     printf '  %s\n' "${protected_ignored[@]}" >&2
     fail 'Worktree is dirty or contains ignored files.'
 fi
-git merge-base --is-ancestor "refs/heads/$branch" refs/remotes/origin/main || fail 'Branch is not merged into origin/main.'
+local_tip=$(git rev-parse "refs/heads/$branch")
+git merge-base --is-ancestor "$local_tip" refs/remotes/origin/main || fail 'Branch is not merged into origin/main.'
 remote_present=false
 if exists "refs/remotes/origin/$branch"; then
     remote_present=true
     remote_tip=$(git rev-parse "refs/remotes/origin/$branch")
-    [[ $(git rev-parse "refs/heads/$branch") == "$remote_tip" ]] || fail 'Local/remote branch differ; refusing unpushed commits or remote work.'
+    if [[ "$local_tip" != "$remote_tip" ]]; then
+        git merge-base --is-ancestor "$remote_tip" refs/remotes/origin/main ||
+            fail 'Local/remote branch differ and remote work is not merged into origin/main.'
+    fi
 fi
 # Only after all safety checks, remove the explicitly disposable ignored entries.
 for ignored in "${disposable_ignored[@]}"; do
@@ -134,8 +138,10 @@ remaining_state=$(git -C "$worktree" status --porcelain --untracked-files=all --
 [[ -z "$remaining_state" ]] || fail 'Worktree changed during cleanup or contains remaining ignored files.'
 # If the task remote is already absent, ancestry in origin/main proves every commit is pushed.
 git worktree remove -- "$worktree"
-# Use the verified origin/main as the deletion safety check, without changing branch config.
-git -c "branch.$branch.remote=origin" -c "branch.$branch.merge=refs/heads/main" branch -d -- "$branch"
+# Delete exactly the local tip that passed the ancestry check. A concurrent local
+# branch advance makes update-ref fail instead of discarding newly-created work.
+git update-ref -d "refs/heads/$branch" "$local_tip" ||
+    fail "Local branch changed during cleanup; worktree already removed. Inspect refs/heads/$branch before further cleanup."
 if [[ "$remote_present" == true ]]; then
     # An explicit expected SHA rejects concurrent remote updates, even after another fetch.
     git push --force-with-lease="refs/heads/$branch:$remote_tip" origin --delete "$branch" ||
