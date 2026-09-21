@@ -43,7 +43,7 @@ def main():
         os.environ.pop("VLLM_USE_V1", None)
     root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(root / "src"))
-    from binfocheck.models.local_guidance import xgrammar_schema
+    from binfocheck.models.local_guidance import decomposition_schema
 
     schema = json.loads((root / "prompts/extraction/v1/decompose.output.schema.json").read_bytes())
     body = (
@@ -157,7 +157,20 @@ def main():
             assert engine_args.attention_backend == "TRITON_ATTN"
             assert engine_args.structured_outputs_config.backend == "xgrammar"
             body = deepcopy(body)
-            guidance_schema = xgrammar_schema(schema)
+            try:
+                user_state = json.loads(body["messages"][-1]["content"])
+            except (KeyError, IndexError, TypeError, json.JSONDecodeError):
+                user_state = None
+            if not isinstance(user_state, dict) or "source" not in user_state:
+                user_state = {
+                    "source": {
+                        "text": "Ja, grundsätzlich dürfen Sie mit Diabetes Auto fahren.",
+                        "start": 0,
+                        "end": 58,
+                        "unit_ids": ["unit-1"],
+                    }
+                }
+            guidance_schema = decomposition_schema(schema, user_state)
             body["response_format"]["json_schema"]["schema"] = guidance_schema
             assert schema != guidance_schema
             assert body["response_format"]["json_schema"]["schema"] == guidance_schema
@@ -218,20 +231,24 @@ def main():
         grammar.reset()
         # Independent schema-conforming control; never a replacement for saved output.
         assert grammar.matcher.accept_string(
-            '{"candidates":[],"reason_code":"cannot_extract","status":"unresolved"}'
+            '{"status":"unresolved","candidates":[],"reason_code":"cannot_extract"}'
         )
         if version == "0.19.0":
             from jsonschema import Draft202012Validator
 
+            source = user_state["source"]
+            unit_id = source["unit_ids"][0]
+
             def candidate(claim, quote):
                 return {
+                    "status": "candidates",
                     "candidates": [
                         {
                             "anchor": {
-                                "end": len(quote),
+                                "end": None,
                                 "quote": quote,
-                                "source_unit_ids": ["unit-1"],
-                                "start": 0,
+                                "source_unit_ids": [unit_id],
+                                "start": None,
                             },
                             "consumed_binding_indices": [],
                             "normalized_claim": claim,
@@ -239,7 +256,6 @@ def main():
                         }
                     ],
                     "reason_code": "none",
-                    "status": "candidates",
                 }
 
             valid = [
@@ -258,6 +274,23 @@ def main():
                 encoded = json.dumps(value, ensure_ascii=False, separators=(",", ":"))
                 assert grammar.matcher.accept_string(encoded)
                 assert Draft202012Validator(schema).is_valid(value)
+                assert Draft202012Validator(guidance_schema).is_valid(value)
+
+            incoherent = candidate("Behauptung.", "Zitat")
+            incoherent["status"] = "unresolved"
+            grammar.reset()
+            assert not grammar.matcher.accept_string(
+                json.dumps(incoherent, ensure_ascii=False, separators=(",", ":"))
+            )
+            assert not Draft202012Validator(guidance_schema).is_valid(incoherent)
+
+            bad_offsets = candidate("Behauptung.", "Zitat")
+            bad_offsets["candidates"][0]["anchor"]["start"] = 0
+            bad_offsets["candidates"][0]["anchor"]["end"] = 5
+            grammar.reset()
+            assert not grammar.matcher.accept_string(
+                json.dumps(bad_offsets, ensure_ascii=False, separators=(",", ":"))
+            )
 
             for value in (candidate("", "Zitat"), candidate("Behauptung", "")):
                 grammar.reset()
@@ -291,6 +324,8 @@ def main():
                 "xgrammar": importlib.metadata.version("xgrammar"),
                 "canonical_schema_preserved": True,
                 "guidance_compatibility_applied": version == "0.19.0",
+                "decomposition_invariants_guided": version == "0.19.0",
+                "generated_offsets_disabled": version == "0.19.0",
                 "multi_character_strings_accepted": version == "0.19.0",
                 "canonical_post_validation_required": version == "0.19.0",
                 "v0_unenforced_control": version == "0.10.2",

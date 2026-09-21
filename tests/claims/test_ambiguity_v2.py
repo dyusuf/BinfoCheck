@@ -20,7 +20,7 @@ CASES = TypeAdapter(list[dict[str, str]]).validate_json(
 
 
 def test_only_d_changes_and_v1_remains_pinned() -> None:
-    old, new = ExtractionResources(ROOT, version="1"), ExtractionResources(ROOT)
+    old, new = ExtractionResources(ROOT, version="1"), ExtractionResources(ROOT, version="3")
     assert old.version.sha256 == "f6b0fc9d2acdd1e96392e29830d57aa96f15c5afd827fd58ba755fbe1d91e281"
     assert (
         old.ref("ambiguity").sha256
@@ -157,7 +157,7 @@ def test_legacy_replay_and_version_mismatch_fail_before_calls(
 
 
 def test_review_only_adds_explicit_state_field_targeting() -> None:
-    v2, v3 = ExtractionResources(ROOT, version="2"), ExtractionResources(ROOT)
+    v2, v3 = ExtractionResources(ROOT, version="2"), ExtractionResources(ROOT, version="3")
     assert v2.version.sha256 == "b8f1d4add7f7f569de3a81cdcb0e067168b6c4ff34d2f6b5a5d4f1d0585d13c3"
     old = json.loads(v2.resolve(v2.ref("ambiguity")))
     new = json.loads(v3.resolve(v3.ref("ambiguity")))
@@ -166,3 +166,12 @@ def test_review_only_adds_explicit_state_field_targeting() -> None:
     for field in ("`source.text`", "`working_text`", "`context[0].text`", "`question.text`"):
         assert field in new["instructions"]
     assert {k for k in v2.refs if v2.refs[k] != v3.refs[k]} == {"t04-ambiguity"}
+
+
+def test_v4_resources_change_only_decomposition_guidance() -> None:
+    v3, v4 = ExtractionResources(ROOT, version="3"), ExtractionResources(ROOT)
+    assert v4.version.version == "4"
+    assert v4.ref("decompose").version == "2"
+    assert {k for k in v3.refs if v3.refs[k] != v4.refs[k]} == {"t04-decompose"}
+    for key in v3.refs.keys() - {"t04-decompose"}:
+        assert v3.resolve(v3.refs[key]) == v4.resolve(v4.refs[key])

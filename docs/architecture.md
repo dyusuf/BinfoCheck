@@ -403,6 +403,23 @@ empty strings and malformed structure, and demonstrate that whitespace admitted 
 the weaker guidance is rejected by canonical post-validation. No live calls or
 server startup were made for this correction.
 
+**D04 coherent F guidance — 21 September 2026:** the v4 live response proved the
+multi-character workaround but exposed canonical invariants that JSON Schema did
+not express to xgrammar. Local generation configuration v5 keeps the canonical
+schema and strict post-generation validation unchanged, while its provider-only F
+schema has two disjoint branches: `candidates` requires 1–4 candidates and
+`reason_code=none`; `unresolved` requires an empty list and either
+`cannot_extract` or `candidate_limit`. Anchor source-unit IDs are restricted to
+those supplied in the immutable F state, and guided `start`/`end` are always null,
+so the existing exact-quote locator derives offsets and still rejects missing or
+ambiguous quotes. Extraction resource bundle v4 versions only the F prompt with
+the same instructions. Missing/malformed source-unit state fails preparation rather
+than selecting weaker guidance. V1–v4 configurations, bundles v1–v3 and all historical
+evidence remain replayable and unchanged. Offline xgrammar compilation and masking
+accept both coherent branches and realistic German strings while rejecting the
+saved incoherent shape, numeric guided offsets, invented source-unit IDs and
+malformed structure. No live/model/Jev call is authorized or performed.
+
 **D04 structured-output runtime correction — 20 September 2026:** the user
 requested implementation after the saved F failure review. Installed vLLM 0.10.2
 V0 accepted `response_format` but did not attach guided-decoding enforcement.

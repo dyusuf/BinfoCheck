@@ -46,7 +46,7 @@ def test_legacy_prepares_identically_but_cannot_dispatch() -> None:
     )
     prepared = prepare(request, old, resources(), store)
     assert PreparedRequest.model_validate_json(prepared.model_dump_json()) == prepared
-    assert config_version(old).version == "1" and config_version(current).version == "4"
+    assert config_version(old).version == "1" and config_version(current).version == "5"
     updated = request.model_copy(
         update={
             "settings": Settings(
@@ -123,6 +123,7 @@ def test_version_and_engine_are_not_interchangeable() -> None:
         ("1", "V0", "XFORMERS", "0.10.2"),
         ("2", "V1", "XFORMERS_VLLM_V1", "0.10.2"),
         ("3", "V1", "TRITON_ATTN", "0.19.0"),
+        ("4", "V1", "TRITON_ATTN", "0.19.0"),
     ],
 )
 def test_historical_configs_keep_body_and_replay_but_block_new_dispatch(
@@ -178,7 +179,7 @@ def test_historical_configs_keep_body_and_replay_but_block_new_dispatch(
         ["--trust-remote-code"],
     ],
 )
-def test_v4_rejects_overrides_even_with_matching_manifest_hash(args: list[str]) -> None:
+def test_v5_rejects_overrides_even_with_matching_manifest_hash(args: list[str]) -> None:
     data = json.loads(MANIFEST)
     data["launch_arguments"] += args
     manifest = canonical(data)

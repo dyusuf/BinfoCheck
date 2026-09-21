@@ -3,17 +3,23 @@
 import base64
 import json
 from pathlib import Path
+from typing import cast
 
 import pytest
+from jsonschema import Draft202012Validator
+from jsonschema.protocols import Validator
 from pydantic import JsonValue
 
 from binfocheck.domain.common import Settings, VersionRef
+from binfocheck.domain.interfaces import GenerationRequest
+from binfocheck.domain.storage import ArtifactPayload
+from binfocheck.domain.text import ArtifactRef
 from binfocheck.models import LocalVllmGenerationModel
 from binfocheck.models.config import LocalGenerationConfig, config_version
 from binfocheck.models.errors import ModelError
 from binfocheck.models.generation import local_generation_output
 from binfocheck.models.json import canonical, digest, object_value, parse
-from binfocheck.models.local_guidance import xgrammar_schema
+from binfocheck.models.local_guidance import decomposition_schema, xgrammar_schema
 from binfocheck.models.persistence import prepare
 from binfocheck.models.resources import ResourceRegistry
 from binfocheck.models.transport import HttpResponse
@@ -35,6 +41,45 @@ def extraction_registry() -> ResourceRegistry:
         {
             ("t03-smoke-prompt", "1"): (FIXTURES / "resources/prompt.txt").read_bytes(),
             ("t04-decompose-output", "1"): raw_schema,
+        }
+    )
+
+
+def decomposition_state() -> dict[str, JsonValue]:
+    return {
+        "source": {
+            "text": "**Ja, grundsätzlich dürfen Sie mit Diabetes Auto fahren** **.**",
+            "start": 0,
+            "end": 63,
+            "unit_ids": ["unit-1"],
+        }
+    }
+
+
+def bind_decomposition_state(store: MemoryStore, request: GenerationRequest) -> GenerationRequest:
+    raw = canonical(decomposition_state())
+    assert (
+        store.put_artifact(
+            ArtifactPayload(
+                ref=ArtifactRef(
+                    id="t04-decomposition-state",
+                    storage_key="synthetic/t04/state",
+                    sha256=digest(raw),
+                    media_type="application/json",
+                    access="shareable_fixture",
+                ),
+                content_base64=base64.b64encode(raw).decode(),
+            )
+        ).error
+        is None
+    )
+    return request.model_copy(
+        update={
+            "input_artifact_ids": ("t04-decomposition-state",),
+            "settings": Settings(
+                version=request.settings.version,
+                values={"state_artifact_id": "t04-decomposition-state"},
+            ),
         }
     )
 
@@ -77,6 +122,11 @@ def envelope(value: dict[str, JsonValue]) -> dict[str, JsonValue]:
     }
 
 
+def guided_valid(schema: dict[str, JsonValue], value: dict[str, JsonValue]) -> bool:
+    validator = cast(Validator, Draft202012Validator(schema))
+    return next(validator.iter_errors(value), None) is None
+
+
 def test_guidance_copy_replaces_only_nonblank_patterns() -> None:
     schema = canonical_schema()
     guidance = xgrammar_schema(schema)
@@ -106,7 +156,7 @@ def test_guidance_copy_replaces_only_nonblank_patterns() -> None:
     assert guided_anchor_properties["source_unit_ids"] == anchor_properties["source_unit_ids"]
 
 
-def test_v4_prepares_compatible_wire_schema_but_retains_canonical_resource() -> None:
+def test_v5_prepares_coherent_wire_schema_but_retains_canonical_resource() -> None:
     raw_schema = SCHEMA_PATH.read_bytes()
     registry = extraction_registry()
     with MemoryStore() as store:
@@ -118,14 +168,17 @@ def test_v4_prepares_compatible_wire_schema_but_retains_canonical_resource() -> 
                 )
             }
         )
+        request = bind_decomposition_state(store, request)
         prepared = prepare(request, config, registry, store)
         response_format = object_value(prepared.body["response_format"])
         json_schema = object_value(response_format["json_schema"])
-        assert json_schema["schema"] == xgrammar_schema(canonical_schema())
+        assert json_schema["schema"] == decomposition_schema(
+            canonical_schema(), decomposition_state()
+        )
         assert base64.b64decode(prepared.resource_bytes_base64["schema"]) == raw_schema
 
         historical = LocalGenerationConfig(
-            version="3",
+            version="4",
             runtime_manifest_sha256=digest(MANIFEST),
         )
         historical_request = request.model_copy(
@@ -138,7 +191,7 @@ def test_v4_prepares_compatible_wire_schema_but_retains_canonical_resource() -> 
         historical_prepared = prepare(historical_request, historical, registry, store)
         historical_format = object_value(historical_prepared.body["response_format"])
         historical_json_schema = object_value(historical_format["json_schema"])
-        assert historical_json_schema["schema"] == canonical_schema()
+        assert historical_json_schema["schema"] == xgrammar_schema(canonical_schema())
         assert historical_prepared.work_key != prepared.work_key
 
 
@@ -153,6 +206,7 @@ def test_adapter_validates_guided_output_against_canonical_schema() -> None:
                 )
             }
         )
+        request = bind_decomposition_state(store, request)
         value = candidate("   ", "Zitat")
         transport = LocalDouble(HttpResponse(canonical(envelope(value)), 200))
         result = LocalVllmGenerationModel(
@@ -162,7 +216,63 @@ def test_adapter_validates_guided_output_against_canonical_schema() -> None:
         sent = object_value(parse(transport.calls[0]))
         response_format = object_value(sent["response_format"])
         guided = object_value(response_format["json_schema"])
-        assert guided["schema"] == xgrammar_schema(canonical_schema())
+        assert guided["schema"] == decomposition_schema(canonical_schema(), decomposition_state())
+
+
+@pytest.mark.parametrize(
+    "state",
+    [None, {}, {"source": {}}, {"source": {"unit_ids": []}}],
+)
+def test_decomposition_guidance_fails_closed_without_source_units(state: JsonValue) -> None:
+    with pytest.raises(ModelError, match="local_guidance_unavailable"):
+        decomposition_schema(canonical_schema(), state)
+
+
+def test_decomposition_guidance_encodes_both_coherent_branches() -> None:
+    schema = decomposition_schema(canonical_schema(), decomposition_state())
+    resolved = candidate(
+        "Grundsätzlich dürfen Personen mit Diabetes Auto fahren.",
+        "Ja, grundsätzlich dürfen Sie mit Diabetes Auto fahren",
+    )
+    candidates = resolved["candidates"]
+    assert isinstance(candidates, list)
+    first = object_value(candidates[0])
+    first_anchor = object_value(first["anchor"])
+    first_anchor["start"] = None
+    first_anchor["end"] = None
+    assert guided_valid(schema, resolved)
+    assert guided_valid(
+        schema, {"status": "unresolved", "candidates": [], "reason_code": "cannot_extract"}
+    )
+    assert guided_valid(
+        schema, {"status": "unresolved", "candidates": [], "reason_code": "candidate_limit"}
+    )
+
+    invalid_values: tuple[dict[str, JsonValue], ...] = (
+        {**resolved, "status": "unresolved"},
+        {**resolved, "reason_code": "cannot_extract"},
+        {"status": "candidates", "candidates": [], "reason_code": "none"},
+        {"status": "unresolved", "candidates": [], "reason_code": "none"},
+    )
+    for invalid in invalid_values:
+        assert not guided_valid(schema, invalid)
+
+
+def test_decomposition_guidance_uses_exact_quote_location_path() -> None:
+    schema = decomposition_schema(canonical_schema(), decomposition_state())
+    value = candidate("Behauptung.", "grundsätzlich")
+    candidates = value["candidates"]
+    assert isinstance(candidates, list)
+    anchor = object_value(object_value(candidates[0])["anchor"])
+    anchor["start"] = None
+    anchor["end"] = None
+    assert guided_valid(schema, value)
+
+    anchor["start"], anchor["end"] = 0, 18
+    assert not guided_valid(schema, value)
+    anchor["start"], anchor["end"] = None, None
+    anchor["source_unit_ids"] = ["invented-unit"]
+    assert not guided_valid(schema, value)
 
 
 @pytest.mark.parametrize(

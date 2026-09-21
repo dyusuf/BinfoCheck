@@ -595,3 +595,31 @@ Both shared BinfoNet vLLM services were restored and passed GET model checks;
 Ollama remained active and task-local port 8004 is free. T04 and T05 remain
 integration-blocked by genuine contract-valid F output, rather than xgrammar's
 former multi-character-string rejection.
+
+### Offline coherent F guidance — 21 September 2026
+
+No server, generation, Jev, gate or T05 call was authorized or performed. Local
+configuration v5 preserves the exact canonical decomposition schema and strict
+post-generation validation. Its provider-only guidance schema now exposes the
+coherence rules that were previously present only in Pydantic: `status=candidates`
+requires 1–4 candidates with `reason_code=none`; `status=unresolved` requires no
+candidates and an explicit `cannot_extract` or `candidate_limit` reason.
+
+For every F anchor, guidance restricts `source_unit_ids` to IDs supplied in the
+immutable source state and fixes `start` and `end` to null. The versioned F prompt
+requires a verbatim contiguous quote and the existing locator alone derives its
+absolute offsets. It continues to reject missing, ambiguous or altered quotes;
+the change does not repair model output or weaken location validation. Extraction
+resource bundle v4 changes only that F prompt; D remains v3 and all other resources
+remain byte-identical to bundle v3.
+
+The pinned vLLM 0.19.0/xgrammar 0.2.3 offline protocol/compiler check, with sockets
+blocked and no engine or weights, accepts realistic multi-character German values
+in the coherent candidate branch and both explicit unresolved reasons. It rejects
+the saved v4 combination of unresolved plus candidates, numeric anchor offsets,
+unknown source-unit IDs and malformed structure. Canonical validation remains
+necessary and still rejects whitespace-only strings. Historical v1–v4 preparation,
+replay and all saved live evidence remain unchanged. A fresh v5 manifest-bound gate
+requires separate authorization.
+Malformed or missing F source-unit state fails before dispatch; v5 never silently
+falls back to the weaker v4 guidance schema.

@@ -21,7 +21,7 @@ from binfocheck.domain.text import ArtifactRef
 from .config import MODELS, LocalGenerationConfig, ModelAdapterConfig, config_version
 from .errors import ModelError, failure, require
 from .json import canonical, digest, object_value, parse, text_value
-from .local_guidance import xgrammar_schema
+from .local_guidance import decomposition_schema, xgrammar_schema
 from .local_runtime import require_structured_runtime
 from .receipt import ModelReceipt, PreparedRequest, role_id
 from .resources import ModelResources, resolve, schema_resource
@@ -201,7 +201,11 @@ def prepare(
             "max_output_tokens": config.max_output_tokens,
         }
         if isinstance(config, LocalGenerationConfig):
-            guidance_schema = xgrammar_schema(schema) if config.version == "4" else schema
+            guidance_schema = schema
+            if config.version == "4":
+                guidance_schema = xgrammar_schema(schema)
+            elif config.version == "5":
+                guidance_schema = decomposition_schema(schema, state)
             body = {
                 "model": request.requested_model_id,
                 "messages": [

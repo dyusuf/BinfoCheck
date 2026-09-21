@@ -344,6 +344,15 @@ locate the returned quote. Execution stopped with zero Claims, no H/I or T05, tw
 Jev calls, one local generation and zero retries. Offline terminal replay passed.
 Check 3 remains blocked on contract-valid F output; the grammar-string blocker is
 closed.
+The next offline iteration versions local generation to v5 and extraction resources
+to v4. Provider guidance now encodes the two canonical decomposition branches,
+restricts anchor unit IDs to the supplied F state and requires null generated
+offsets so code locates exact quotes in immutable source text. The F prompt states
+the same rules. The canonical schema, Pydantic coherence validator, exact locator,
+B/D/H/T05 semantics and thresholds are unchanged. Pinned xgrammar tests accept
+coherent resolved/unresolved outputs and reject the saved v4 incoherent shape and
+numeric offsets. No live call occurred; Check 3 remains blocked pending a separately
+authorized v5 gate.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction
