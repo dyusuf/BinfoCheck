@@ -47,5 +47,8 @@ jobs:
       - name: Check schema drift
         run: uv run --offline --locked python -m binfocheck.domain.export_schemas --check
 
+      - name: Check README task status
+        run: uv run --offline --locked python scripts/update-readme-status.py --check
+
       - name: Check whitespace
         run: git diff --check

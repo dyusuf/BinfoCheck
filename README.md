@@ -35,4 +35,29 @@ AI observation
 
 ## Current status
 
-The MVP is under development. The current implementation establishes the shared contracts and infrastructure required by the later measurement pipeline.
+The MVP is under development. Task states below are a generated public summary of the
+official acceptance state maintained in the implementation plan.
+
+<!-- TASK-STATUS:START -->
+| Task | Component | Status |
+|---|---|---|
+| T00 | Contracts, scaffold and CI | ✅ Accepted |
+| T11A | Shared storage | ✅ Accepted |
+| T01 | Google AI Mode acquisition | ✅ Accepted |
+| T02 | Answer indexing/context | ✅ Accepted |
+| T03 | Model adapters | 🟡 Integration blocked |
+| T04 | Claim extraction | 🟡 Integration blocked |
+| T05 | Citation mapping | 🟡 Integration blocked |
+| T06 | diabinfo.de corpus | ✅ Accepted |
+| T07 | Hybrid retrieval | ✅ Accepted |
+| T08 | Candidate verification | ⚪ Not started |
+| T09 | Alternative-source analysis | ⚪ Not started |
+| T10 | Evidence classification | ⚪ Not started |
+| T11B | Pipeline execution | ⚪ Not started |
+| T12 | API | ⚪ Not started |
+| T13 | Editorial dashboard | ⚪ Not started |
+| T14 | End-to-end/deployment | ⚪ Not started |
+
+Detailed acceptance criteria and evidence are maintained in the
+[implementation plan](docs/implementation-plan.md).
+<!-- TASK-STATUS:END -->

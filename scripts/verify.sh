@@ -9,5 +9,6 @@ uv run --offline --locked ruff check .
 uv run --offline --locked ruff format --check .
 uv run --offline --locked pyright
 uv run --offline --locked python -m binfocheck.domain.export_schemas --check
+uv run --offline --locked python scripts/update-readme-status.py --check
 git diff --check
 git diff --cached --check

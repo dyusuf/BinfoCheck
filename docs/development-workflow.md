@@ -145,6 +145,22 @@ then merge it automatically only after the active `main` ruleset is satisfied,
 including the required `Offline quality checks` and up-to-date branch requirement.
 Draft PRs, other authors, forks and non-`codex/*` branches are never auto-enabled.
 
+### Task-status synchronization
+
+The implementation plan remains authoritative for task acceptance state. When a task's
+official status changes there, update the concise machine-readable mirror in
+`docs/task-status.json`, then run:
+
+```sh
+python scripts/update-readme-status.py
+```
+
+The script updates only the marked task-status block in `README.md`. Statuses are
+limited to `not_started`, `in_progress`, `offline_passed`,
+`integration_blocked` and `accepted`. Do not infer them from test counts, CI or PR
+state. `scripts/verify.sh` and hosted CI run the script with `--check` and fail if
+the README table is stale or the status file is invalid.
+
 ## Handoffs
 
 Overwrite `/tmp/binfocheck-<task>-handoff.txt`; do not append stale history.

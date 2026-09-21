@@ -16,7 +16,9 @@ task block only dependent work.
 
 Statuses: `not_started`, `in_progress`, `offline_passed`, `integration_blocked`,
 `accepted`. Accept a task only after its required checks pass. Record the assignee,
-schema/rubric versions, blockers and check results in the handoff.
+schema/rubric versions, blockers and check results in the handoff. This plan remains
+authoritative for acceptance state; `task-status.json` is only its concise
+machine-readable mirror used to generate the README progress table.
 
 Resolve [D01–D10](architecture.md#8-decision-register) under the architecture's decision
 rule. Use recorded task/user authorization, not an assumed approval role. Propose any
