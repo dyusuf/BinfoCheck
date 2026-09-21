@@ -1,6 +1,6 @@
 # BinfoCheck — Beyond MVP
 
-**Version:** 1.2 · 20 September 2026  
+**Version:** 1.3 · 21 September 2026  
 **Status:** Backlog, not a schedule or part of [MVP completion](mvp.md#8-completion-criteria).
 
 The MVP supplies observations and editor decisions for later evaluation. Those
@@ -52,7 +52,36 @@ treating similarity or reported retrieval as proof of causal use.
 
 These additions must not silently change the meaning of existing MVP categories.
 
-## 3. Product expansion
+## 3. Search-demand-backed prompt benchmarking
+
+Build future benchmark sets from observable search demand rather than relying only
+on manually authored questions.
+
+```text
+Google/DataForSEO keywords
+→ search-volume estimates
+→ People Also Ask questions
+→ intent clustering
+→ representative benchmark prompts
+→ multi-provider AI observations
+→ BinfoCheck evaluation
+```
+
+Preserve provenance for every benchmark item, including the source keyword or
+question, source type, country, language, capture date and available demand estimate.
+Keep a clear distinction between an observed search query, a People Also Ask question
+and a derived benchmark prompt; none should be presented as a private AI-user query
+unless it was actually observed as such.
+
+Use search demand to prioritize and, where justified, weight benchmark coverage.
+Cluster near-duplicate questions by intent, select representative prompts, and support
+country- and language-specific benchmark sets. Re-run stable benchmark sets over time
+to measure change and compare sources or competitors on high-demand intents.
+
+Treat search-volume estimates and PAA as demand evidence, not as exact measurements
+of how often a specific question is asked in ChatGPT or another AI system.
+
+## 4. Product expansion
 
 After reviewing measurement quality, consider more AI-search products, languages,
 corpora, scheduled longitudinal monitoring, alerts and reporting.
@@ -62,7 +91,7 @@ A CMS client does not imply automatic rewriting or publication. Increase scale,
 deployment complexity or vendor choices only when usage and measured limitations
 justify them.
 
-## 4. Boundary with the MVP
+## 5. Boundary with the MVP
 
 Basic tests, source traceability, visible failures and human review remain required
 now. Systematic comparisons and calibration are deferred, not unnecessary.
