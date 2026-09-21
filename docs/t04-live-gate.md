@@ -562,3 +562,36 @@ canonical normalization. V1–v3 request construction/replay remains versioned a
 unchanged; only v4 can dispatch after a future fresh manifest binding. T04 retains
 zero accepted Claims and T05 remains blocked until a separately authorized live
 gate succeeds.
+
+### Fresh v4 gate on the original first target — 21 September 2026
+
+The user authorized one fresh manifest-bound gate on retained target `[0,63)`,
+with at most five Jev calls (USD 0.05 total), one local Qwen generation,
+concurrency one, 60-second timeouts and zero retries. A new actual-process runtime
+manifest bound vLLM 0.19.0 V1, FP16, TRITON_ATTN, explicit xgrammar and the pinned
+Qwen revision to local configuration v4. The schema copy sent for guidance used
+the reviewed compatibility transformation; the exact canonical schema remained
+the mandatory post-generation contract.
+
+B returned `factual` (0.97) and D v3 returned `clear` (1.0). F then returned HTTP
+200 with realistic multi-character German text, demonstrating that the xgrammar
+`\\S` compatibility blocker is gone. The output still failed unchanged T04
+validation: it combined `status=unresolved`, `reason_code=none` and one candidate,
+which violates `Decomposed` coherence. Its candidate and required-support anchors
+also declared `[0,18)` for a much longer quote and therefore would fail exact
+location validation if the coherence check passed. Execution stopped immediately.
+No H or I ran, no Claim was accepted, no output was repaired, and T05 was not run.
+
+Actual use was two Jev calls (2,041 input and 98 output tokens; estimated USD
+0.000085722, billed cost unknown) and one local Qwen call (575 prompt and 268
+completion tokens; external provider cost USD 0). There were zero retries and no
+uncertain dispatch. Close/reopen replay with network, DNS and model operations
+blocked passed twice for all three saved decisions and complete target accounting.
+The private evidence is
+`/mnt/workspace/BinfoCheck-data/t04-qwen-v4-first-20260921T100748Z/`; its runtime
+manifest SHA-256 is
+`d519d722ab5c71082047f50e50c610c9d8e98cf8ff11f0a095d864f9028a750e`.
+Both shared BinfoNet vLLM services were restored and passed GET model checks;
+Ollama remained active and task-local port 8004 is free. T04 and T05 remain
+integration-blocked by genuine contract-valid F output, rather than xgrammar's
+former multi-character-string rejection.

@@ -531,6 +531,18 @@ B/F/H/T05 and uncertainty handling are unchanged. See the
 [review findings and verification limits](t04-stage-d-review.md). No live calls
 are authorized; historical unresolved results and the Claim integration blocker remain.
 
+**D07 T04 v4 first-target live gate — 21 September 2026:** the bounded gate used
+a new actual-process manifest and local configuration v4. B=factual and D v3=clear.
+F returned HTTP 200 with realistic multi-character strings, so the provider-only
+xgrammar compatibility handling worked in live generation while the canonical
+schema remained authoritative. The unchanged `Decomposed` contract rejected the
+response because `status=unresolved`, `reason_code=none` and a nonempty candidate
+are incoherent; the saved `[0,18)` anchors also do not locate their longer quote.
+The gate stopped with zero Claims after two Jev calls and one local generation;
+no H/I or T05 ran and offline replay passed. The remaining blocker is useful,
+contract-valid F output. No threshold, prompt, extraction policy or T05 behavior
+changed.
+
 **D07 T04 Stage-D clarification — 20 September 2026:** the user authorized an
 offline versioned ambiguity fix after both retained gates returned `unresolved`.
 New composition defaults to `t04-extraction-resources/2`, pinned by

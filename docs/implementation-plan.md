@@ -329,6 +329,15 @@ malformed structure; whitespace-only values remain rejected by mandatory canonic
 validation. Historical v1–v3 preparation/replay and live evidence are preserved.
 No model, Jev, server or T05 call occurred, so Check 3 remains blocked pending a
 separately authorized v4 live gate.
+The subsequently authorized v4 gate passed B=factual and D v3=clear. Its single
+local F call returned HTTP 200 and realistic multi-character German text, proving
+the xgrammar compatibility fix on the pinned runtime. The unchanged T04 contract
+rejected the internally inconsistent decomposition (`unresolved` with
+`reason_code=none` and a nonempty candidate); its saved anchor offsets also do not
+locate the returned quote. Execution stopped with zero Claims, no H/I or T05, two
+Jev calls, one local generation and zero retries. Offline terminal replay passed.
+Check 3 remains blocked on contract-valid F output; the grammar-string blocker is
+closed.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction
