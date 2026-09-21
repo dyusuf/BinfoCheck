@@ -60,14 +60,13 @@ def test_generator_updates_and_check_detects_drift(tmp_path: Path) -> None:
     assert updated.returncode == 0, updated.stdout + updated.stderr
 
     readme = (tmp_path / "README.md").read_text(encoding="utf-8")
-    assert (
+    t04_row = (
         "| T04 | [Claim extraction](docs/implementation-plan.md#t04) | "
         "🟡 Integration blocked |"
-    ) in readme
-    assert (
-        "| T07 | [Hybrid retrieval](docs/implementation-plan.md#t07) | ✅ Accepted |"
-        in readme
     )
+    assert t04_row in readme
+    t07_row = "| T07 | [Hybrid retrieval](docs/implementation-plan.md#t07) | ✅ Accepted |"
+    assert t07_row in readme
     assert "Detailed acceptance criteria and evidence" not in readme
     assert run(tmp_path, "--check").returncode == 0
 
