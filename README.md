@@ -13,12 +13,6 @@ A match does **not** prove that the AI used that website as its source. BinfoChe
 
 The MVP is designed to prove one core loop:
 
-**AI observation → citation-first check → claim extraction → corpus retrieval → distinctive-overlap evidence → editor verification.**
-
-**First pilot:** German Google AI Mode results compared with selected [diabinfo.de](https://www.diabinfo.de/) content.
-
-## Workflow
-
 ```text
 AI observation
 → citation-first check
@@ -27,6 +21,8 @@ AI observation
 → distinctive-overlap evidence
 → editor verification
 ```
+
+**First pilot:** German Google AI Mode results compared with selected [diabinfo.de](https://www.diabinfo.de/) content.
 
 ## Documentation
 
