@@ -1,7 +1,8 @@
 # BinfoCheck — Implementation Plan
 
 **Version:** 1.4 · 19 September 2026  
-**Status:** T00 and T11A accepted. T01 live and offline acceptance passed. T02 is accepted and merged; T06 five-page textual corpus live acceptance passed under the approved D06 visual-limitation rule; PR #7 is merged.
+**Status:** T00, T01, T02, T04, T06, T07 and T11A are accepted. T04 has genuine
+saved Claim evidence from the retained real target; T05 remains a separate task.
 
 [MVP](mvp.md) owns scope; [Architecture](architecture.md) owns contracts and technical
 rules; this plan assigns work. [Beyond MVP](beyond-mvp.md) lists deferred work.
@@ -228,7 +229,7 @@ in the draft PR and final delivery handoff. No new provider call is authorized.
 <a id="t03"></a>
 ### T03 — Decision and generation adapters
 
-**Build:** T00 + request/response doubles. **Integrate:** T11A + Jev + hosted LLM.  
+**Build:** T00 + request/response doubles. **Integrate:** T11A + Jev + selected GenerationModel.
 **Decisions:** D04 + live budget. **Tools / files:** selected HTTP/SDK integrations;
 `models/decision.py`, `models/generation.py`, adapter tests/configuration.
 
@@ -251,14 +252,16 @@ with exactly one authorized request and zero retries using `jev-1.13.0`.
 OpenAI Responses `gpt-4.1-mini-2025-04-14` remains offline-tested only: live
 integration is blocked because credentials/API access are unavailable, and the
 user explicitly skipped that live smoke. T03 remains partially integrated, with
-OpenAI as an outstanding integration dependency; it is not fully live-accepted.
+OpenAI as the then-outstanding integration dependency; it was not fully live-accepted.
+The 20 September T04 assignment supersedes MVP OpenAI generation with local Qwen/vLLM
+under D04; historical adapter evidence remains unchanged.
 **Handoff:** [T03 files, checks, frozen smoke payloads and limitations](t03-handoff.md).
 
 <a id="t04"></a>
 ### T04 — Claimify-inspired ClaimExtractor
 
 **Build:** T00, T02, T03 contracts/doubles. **Integrate:** T01, T03 live, T11A.  
-**Decisions:** D07. **Tools / files:** code/Jev/hosted LLM per Architecture Section 4;
+**Decisions:** D07. **Tools / files:** code/Jev/selected GenerationModel per Architecture Section 4;
 `claims/`, `prompts/extraction/`, `rubrics/extraction/`, extraction tests.
 
 Implement selection, ambiguity handling, clarification and decomposition. Code
@@ -275,10 +278,91 @@ claims and separate rejected/unresolved issues.
 
 **Stop:** citation fidelity, corpus matching or claims of reproduced Claimify quality.
 
-**Status:** Offline implementation and acceptance fixtures completed. Live integration
-is blocked by unavailable GenerationModel access and absent request-bound authorization.
-Check 3 remains outstanding; T04 is not fully accepted. Shared contracts and T03 remain
-unchanged; extraction-only D07 resources are selected.
+**Status — 21 September 2026: accepted.** Local Qwen3-4B-Instruct-2507/vLLM adapter implemented
+through T03/T04, with unchanged extraction policy and shared contracts.
+The subsequent offline D07 fix versions only the D ambiguity rubric to v2, with
+regression coverage for both gate sentences and necessary pronoun resolution.
+The subsequent Jev skill review adds D v3 field targeting and exact-heading
+regression coverage; see [review](t04-stage-d-review.md).
+V1/v2/v3 and both historical runs are preserved. Both historical v1 gates
+([0,63) and [2155,2338)) saved real B=factual and
+D=unresolved decisions, then correctly stopped with one unresolved issue and no
+Claim per run. Those two historical gates used four Jev calls and no local F/H
+execution.
+A fresh authorized v3 gate on the original first target subsequently returned
+B=factual and D=clear, then failed local F output-schema validation. It preserved
+zero Claims and one failed issue, with two Jev calls and one local generation,
+zero retries, and network/model-disabled terminal replay passed. No G/H or T05
+execution occurred; the current blocker is local F schema compliance. This consumes
+the authorized v3 gate; no further live call is authorized.
+The offline runtime review found missing guided-decoding enforcement in vLLM
+0.10.2 V0. The versioned adapter fix now blocks V0 before dispatch and selects
+V1/XFORMERS_VLLM_V1 with a matching runtime manifest. Offline regressions cover
+installed V1 grammar attachment and masking. An initial GET-only V1 startup failed
+before readiness:
+9.72 GiB free was below the configured 20.63 GiB requirement; the historical V0
+worker remained after its listener was stopped. No restart or HTTP/model call
+followed under that assignment. After the user authorized the identified fix, the
+exact orphaned worker was stopped and the unchanged V1 runtime passed GPU/server and
+GET-only checks. A new v2 runtime manifest passes `require_structured_runtime`; no
+generation/Jev call or T04/T05 execution occurred. See the gate report for exact
+evidence. Historical preparation/replay and evidence are preserved. A separately
+authorized 21 September gate then passed B/D but its single F request crashed the
+V1 engine: XFormers had no operator supporting the V100 and paged-attention inputs.
+HTTP 500 and the failed audit are preserved; no retry/H/T05 occurred. GET-only startup
+acceptance did not establish inference compatibility. A genuine Claim remains
+outstanding; the runtime inference blocker is open.
+The authorized v3 runtime implementation selects vLLM 0.19.0 V1/TRITON_ATTN and
+explicit xgrammar, with a separate dependency lock and version-aware live guards.
+Historical v1/v2 preparation/replay are retained. Offline checks cover the exact F
+schema, grammar attachment, token masking and failure without backend fallback.
+No new live call is included in this implementation; inference acceptance requires
+a new manifest-bound F-only adapter diagnostic before a fresh authorized Jev gate.
+The subsequent authorized F-only v3 diagnostic completed GPU generation with
+HTTP 200 and passed adapter schema validation, but its saved output fails the
+unchanged T04 decomposition contract (`invalid_unresolved_output`). Offline
+controls also show that the exact xgrammar path rejects multi-character claim
+and quote strings permitted by the schema. The attention-kernel blocker is
+resolved for this request; usable F output remains blocked. One local call,
+zero Jev calls and no G/H/I or T05 execution; evidence and offline replay are
+preserved in the gate report. Investigate grammar compatibility before another
+live call. At that point T04 remained `integration_blocked`.
+The subsequent offline compatibility fix versions local generation to v4 and
+changes only the schema copy sent to xgrammar: exact nonblank patterns become
+`minLength: 1`. The canonical schema resource, prompt and post-generation validation
+are unchanged. Pinned installed-runtime tests now accept realistic multi-character
+German claims/quotes and complete sentences while rejecting empty strings and
+malformed structure; whitespace-only values remain rejected by mandatory canonical
+validation. Historical v1–v3 preparation/replay and live evidence are preserved.
+No model, Jev, server or T05 call occurred, so Check 3 remains blocked pending a
+separately authorized v4 live gate.
+The subsequently authorized v4 gate passed B=factual and D v3=clear. Its single
+local F call returned HTTP 200 and realistic multi-character German text, proving
+the xgrammar compatibility fix on the pinned runtime. The unchanged T04 contract
+rejected the internally inconsistent decomposition (`unresolved` with
+`reason_code=none` and a nonempty candidate); its saved anchor offsets also do not
+locate the returned quote. Execution stopped with zero Claims, no H/I or T05, two
+Jev calls, one local generation and zero retries. Offline terminal replay passed.
+Check 3 remains blocked on contract-valid F output; the grammar-string blocker is
+closed.
+The next offline iteration versions local generation to v5 and extraction resources
+to v4. Provider guidance now encodes the two canonical decomposition branches,
+restricts anchor unit IDs to the supplied F state and requires null generated
+offsets so code locates exact quotes in immutable source text. The F prompt states
+the same rules. The canonical schema, Pydantic coherence validator, exact locator,
+B/D/H/T05 semantics and thresholds are unchanged. Pinned xgrammar tests accept
+coherent resolved/unresolved outputs and reject the saved v4 incoherent shape and
+numeric offsets. No live call occurred in that implementation step.
+The subsequently authorized fresh v5 gate used the retained first target and a new
+manifest-bound run/store. B=`factual`, D v3=`clear`, F produced one coherent
+candidate with an exact immutable-source location, and H returned `faithful`,
+`atomic` and `self_contained`, each with a unique maximum. I persisted genuine
+Claim `claim-2370b9001cd29251fa839f0ed558b73b3594754200aae7a3b0187db5cac2ba40`
+with span `[0,63)` and no issues. The gate used five Jev calls and one local Qwen
+generation, zero retries and no uncertain dispatch; network/model-disabled replay
+passed twice. Check 3 is satisfied and T04 is accepted. T05 was not executed or
+modified and remains a separate task. Detailed bounds and evidence are in the
+[gate report](t04-live-gate.md).
 
 <a id="t05"></a>
 ### T05 — Citation mapping and routing

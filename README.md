@@ -46,7 +46,7 @@ official acceptance state maintained in the [implementation plan](docs/implement
 | T01 | [Google AI Mode acquisition](docs/implementation-plan.md#t01) | ✅ Accepted |
 | T02 | [Answer indexing/context](docs/implementation-plan.md#t02) | ✅ Accepted |
 | T03 | [Model adapters](docs/implementation-plan.md#t03) | 🟡 Integration blocked |
-| T04 | [Claim extraction](docs/implementation-plan.md#t04) | 🟡 Integration blocked |
+| T04 | [Claim extraction](docs/implementation-plan.md#t04) | ✅ Accepted |
 | T05 | [Citation mapping](docs/implementation-plan.md#t05) | 🟡 Integration blocked |
 | T06 | [diabinfo.de corpus](docs/implementation-plan.md#t06) | ✅ Accepted |
 | T07 | [Hybrid retrieval](docs/implementation-plan.md#t07) | ✅ Accepted |

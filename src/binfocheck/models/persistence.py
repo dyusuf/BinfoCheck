@@ -18,9 +18,11 @@ from binfocheck.domain.runs import RunManifest
 from binfocheck.domain.storage import ArtifactPayload, ArtifactStore, IdRequest, RecordStore
 from binfocheck.domain.text import ArtifactRef
 
-from .config import CONFIG_VERSION, MODELS, ModelAdapterConfig
+from .config import MODELS, LocalGenerationConfig, ModelAdapterConfig, config_version
 from .errors import ModelError, failure, require
 from .json import canonical, digest, object_value, parse, text_value
+from .local_guidance import decomposition_schema, xgrammar_schema
+from .local_runtime import require_structured_runtime
 from .receipt import ModelReceipt, PreparedRequest, role_id
 from .resources import ModelResources, resolve, schema_resource
 from .transport import ALLOWED_HEADERS, HttpResponse, ModelTransport
@@ -111,11 +113,7 @@ def prepare(
 ) -> PreparedRequest:
     if request.requested_model_id != MODELS[config.provider]:
         raise ModelError("requested_model_mismatch")
-    if (
-        request.settings.version.name != CONFIG_VERSION.name
-        or request.settings.version.version != CONFIG_VERSION.version
-        or request.settings.version.sha256 is not None
-    ):
+    if request.settings.version != config_version(config):
         raise ModelError("unsupported_config_version")
     settings = request.settings.values
     if set(settings) != {"state_artifact_id"}:
@@ -171,7 +169,7 @@ def prepare(
             },
         }
     else:
-        if config.provider != "openai" or request.rubric_version is not None:
+        if config.provider not in ("openai", "vllm") or request.rubric_version is not None:
             raise ModelError("unsupported_request")
         prompt = resource("prompt", resolve(resources, request.prompt_version))
         try:
@@ -202,6 +200,35 @@ def prepare(
             "temperature": 0,
             "max_output_tokens": config.max_output_tokens,
         }
+        if isinstance(config, LocalGenerationConfig):
+            guidance_schema = schema
+            if config.version == "4":
+                guidance_schema = xgrammar_schema(schema)
+            elif config.version == "5":
+                guidance_schema = decomposition_schema(schema, state)
+            body = {
+                "model": request.requested_model_id,
+                "messages": [
+                    {"role": "system", "content": instructions},
+                    {"role": "user", "content": body["input"]},
+                ],
+                "response_format": {
+                    "type": "json_schema",
+                    "json_schema": {
+                        "name": "t04_" + digest(canonical(schema))[:32],
+                        "strict": True,
+                        "schema": guidance_schema,
+                    },
+                },
+                "temperature": 0,
+                "top_p": 1,
+                "seed": 0,
+                "max_tokens": config.max_output_tokens,
+                "n": 1,
+                "stream": False,
+                "tools": [],
+                "tool_choice": "none",
+            }
     if len(canonical(body)) > config.max_request_bytes:
         raise ModelError("request_too_large")
     return PreparedRequest(
@@ -233,7 +260,8 @@ def usage_metadata(
             None,
             "estimate unavailable",
         )
-    inputs, outputs = count(raw.get("input_tokens")), count(raw.get("output_tokens"))
+    inputs = count(raw.get("prompt_tokens" if provider == "vllm" else "input_tokens"))
+    outputs = count(raw.get("completion_tokens" if provider == "vllm" else "output_tokens"))
     usage = Available[Usage](
         availability=Availability.INCOMPLETE,
         data=Usage(
@@ -243,6 +271,9 @@ def usage_metadata(
     )
     estimate: float | None = None
     basis = "estimate unavailable"
+    if provider == "vllm":
+        basis = "Local inference: no external provider charge; infrastructure cost unknown"
+        estimate = 0.0
     if provider == "jev" and inputs is not None:
         estimate = inputs * 0.042 / 1_000_000
         basis = "estimate: input tokens * USD 0.042/M; docs.typesafe.ai/models"
@@ -270,7 +301,7 @@ def normalize(
     finished: datetime,
 ) -> tuple[DecisionRecord, dict[str, JsonValue] | None, dict[str, JsonValue]]:
     from .decision import decision_result
-    from .generation import generation_output
+    from .generation import generation_output, local_generation_output
 
     request = prepared.request
     body: dict[str, JsonValue] = {}
@@ -316,7 +347,11 @@ def normalize(
             result = decision_result(request, body)
         else:
             schema = schema_resource(base64.b64decode(prepared.resource_bytes_base64["schema"]))
-            structured = generation_output(schema, body)
+            structured = (
+                local_generation_output(schema, body)
+                if prepared.config.provider == "vllm"
+                else generation_output(schema, body)
+            )
             result = GenerationResult(
                 output_schema=request.output_schema,
                 structured_output=structured,
@@ -369,7 +404,7 @@ class ModelAdapter:
         clock: Clock | None = None,
     ) -> None:
         self.records, self.artifacts, self.resources = records, artifacts, resources
-        self.config = ModelAdapterConfig.model_validate_json(config.model_dump_json())
+        self.config = type(config).model_validate_json(config.model_dump_json())
         if self.provider != self.config.provider:
             raise ModelError("provider_mismatch")
         self.transport, self.clock = transport, clock or SystemClock()
@@ -458,6 +493,19 @@ class ModelAdapter:
                 try:
                     if self.config.budget.request_limit != 1:
                         raise ModelError("request_limit_exhausted")
+                    if isinstance(self.config, LocalGenerationConfig):
+                        manifest = getattr(self.transport, "runtime_manifest", None)
+                        if (
+                            not isinstance(manifest, bytes)
+                            or digest(manifest) != self.config.runtime_manifest_sha256
+                        ):
+                            raise ModelError("local_runtime_manifest_mismatch")
+                        require_structured_runtime(self.config, manifest)
+                        save(
+                            self.artifacts,
+                            artifact_ref(prepared.record_id, "runtime", manifest),
+                            manifest,
+                        )
                     approval = self.transport.check(self.config, outbound, prepared.work_key)
                 except ModelError as caught:
                     preflight_error = caught.detail

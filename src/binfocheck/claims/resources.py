@@ -1,7 +1,7 @@
 """Explicit extraction resource bytes; paths are trusted composition configuration."""
 
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import Field, TypeAdapter
 
@@ -20,8 +20,9 @@ class Entry(Contract):
 
 
 class ExtractionResources:
-    def __init__(self, root: Path) -> None:
-        raw = (root / "prompts/extraction/v1/manifest.json").read_bytes()
+    def __init__(self, root: Path, version: Literal["1", "2", "3", "4"] = "4") -> None:
+        check(version in ("1", "2", "3", "4"), "unsupported_resource_version")
+        raw = (root / f"prompts/extraction/v{version}/manifest.json").read_bytes()
         entries = TypeAdapter(tuple[Entry, ...]).validate_json(raw)
         self.refs: dict[str, VersionRef] = {}
         self.data: dict[str, bytes] = {}
@@ -35,7 +36,9 @@ class ExtractionResources:
                 name=entry.name, version=entry.version, sha256=entry.sha256
             )
             self.data[entry.name] = content
-        self.version = VersionRef(name="t04-extraction-resources", version="1", sha256=digest(raw))
+        self.version = VersionRef(
+            name="t04-extraction-resources", version=version, sha256=digest(raw)
+        )
         self.policy = VersionRef(
             name="t04-extraction-policy", version="1", sha256=digest(canonical(POLICY))
         )

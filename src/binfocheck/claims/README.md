@@ -8,11 +8,17 @@ T03 preparation. Only that module imports provider-specific adapter facilities.
 It does not instantiate a transport, load credentials or grant live authorization.
 
 Load `ExtractionResources(repository_root)` from a trusted checkout containing
-`prompts/extraction/v1/manifest.json`. Supply the SAME immutable adapter configs and
+`prompts/extraction/v3/manifest.json` (only D uses a v3 rubric).
+For historical runs, explicitly load `ExtractionResources(root, version="1")`
+or `version="2"` to match the recorded resource bundle;
+never apply a newer bundle to an older run or overwrite its decisions. Supply the
+SAME immutable adapter configs and
 resource registry to T03 adapters and `T03Models`; the run must pin the composition's
 `configuration`, `prompts`, `rubrics` and model IDs. Use request bytes <=16384, output
-<=512 tokens, retries zero and concurrency one as recorded under D07. No dependency,
-shared contract or T03 change is required.
+<=512 tokens, retries zero and concurrency one as recorded under D07. The local
+generation adapter is selected under D04; shared contracts and extraction policy
+remain unchanged. Only the D ambiguity rubric is versioned to v3 with explicit
+state-field targeting.
 
 Create a diagnostic/reanalysis RunManifest first, then index the saved original in
 that same run with T02. `ExtractionSettings` names the complete T02 index, 1–20 ordered
@@ -109,15 +115,28 @@ checks. Tests deny network and use synthetic answers/model outputs; both T11A ba
 and real T03 adapters with offline transports are exercised. Test outcomes establish
 wiring, invariants and audit behavior, not German extraction accuracy.
 
-OpenAI GenerationModel live access is still unavailable and its T03 smoke was skipped.
-T04 live acceptance is BLOCKED, not bypassed by doubles or another vendor. Later use
-must prepare one retained saved answer and derive a much tighter exact stage/request
-bound with explicit cost/request approval. Each adaptive request requires its exact
-T03 authorization binding. No such authorization is present. No T05/citation mapping,
-retrieval, medical truth checking, benchmark, worker, API or UI work is included.
+MVP generation now uses the explicitly selected local Qwen/vLLM adapter under D04.
+Supply `LocalGenerationConfig` to both that adapter and `T03Models`; use the selected
+Jev and Qwen model IDs in the new run. The runtime-manifest hash participates in
+configuration identity, so the historical OpenAI gate requires a new diagnostic run
+and same-run index. Do not relabel existing claims, decisions or model outputs.
 
-The [bounded live-gate proposal](../../../docs/t04-live-gate.md) freezes one retained
-sentence: at most five Jev calls and one OpenAI call, USD 0.06 total using existing
-per-call allowances. Initial B/D/F requests are prepared offline; exact H requests
-require the actual F output and a later authorization step. This is not permission
-to execute, and does not change extraction policy or the configured adapters.
+The retained [0,63) gate and authorized additional [2155,2338) gate were executed
+with real Jev B/D decisions. Both selected B=factual and D=unresolved, so the
+unchanged extractor correctly stopped before F/H and saved a completed audit with
+one unresolved issue and zero Claims per run. Offline close/reopen,
+model-disabled replay, linked records and original preservation passed. This is a
+genuine unresolved result, not successful Claim integration. T04/T05 acceptance stays
+blocked until an authorized gate produces genuine validated Claim output.
+
+The [live-gate evidence](../../../docs/t04-live-gate.md) records original/follow-up
+scope, actual usage and private artifact locations. The old frozen OpenAI proposal is
+historical; current bounded authorization and selected local model are recorded in
+D04. No citation fidelity, retrieval, medical truth checking, model comparison,
+worker, API or UI work is included.
+
+The authorized fresh v3 gate on the first retained target passed B/D but its one
+local Qwen F response failed the unchanged output schema. It saved F.model_failed
+with zero Claims; G/H and the T05 saved-pair diagnostic were not reached. Failed-F
+and terminal-extraction replay passed offline; both historical v1 runs remain
+unchanged. See [gate evidence](../../../docs/t04-live-gate.md#fresh-v3-gate-on-the-original-first-target--20-september-2026).

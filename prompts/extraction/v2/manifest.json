@@ -1,0 +1,68 @@
+[
+  {
+    "name": "t04-select-factual",
+    "path": "rubrics/extraction/v1/select-factual.json",
+    "sha256": "fe0e99fe941965efb0b90d7079cd30e4561ddfa196bcb6a57ba4a4daa11e267d",
+    "version": "1"
+  },
+  {
+    "name": "t04-ambiguity",
+    "path": "rubrics/extraction/v2/ambiguity.json",
+    "sha256": "aa5f3b2dbc002abff22614220895b94ea046b81c7ec2725c86f6a923ed8e9a21",
+    "version": "2"
+  },
+  {
+    "name": "t04-faithfulness",
+    "path": "rubrics/extraction/v1/faithfulness.json",
+    "sha256": "a62179c1136e2f879ab7ded1a2cb55a6eff6905f3394cda031866a2750fa8a3b",
+    "version": "1"
+  },
+  {
+    "name": "t04-atomicity",
+    "path": "rubrics/extraction/v1/atomicity.json",
+    "sha256": "22c0472af50703b615b95ef92be8bcbe8f9498e861381c5a9fd4d0816862f6d1",
+    "version": "1"
+  },
+  {
+    "name": "t04-self-containment",
+    "path": "rubrics/extraction/v1/self-containment.json",
+    "sha256": "6db06966b16a6fc83b8ec0bb4c2f629a59a9cfbd2b3eda8a16e49c8c56aea392",
+    "version": "1"
+  },
+  {
+    "name": "t04-mixed",
+    "path": "prompts/extraction/v1/mixed.txt",
+    "sha256": "677ed6ccf5aba49b6c4cf2bfc6ef09d9403d08f084a86dcf65412cc807629b20",
+    "version": "1"
+  },
+  {
+    "name": "t04-mixed-output",
+    "path": "prompts/extraction/v1/mixed.output.schema.json",
+    "sha256": "88afed0cd4a838dec54c73c2401a41e92b1a721dceec1b71738031a1cf734184",
+    "version": "1"
+  },
+  {
+    "name": "t04-clarify",
+    "path": "prompts/extraction/v1/clarify.txt",
+    "sha256": "d927442081c72fc9f1b0e4ec5ca9a8d45d3078fc76803ad094f27c6e7182c305",
+    "version": "1"
+  },
+  {
+    "name": "t04-clarify-output",
+    "path": "prompts/extraction/v1/clarify.output.schema.json",
+    "sha256": "9a1567303dc4f442aea56daea348000a83bd1f18242605aaea75cee02510cdd3",
+    "version": "1"
+  },
+  {
+    "name": "t04-decompose",
+    "path": "prompts/extraction/v1/decompose.txt",
+    "sha256": "72f147892310cc121cc853e160e8d7040c89161f9be015b543b2dbc3b58aec50",
+    "version": "1"
+  },
+  {
+    "name": "t04-decompose-output",
+    "path": "prompts/extraction/v1/decompose.output.schema.json",
+    "sha256": "aebb85e2cb1d56b5fe8bcc250012400c77c05900794e29945c261864e587e729",
+    "version": "1"
+  }
+]

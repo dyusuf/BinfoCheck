@@ -12,7 +12,7 @@ from binfocheck.domain.interfaces import (
 )
 from binfocheck.domain.runs import RunManifest
 from binfocheck.domain.storage import ArtifactStore, IdRequest, RecordStore
-from binfocheck.models.config import CONFIG_VERSION, MODELS, ModelAdapterConfig
+from binfocheck.models.config import MODELS, ModelAdapterConfig, config_version
 from binfocheck.models.errors import ModelError
 from binfocheck.models.persistence import prepare
 from binfocheck.models.receipt import ModelReceipt, role_id
@@ -37,7 +37,9 @@ class T03Models:
         decision_config: ModelAdapterConfig,
         generation_config: ModelAdapterConfig,
     ) -> None:
-        check(decision_config.provider == "jev" and generation_config.provider == "openai")
+        check(
+            decision_config.provider == "jev" and generation_config.provider in ("openai", "vllm")
+        )
         self.records, self.artifacts = records, artifacts
         self.decisions, self.generation, self.resources = decisions, generation, resources
         self.decision_config, self.generation_config = decision_config, generation_config
@@ -115,7 +117,11 @@ class T03Models:
 
     def validate_run(self, run: RunManifest) -> None:
         check(run.configuration == self.configuration, "run_configuration_mismatch")
-        check(set(run.model_ids) == set(MODELS.values()), "run_models_mismatch")
+        check(
+            set(run.model_ids)
+            == {MODELS[self.decision_config.provider], MODELS[self.generation_config.provider]},
+            "run_models_mismatch",
+        )
         check(
             set(run.prompt_versions) == set(self.prompts)
             and set(run.rubric_versions) == set(self.rubrics),
@@ -171,7 +177,9 @@ class T03Models:
             input_ids=tuple(dict.fromkeys((*input_ids, *(r.id for r in upstream)))),
             input_artifact_ids=tuple(dict.fromkeys(artifact_ids)),
             requested_model_id=MODELS[config.provider],
-            settings=Settings(version=CONFIG_VERSION, values={"state_artifact_id": state_id}),
+            settings=Settings(
+                version=config_version(config), values={"state_artifact_id": state_id}
+            ),
         )
         if generated:
             name = GENERATIONS[stage]

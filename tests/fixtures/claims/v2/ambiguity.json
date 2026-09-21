@@ -1,0 +1,114 @@
+[
+  {
+    "id": "retained_first",
+    "text": "**Ja, grundsätzlich dürfen Sie mit Diabetes Auto fahren** **.**",
+    "context": "",
+    "expected": "clear",
+    "reason": "Generic reader Sie does not require a particular identity.",
+    "origin": "User-authorized exact retained gate excerpt; test IDs and outputs are synthetic."
+  },
+  {
+    "id": "retained_second",
+    "text": "Häufige oder schwere Unterzuckerungen, die unbemerkt auftreten oder bei denen Sie fremde Hilfe benötigen, können die Eignung zum Führen von Kraftfahrzeugen vorübergehend einschränken.",
+    "context": "### 3. Besonderheiten bei schwerer Unterzuckerung",
+    "expected": "clear",
+    "reason": "The actual supplied heading adds topic context; die/denen refer to Unterzuckerungen inside the source, and reader Sie needs no specific identity.",
+    "origin": "User-authorized exact retained gate excerpt; test IDs and outputs are synthetic."
+  },
+  {
+    "id": "no_reference",
+    "text": "Der Ball ist rot.",
+    "context": "",
+    "expected": "clear",
+    "reason": "No referent needs resolution.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "citation",
+    "text": "Der Ball ist rot (Quelle: https://source.example/ball).",
+    "context": "",
+    "expected": "clear",
+    "reason": "Citation completeness is outside D.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "reader",
+    "text": "Ihnen steht Ihr Ergebnis zur Verfügung.",
+    "context": "",
+    "expected": "clear",
+    "reason": "Formal reader identity is irrelevant.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "internal",
+    "text": "Der Ball ist rund und er ist rot.",
+    "context": "",
+    "expected": "clear",
+    "reason": "Antecedent is inside the source.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "unique",
+    "text": "Er ist rot.",
+    "context": "Der Ball ist rund.",
+    "expected": "resolvable_from_context",
+    "reason": "Supplied context uniquely identifies the ball.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "missing",
+    "text": "Er ist rot.",
+    "context": "",
+    "expected": "unresolved",
+    "reason": "Necessary antecedent absent; do not imagine context.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "irrelevant",
+    "text": "Er ist rot.",
+    "context": "Heute regnet es.",
+    "expected": "unresolved",
+    "reason": "Supplied context provides no antecedent.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "ambiguous",
+    "text": "Er ist rot.",
+    "context": "Der Ball liegt neben dem Würfel.",
+    "expected": "unresolved",
+    "reason": "Two plausible masculine antecedents.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "specific_sie",
+    "text": "Sie liegt dort.",
+    "context": "",
+    "expected": "unresolved",
+    "reason": "Third-person referent is necessary.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "partial",
+    "text": "Er liegt neben ihr.",
+    "context": "Der Ball ist rot.",
+    "expected": "unresolved",
+    "reason": "One necessary referent remains missing.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "irrelevant_heading",
+    "text": "Er ist rot.",
+    "context": "### Wetter",
+    "expected": "unresolved",
+    "reason": "A supplied heading is not automatically an antecedent.",
+    "origin": "Synthetic"
+  },
+  {
+    "id": "unique_heading",
+    "text": "Er ist rot.",
+    "context": "### Der Ball",
+    "expected": "resolvable_from_context",
+    "reason": "The supplied heading uniquely identifies the necessary antecedent.",
+    "origin": "Synthetic"
+  }
+]

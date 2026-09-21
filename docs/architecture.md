@@ -52,7 +52,7 @@ do not silently change vendors or allow library defaults to make extra model cal
 |---|---|
 | `ObservationProvider` | Python HTTP adapter → DataForSEO Google AI Mode SERP API [1] |
 | `AnswerIndexer`, `ContextBuilder` | Python; spaCy German tokenizer + rule-based Sentencizer proposed [5] |
-| `ClaimExtractor` | Claimify-inspired stages: Jev decisions + hosted LLM generation [3] |
+| `ClaimExtractor` | Claimify-inspired stages: Jev decisions + local Qwen generation through vLLM [3] |
 | `CitationMapper` | Code using citation metadata and versioned mapping rules |
 | `CorpusIngestor` | Code for fetching/parsing/versioning; LlamaIndex ingestion [4] |
 | `ClaimRetriever` | LlamaIndex vector retrieval, local Harrier embeddings, direct German-configured bm25s (D05/D06) |
@@ -165,10 +165,10 @@ This adapts Claimify's method; it does not reproduce its published results. [3]
 |---|---|
 | Prepare context | Code selects target, neighbors and headings; context may span sentences. |
 | Select factual content | Jev: factual / nonfactual / mixed / uncertain; retain exclusions and issues. |
-| Handle mixed text | Hosted LLM retains factual content in derived wording; adds no facts. |
+| Handle mixed text | Local GenerationModel retains factual content in derived wording; adds no facts. |
 | Assess ambiguity | Jev: clear / resolvable from supplied context / unresolved. |
-| Clarify | Hosted LLM resolves references from that context, not external knowledge. |
-| Decompose | Hosted LLM returns standalone German claims with original quotes/source-unit references. |
+| Clarify | Local GenerationModel resolves references from that context, not external knowledge. |
+| Decompose | Local GenerationModel returns standalone German claims with original quotes/source-unit references. |
 | Locate sources | Code validates exact locations; rejects invented or ambiguous quotes. |
 | Validate extraction | Jev separately checks faithfulness, atomicity and self-containment; uncertainty allowed. |
 | Assemble | Code saves accepted claims and separate issues with decision/version IDs. |
@@ -354,13 +354,142 @@ implementation details need no separate approval.
 | D01 | Python schema/runtime/test dependencies | T00 acceptance |
 | D02 | Shared artifact and record/database backend | T11A backend implementation |
 | D03 | Resolved and exercised for the exact T01 German capture: Germany/de/desktop/windows, one POST, zero retries, 60s timeout; USD 0.004 reported against USD 0.01 ceiling, budget verified; see T01 handoff | One-call authorization consumed; any further provider call requires new explicit authorization |
-| D04 | T03 implementation approved: direct Jev `jev-1.13.0` and OpenAI Responses `gpt-4.1-mini-2025-04-14`; see record below | Jev live passed (one authorized call); OpenAI live blocked, credentials unavailable; integration partially blocked |
+| D04 | Jev `jev-1.13.0`; MVP GenerationModel is local Qwen3-4B-Instruct-2507 served by vLLM, selected below. Historical OpenAI adapter retained for replay | Local T04 integration accepted on the retained real target; T05 remains separate |
 | D05 | T07 selected: local pinned Harrier/SentenceTransformers, 1024 dimensions, T11A index artifacts; details below | T07 real-model acceptance passed |
 | D06 | T02 resolved: spaCy 3.8.16 blank German tokenizer + rule-based Sentencizer and versioned mechanical rules; T06 textual corpus and audited non-text visual limitation resolved below; T07 direct bm25s and top-50/RRF settings selected below | T07 offline and real-model acceptance passed |
-| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | Extraction live use still needs exact request authorization and generation access. Category changes require explicit scope authorization. |
+| D07 | T04 extraction policy/resources selected below; T05/T08/T09/T10 portions remain open | T04 accepted with one genuine retained-target Claim under resources v4/local config v5. T05 and category work remain separate. |
 | D08 | German question manifest and run limits; five pages fixed | T11B live run and T14; T06 supplies snapshots |
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
+
+**D04 v3 runtime correction — 21 September 2026:** authorized implementation
+versions the local configuration to v3: vLLM 0.19.0 V1, explicit
+`--attention-backend TRITON_ATTN`, FP16 and explicit xgrammar via
+`--structured-outputs-config.backend`. Unlike `auto`, the explicit backend fails
+without fallback. The 0.19 attention CLI replaces the obsolete environment switch.
+The separate `models/vllm-runtime-v3.lock` and durable Python 3.12 environment do
+not change the historical lock or shared GPU applications. Pinned Qwen revision,
+F request/schema, Jev decisions and extraction validation remain unchanged.
+V1/v2 configurations and receipts retain preparation/replay semantics; new calls
+require v3 and a newly observed, hashed runtime manifest. The prior direct-HTTP
+post-reboot diagnostic reproduced the attention failure, but was not T03 adapter
+acceptance. Offline grammar tests do not establish inference compatibility.
+A bounded F-only adapter test and later fresh Jev gate remain separate live steps.
+
+**D04 v3 runtime diagnostic — 21 September 2026:** a newly manifest-bound,
+one-call F-only test returned HTTP 200 on V100/TRITON_ATTN and passed adapter JSON
+validation. Its actual output fails the unchanged T04 decomposition contract;
+no Claim is accepted. Offline controls demonstrate that the installed xgrammar
+path rejects multi-character claim/quote strings allowed by the exact F schema.
+GPU decoding is verified for this request, but usable F output remains blocked.
+The prompt, schema, thresholds and B/D/H/T05 behavior are unchanged. The single
+local allowance is consumed; zero Jev calls were made. See the
+[T04 gate report](t04-live-gate.md#v3-runtime-f-only-diagnostic--21-september-2026)
+for exact evidence, offline replay and restored shared services.
+
+**D04 xgrammar compatibility — 21 September 2026:** the saved F evidence and
+installed-runtime controls establish that xgrammar 0.2.3 miscompiles the canonical
+unanchored string pattern `\S`: it admits an empty string and constrains nonempty
+values to one character. Local generation configuration v4 therefore copies the
+already validated canonical schema for the provider request and replaces only exact
+`type: string` / `pattern: "\\S"` nodes with `minLength: 1`. This is a guidance-side
+compatibility relaxation, not a canonical contract change. The immutable schema
+resource remains in each prepared record and the adapter still validates every
+returned value against that exact resource, so blank and whitespace-only strings
+fail as before. V1–v3 preparation/replay and all saved gate evidence remain
+unchanged; only v4 may dispatch a new local request. Offline tests with the pinned
+vLLM/xgrammar environment accept multi-character German claims and quotes, reject
+empty strings and malformed structure, and demonstrate that whitespace admitted by
+the weaker guidance is rejected by canonical post-validation. No live calls or
+server startup were made for this correction.
+
+**D04 coherent F guidance — 21 September 2026:** the v4 live response proved the
+multi-character workaround but exposed canonical invariants that JSON Schema did
+not express to xgrammar. Local generation configuration v5 keeps the canonical
+schema and strict post-generation validation unchanged, while its provider-only F
+schema has two disjoint branches: `candidates` requires 1–4 candidates and
+`reason_code=none`; `unresolved` requires an empty list and either
+`cannot_extract` or `candidate_limit`. Anchor source-unit IDs are restricted to
+those supplied in the immutable F state, and guided `start`/`end` are always null,
+so the existing exact-quote locator derives offsets and still rejects missing or
+ambiguous quotes. Extraction resource bundle v4 versions only the F prompt with
+the same instructions. Missing/malformed source-unit state fails preparation rather
+than selecting weaker guidance. V1–v4 configurations, bundles v1–v3 and all historical
+evidence remain replayable and unchanged. Offline xgrammar compilation and masking
+accept both coherent branches and realistic German strings while rejecting the
+saved incoherent shape, numeric guided offsets, invented source-unit IDs and
+malformed structure. No live/model/Jev call is authorized or performed.
+
+**D04 structured-output runtime correction — 20 September 2026:** the user
+requested implementation after the saved F failure review. Installed vLLM 0.10.2
+V0 accepted `response_format` but did not attach guided-decoding enforcement.
+New `t04-vllm-generation/2` configurations select V1, XFORMERS_VLLM_V1 and the same
+FP16 model, revision, schema, prompt and xgrammar/no-fallback settings. Live dispatch
+rejects v1/V0 and checks the hashed runtime manifest's relevant launch settings.
+Historical v1 configuration preparation, receipts and replay remain supported;
+old manifests and all failed/unresolved evidence remain immutable. Installed-runtime
+offline checks exercise V1 grammar attachment and token masking without generation.
+The later GET-only runtime acceptance started this configuration successfully on
+the V100, verified the authenticated loopback server and captured a new v2 manifest.
+It made no generation or Jev call. No model-call authorization is implied.
+
+**D04 V1 inference status — 21 September 2026:** the separately authorized first-target
+gate passed B/D, but F returned HTTP 500 after XFormers could not dispatch a supported
+operator for the actual paged-attention inputs on the V100. The V1 engine and API
+server exited. The completed GET-only checks remain valid historical startup
+evidence, not proof of inference compatibility. No versions, settings or guards
+were changed, and no retry occurred. Further runtime correction requires a separate
+assignment; the new terminal gate evidence is in the T04 gate report.
+
+**D04 local generation selected — 20 September 2026:** the current T04 assignment
+explicitly selects `Qwen/Qwen3-4B-Instruct-2507` for MVP generation; subsequent user
+instruction selects vLLM serving. Model comparison remains Beyond MVP. The pinned
+snapshot is `cdbee75f17c01a7cc42f958dc650907174af0554`. The separate
+`t04-vllm-generation/1` adapter configuration in `models/config.py` binds the complete
+private runtime manifest hash, revision and serving settings. Historical
+`t03-model-adapters/1` Jev/OpenAI prepared bytes and replay identities remain unchanged.
+No shared wire schema, extraction prompt, rubric, locating or target-accounting rule
+changes. T04 validates the two actually selected model identities in each run.
+
+The historical V100 deployment used vLLM 0.10.2, V0 engine, FP16, XFORMERS, eager execution, context limit
+4096, one sequence, tensor parallelism one, GPU memory fraction 0.65, no quantization,
+no prefix caching and no guided-decoding fallback. Exact server dependencies are in
+`models/vllm-runtime.lock`; its isolated Python 3.12 environment uses Torch 2.8.0 and
+Transformers 4.57.3. It does not alter T07's locked Torch 2.9.1 environment. A verified
+process-local NVML 580.173.02 library matches this host's loaded driver; no system
+library replacement, driver unload or reboot is needed for serving.
+
+The authenticated loopback-only endpoint is `http://127.0.0.1:8004/v1/chat/completions`.
+Requests bind the exact model/revision alias, unchanged extraction prompt and input,
+strict JSON Schema, temperature 0, top_p 1, seed 0, n=1, max_tokens<=512, no tools,
+no streaming. Input overflow fails; it is never truncated. Model weights/tokenizer
+are pre-provisioned, inference runs with offline Hugging Face settings and usage
+telemetry disabled. Exact runtime inventory, launch settings and model-file hashes
+are retained privately and snapshotted with T03 model evidence. Actual vLLM raw chat
+responses remain separate from validated canonical structured output; finish reasons
+other than `stop`, malformed/schema-invalid JSON and identity mismatch fail without
+repair. The response model alias alone does not authenticate weights; retained launch
+and snapshot evidence establish the local origin. Replay requires no server or GPU.
+
+The user subsequently authorized at most **five Jev calls / USD 0.05 total** for the
+retained gate, concurrency one, timeout 60 seconds each, zero retries. Exact request
+bindings are prepared from actual stage inputs under this bounded authorization;
+B/D selection and three independent H validations remain unchanged. Other paid model
+calls are prohibited. One local F operation uses a zero external-provider allowance;
+local infrastructure cost is unknown. The original gate bundle is immutable; create
+a new same-observation diagnostic run/index/configuration in a private copy. Gate
+scope stays first sentence [0,63), B/D/F/H only, no C/E or alternative targets.
+This supersedes the old OpenAI-access and separate H-approval proposal for this
+assignment only. Outcomes and actual usage must be recorded before acceptance.
+
+**D04/T04 bounded continuation authorization — 20 September 2026:** after the first
+gate returned D.unresolved, the user approved exactly the additional retained
+sentence [2155,2338) under the [gate policy](t04-live-gate.md). At most five further
+Jev calls are allowed (seven calls/USD 0.07 session ceiling), one local Qwen F call,
+60-second timeouts, concurrency one and zero retries. All extraction rules remain
+unchanged; the original result is preserved and a distinct run/index is required.
+This additional gate also returned B=factual and D=unresolved, stopping before F/H.
+Four Jev calls total were used; no accepted Claim exists and no further gate is authorized.
 
 **D05/D06 T07 selected — 20 September 2026:** authorized by the user's final
 T07 implementation decisions. Dense retrieval uses local SentenceTransformers with
@@ -395,6 +524,75 @@ remain unchanged.
 T07 offline and real-model acceptance passed on the saved five-page corpus.
 See the [durable T07 handoff](t07-handoff.md) for detailed integration evidence,
 artifact identities and limitations; this is not a retrieval-quality benchmark.
+
+**D07 T04 v3 first-target live gate — 20 September 2026:** explicitly authorized
+one fresh gate on retained [0,63), at most five Jev calls and one local Qwen
+request, concurrency one, 60-second timeout, zero retries. Existing USD 0.01/request
+and USD 0.05/gate caps retained. B=factual and D v3=clear; the single local F
+response failed the unchanged output schema. Execution stopped with zero Claims
+and a persisted F.model_failed issue; no G/H or T05 execution. Two Jev calls and
+one local generation used, zero retries, estimated Jev cost USD 0.00008589; billed
+and infrastructure costs unknown. Both historical v1 runs and v1/v2/v3 resources
+remain unchanged; network/model-disabled terminal replay passed. The gate is
+terminal and the current blocker is F schema compliance. See
+[exact gate evidence](t04-live-gate.md#fresh-v3-gate-on-the-original-first-target--20-september-2026).
+
+**D07 T04 Jev skill review — 20 September 2026:** the user authorized an offline
+review of D against the globally installed TypeSafe/Jev skill and current docs.
+D v3 adds explicit state-field targeting and a direct question; all v2 criteria
+and semantic instructions remain intact. New composition uses resource bundle v3;
+v1/v2 remain explicitly loadable and unchanged. The second historical state was
+reconstructed exactly, including its supplied heading; fixtures now cover that
+heading and unique/irrelevant heading contexts. State selection, labels, tie rules,
+B/F/H/T05 and uncertainty handling are unchanged. See the
+[review findings and verification limits](t04-stage-d-review.md). No live calls
+are authorized; historical unresolved results and the Claim integration blocker remain.
+
+**D07 T04 v4 first-target live gate — 21 September 2026:** the bounded gate used
+a new actual-process manifest and local configuration v4. B=factual and D v3=clear.
+F returned HTTP 200 with realistic multi-character strings, so the provider-only
+xgrammar compatibility handling worked in live generation while the canonical
+schema remained authoritative. The unchanged `Decomposed` contract rejected the
+response because `status=unresolved`, `reason_code=none` and a nonempty candidate
+are incoherent; the saved `[0,18)` anchors also do not locate their longer quote.
+The gate stopped with zero Claims after two Jev calls and one local generation;
+no H/I or T05 ran and offline replay passed. The remaining blocker is useful,
+contract-valid F output. No threshold, prompt, extraction policy or T05 behavior
+changed.
+
+**D07 T04 v5 acceptance gate — 21 September 2026:** the explicitly bounded fresh
+gate used local configuration v5, extraction resources v4 and F prompt v2 on the
+retained `[0,63)` target. B=`factual` (0.98), D v3=`clear` (1.0), and F returned a
+coherent candidate whose null guided offsets were resolved by unchanged location
+code to the exact immutable span `[0,63)`. H independently returned
+`faithful` (0.90), `atomic` (0.94) and `self_contained` (0.85), each with a unique
+maximum. I persisted genuine Claim
+`claim-2370b9001cd29251fa839f0ed558b73b3594754200aae7a3b0187db5cac2ba40`
+with no issues. Five Jev calls and one local generation were used, with zero retries
+and no uncertain dispatch. Close/reopen replay with network and model operations
+blocked passed twice; complete target accounting and historical preservation passed.
+This satisfies T04's real saved-answer integration check. T05 was neither executed
+nor modified and remains a separate decision/task.
+
+**D07 T04 Stage-D clarification — 20 September 2026:** the user authorized an
+offline versioned ambiguity fix after both retained gates returned `unresolved`.
+New composition defaults to `t04-extraction-resources/2`, pinned by
+`prompts/extraction/v2/manifest.json` (SHA-256
+`b8f1d4add7f7f569de3a81cdcb0e067168b6c4ff34d2f6b5a5d4f1d0585d13c3`).
+Only `t04-ambiguity/2` changes: reference means linguistic/anaphoric reference,
+not citations. No necessary reference to resolve, including generic/formal reader
+Sie/Ihnen/Ihr when identity is irrelevant, means `clear`. Missing context alone
+is not ambiguity. `resolvable_from_context` requires actually supplied context
+that uniquely resolves all necessary referents not already clear in the source;
+`unresolved` requires a meaning-critical referent that remains missing or ambiguous.
+B/F/H, labels, maximum-selection/tie rules, thresholds, provenance and target
+accounting remain unchanged. V1 resources and both unresolved runs remain immutable;
+reconstruct their composition with `ExtractionResources(root, version="1")`.
+V2 changes the configuration hash and must use a new run; v1 decisions cannot be
+reinterpreted or reused as v2 results. Regression labels specify intended behavior
+and test offline preparation/routing, not Jev accuracy. No live call is authorized
+by this change. Accepted Claim output and T05 remain integration-blocked pending
+separately authorized execution and genuine completed evidence.
 
 **D07 T04 portion selected — 19 September 2026:** authorized by the user's approval
 of the revised T04 plan and subsequent offline implementation instruction. Scope is

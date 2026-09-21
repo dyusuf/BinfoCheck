@@ -1,6 +1,8 @@
 # T04 bounded live-acceptance proposal
 
-Prepared offline from retained T01/T02 evidence. **No live authorization exists.**
+Historical frozen proposal prepared offline from retained T01/T02 evidence.
+The continuation below supersedes its model/access and approval policy for the current assignment.
+The original proposal and private bundle remain unchanged.
 This gate is a proposal for one saved target, not a benchmark, medical truth check,
 new capture, or permission to spend. The theoretical 340-call bound does not apply.
 
@@ -142,3 +144,514 @@ Generation credentials/API access remain unavailable from the recorded T03 statu
 were not probed. No live authorization exists; actual calls and spend here are zero.
 The conditional B/D/F bindings are prepared, while H bindings require a later real F
 result. T04 business logic, shared contracts, resources and downstream scope are unchanged.
+
+## Local Qwen/vLLM continuation — 20 September 2026
+
+The user selected local Qwen3-4B-Instruct-2507 and vLLM, then explicitly authorized
+at most five Jev calls, USD 0.05 total, 60-second timeout, concurrency one, zero
+retries. D04 records the pinned runtime and unchanged extraction constraints.
+Create a new diagnostic run/index on a complete private copy of this bundle; do not
+reuse or rewrite the frozen OpenAI run/configuration. Prepare each exact request
+from real upstream output and bind its authorization before dispatch. The scope
+remains [0,63), one candidate, B/D/F/three H stages, no C/E. One local F request has
+zero external-provider cost. No other paid call, fallback, extra target or benchmark.
+
+The runtime is provisioned privately at
+`/mnt/workspace/BinfoCheck-data/t04-local-runtime/`. Its hash-bound manifest captures
+model-file hashes, exact package versions, launch arguments, selected environment,
+GPU/driver, and authenticated server model/version checks. The task-local NVML fix
+uses NVIDIA's official 580.173.02 redistribution archive matching the loaded kernel
+module; system NVML is not replaced.
+
+Current Jev pricing was verified from [TypeSafe model documentation](https://docs.typesafe.ai/models):
+USD 0.042 per million input tokens, output free. A conservative full 65,536-token
+context costs at most USD 0.002752512, below each USD 0.01 reserved allowance.
+Actual reported usage and estimates remain separate from unknown billed cost.
+
+### Executed first gate: genuine unresolved result
+
+Private evidence: `/mnt/workspace/BinfoCheck-data/t04-qwen-acceptance-20260920/`.
+Original gate source/fingerprints and every copied original record remain unchanged.
+A preflight-only enum construction failure made zero calls and is preserved separately
+in the sibling `t04-qwen-acceptance-20260920-preflight-error` directory.
+
+- Run: `t04-local-qwen-gate-08196e14576b073dcd35df16d5d329dc15565801daac11136b5778ea42d57856`.
+- Same-run index: `text-index-3815c3dd8a32e7158134537b23439d44938837983f437cd5032f787b9e180440`.
+- Final audit: `extraction-final-de878643d405b8a9befa8f6cce2f5fb9602cf910e38fd13d6ee7d30621ab95e8`.
+- B: factual (0.97); D: unresolved (0.55, versus clear 0.42). These are model scores,
+  not accuracy estimates or invented explanations of model reasoning.
+- Two Jev calls, zero retries; 1,355 input / 101 output tokens reported. Estimated
+  provider cost USD 0.00005691; billed cost unknown. No F/H calls were made.
+- Boundary success means completed durable accounting: **zero Claims, one D.unresolved
+  issue**. It does not satisfy the nonempty-Claim integration gate or T05 prerequisite.
+- Two socket/DNS-blocked close/reopen cycles reproduced every decision and identical
+  extraction output without model execution. Linked records, terminal accounting and
+  source fingerprints passed; see private `offline-replay.json`.
+
+The original frozen B/D/F preparation bytes and work identities were independently
+reconstructed unchanged with the extended adapter code. Historical evidence remains
+replayable. No validation label was overridden and no generation was run past D.
+
+### Authorized additional gate — 20 September 2026
+
+The user explicitly approved one additional gate on the retained sentence at
+**[2155,2338)**, target
+`text-unit-476f64c946df226da997df354a55876a1a7c879c52f906bb6dcce9db54ef77f0`.
+This allows at most five further Jev calls, giving a session ceiling of seven calls
+and USD 0.07, with 60-second timeouts, concurrency one and zero retries. One local
+Qwen F generation, the same prompts/rubrics and all three independent H checks remain
+required. There is no further target expansion or retry authorization.
+
+Copy the first completed gate store, preserving its original decisions/issues/audit,
+then create a distinct diagnostic run whose identity includes the new target and a
+new same-run T02 index. No prior result is rewritten. Private continuation location:
+`/mnt/workspace/BinfoCheck-data/t04-qwen-followup-20260920/`.
+
+### Additional gate result: genuine unresolved output
+
+The additional gate executed once through the unchanged T04/T03 implementation.
+B selected factual (1.0); D selected unresolved (0.47, versus clear 0.38 and
+resolvable_from_context 0.15). The exact source sentence and stored heading were
+provided by the existing context-selection code. Inspection confirmed their saved
+text/offsets; no model reasoning or explanation for the label is inferred.
+
+- Run: `t04-local-qwen-followup-adf23c2a7856afc86e2042f35782ca92ba91c60a7235efd39ed47107b9267750`.
+- Same-run index: `text-index-3db7f0015f3cbc2ab26ab412938dc3dfb198f1d98517f32e9f656bbc9c73ff6c`.
+- Final audit: `extraction-final-9dc86c02c76512de2de111213b974027e9e0f0f162611184bf23739dc51646bb`.
+- Result: zero Claims and one `D.unresolved` issue with complete target accounting.
+  No local F or H operations occurred. There were two additional Jev calls and zero
+  retries, reporting 1,564 input / 101 output tokens; estimated cost USD 0.000065688.
+- Session total: **four Jev calls**, 2,919 input / 202 output tokens, estimated cost
+  **USD 0.000122598**. Billed cost remains unknown. No other paid model call occurred.
+- The store includes both runs and their original decisions/issues/audits.
+  Network/model-disabled close/reopen replay, linked records, target accounting and
+  unchanged predecessor-store fingerprints passed; private `offline-replay.json`
+  and `execution.log` preserve the checks.
+
+This consumes the authorized additional-gate attempt. Unused numeric allowance is
+not authorization to retry, select another target or override D. T04 remains
+**integration_blocked**; Qwen serving is ready but no real F request was reached.
+The existing T05 saved-pair diagnostic was not run because there is no genuine
+accepted Claim ID to supply. No T05 logic or provenance guard was changed.
+
+### Fresh v3 gate on the original first target — 20 September 2026
+
+The user authorized one fresh v3-bound run on the existing **[0,63)** target only:
+at most five Jev calls and one local Qwen generation, concurrency one, 60-second
+timeouts, zero retries, no external paid generation, and immediate stopping on a
+non-required label, malformed output, uncertain dispatch, location/budget problem
+or validation failure. Existing cost caps were retained: USD 0.01 per Jev request,
+USD 0.05 for this gate. Current Jev pricing was checked again against the official
+model documentation. No prompt, rubric, threshold, state-selection or B/F/H/T05
+logic changed during execution.
+
+Execution used code `e89fa5493aef77bec911347215815c58902c1337`, immutable bundle v3
+(`8d34d05c57578b2eed05e383102420df97aacb512069c541854cc337fb36168d`), and the
+same pinned Qwen/vLLM runtime. Authentication, model-file hashes and server version
+passed read-only checks without generation. The source was a copy of the **first**
+historical gate store; both original historical stores remained unchanged.
+Every dispatched request's exact prepared bytes and approval hash were saved before
+dispatch and bound to the new run/configuration. A one-shot marker prevents re-entry.
+
+Private evidence: `/mnt/workspace/BinfoCheck-data/t04-qwen-v3-first-20260920/`.
+
+- Run: `t04-local-qwen-v3-first-gate-74cd3db88bdefc6122af0d17f49dfd7cd34670f52d1601f77e7209d098d35255`.
+- Index: `text-index-1c29edeaa1a5a96bf8d2315b192211941e356678bce2a6f8eccccf220032d6d4`.
+- Final audit: `extraction-final-d03c1cd22b43a160345b4b1015ee9bf8fa95dc31afa5151c87be7ed9b489d1e4`.
+- B: **factual (0.97)**; D v3: **clear (1.0)**. These are reported model scores,
+  not measured accuracy. Historical v1 unresolved outcomes were not reinterpreted.
+- F: one local request, complete HTTP 200, normal stop; adapter normalization failed
+  with **`schema_validation_failed`**. The JSON omitted `status` and
+  `normalized_claim`, used an unexpected `text` key, and supplied strings where
+  `anchor` and `required_support` entries require objects. Raw response, exact
+  schema, receipt and schema-error inspection are preserved; no output repair or
+  additional generation was attempted.
+- F record: `model-generation-f00fd00955fd7b4b4ee93010df58702e97da7520535b2324c5e3f58c0ab51389`.
+- Terminal result: **zero Claims, one `F.model_failed` issue**. G/H were not reached.
+  The extraction boundary completed terminal accounting; this is not live acceptance.
+- Calls: **two Jev, one local Qwen**, zero retries, zero uncertain dispatches.
+  Jev reported 2,045 input / 98 output tokens; estimated USD **0.00008589**.
+  Local Qwen reported 577 input / 92 output tokens; external provider cost zero,
+  infrastructure cost unknown. Session totals: six Jev calls, one local generation,
+  4,964 Jev input / 300 output tokens, estimated Jev cost **USD 0.000208488**.
+  Billed cost is unknown; estimates are separate from provider billing.
+- Replay passed twice after close/reopen with sockets/DNS/model operations blocked,
+  reproducing the two successful decisions, failed F record and identical extraction
+  output. Linked records, original records, complete target accounting and source
+  fingerprints passed. Both historical stores retained hashes, mtimes and modes.
+- T05 saved-pair diagnostic: **not run**, because no genuine accepted Claim exists.
+  No T05 code changed. This gate is terminal; remaining numeric allowance is not
+  permission to retry or dispatch H after failed F.
+
+Pre-dispatch problems made zero model calls and are retained in private logs:
+automatic approval review rejected an initial source-copy choice that included both
+historical runs; using the first store directly and proving the exact target resolved
+that concern. A runner-only assertion incorrectly expected a hash on the adapter's
+version reference; it was replaced with canonical adapter-version and run-binding
+checks. A saved fingerprint needed JSON-list-to-tuple restoration before comparison.
+Both checks were corrected before any request dispatch, with the same run and frozen
+resources. They are not model retries; original scripts and failure logs remain saved.
+
+The current integration blocker is local F schema compliance. Any follow-up diagnosis
+or execution must be separately scoped; the failed output must not be promoted to a
+Claim or used to bypass the T05 genuine-evidence prerequisite.
+
+Post-gate offline verification: 250 focused model/Claim tests passed;
+`scripts/verify.sh` passed all 1,029 tests plus lint, formatting, Pyright, schema
+and whitespace checks. No further live call occurred during verification.
+
+### Offline F runtime correction — 20 September 2026
+
+The retained prepared request rebuilt byte-identically, and the strict F JSON schema
+reached the saved outbound body unchanged. Installed vLLM 0.10.2 protocol parsing
+converted it to `guided_decoding.json`; the historical V0 engine installed no guided
+logits processors. The configured xgrammar compiler accepted the exact schema and
+rejected the failed content. The private diagnosis is preserved in the sibling
+`t04-qwen-v3-first-20260920-f-review/` directory; original evidence is unchanged.
+
+The authorized implementation introduces local configuration v2 (V1 with
+XFORMERS_VLLM_V1) and rejects legacy V0 calls before dispatch. Both adapter and
+transport validate the bound runtime manifest's relevant settings. Old configuration
+preparation and network/model-disabled replay remain supported. No F schema/prompt,
+Jev rubric, threshold, extraction methodology or T05 logic changed.
+
+The installed-environment offline regression uses the exact saved request and local
+tokenizer: V1 attaches a compiled grammar, masks invalid tokens, rejects a synthetic
+malformed shape, and accepts a schema-conforming unresolved control. No engine,
+weights or generation are initialized. xgrammar emits its existing non-ASCII
+negative-character-class warning; adapter schema validation remains mandatory.
+This demonstrates wiring/enforcement, not exhaustive JSON Schema fidelity or GPU
+serving acceptance. The old server and manifest remain untouched; corrected GPU
+startup and any newly authorized live gate are still outstanding.
+
+Both historical unresolved runs and the failed v3 run replayed after close/reopen
+with network/model access disabled. The exact failed F request still rebuilds
+identically; the entire failed gate retains its hashes, mtimes and modes.
+New Jev/Qwen calls and incremental provider cost: zero. T04 remains unaccepted and
+T05 remains blocked by the absence of a genuine accepted Claim.
+
+### V1 GPU startup attempt — 20 September 2026
+
+The GET-only runtime assignment authorized one corrected startup, with no Jev,
+generation, gate or T05 execution. Evidence is in the separate private directory
+`/mnt/workspace/BinfoCheck-data/t04-local-runtime-v2-20260920/`.
+The exact historical listener PID 4147705 was terminated with SIGKILL to avoid
+appending shutdown output to its historical log. Its V0 worker PID 4147811 remained
+in that session, holding 21,290 MiB; identifying only the listener before startup
+was insufficient. Ollama and other GPU processes were not stopped.
+
+New API PID 31499 / V1 engine PID 31861 used the documented vLLM 0.10.2, pinned
+snapshot, FP16, XFORMERS_VLLM_V1, xgrammar/no-fallback and offline-loading settings.
+The logs confirm V1 initialization and `trust_remote_code=False`, but startup
+failed before readiness: 9.72 GiB free of 31.73 GiB was below the configured 0.65
+allocation (20.63 GiB). A preceding FlashAttention2 capability warning is retained;
+it does not establish an additional fatal cause. No settings or versions were
+changed and no restart was attempted after failure.
+
+There were zero HTTP requests, including zero chat-completion requests. `/version`,
+models/authentication checks and a verified running-runtime manifest are blocked.
+The separately named failed-startup manifest is evidence, not dispatch eligibility.
+The offline structured-output script passed with the exact saved F body/local
+tokenizer; 27 focused adapter/extraction tests passed. No genuine Claim or T05
+result was produced. The next runtime attempt must explicitly account for the
+remaining identified V0 worker while preserving historical files and unrelated
+processes; this failed attempt is not authorization to retry.
+
+### V1 GPU runtime accepted after orphan cleanup — 20 September 2026
+
+The user subsequently authorized the identified fix. PID 4147811 was reconfirmed as
+the orphaned worker of the historical V0 runtime and the only BinfoCheck process using
+GPU memory (21,290 MiB); it was terminated without affecting Ollama. Free GPU memory
+rose to 31,615 MiB. The resource tracker then appended a 242-byte leaked-semaphore
+warning to the historical log. Its original 10,350-byte prefix matched the retained
+SHA-256 exactly, so only that append was removed and the recorded timestamp restored.
+A complete rehash confirms the historical runtime's bytes, paths, modes, mtimes and
+symlinks again match its pre-attempt fingerprint.
+
+The unchanged documented V1 configuration then started successfully on the V100.
+API PID 38126 and engine PID 38272 use vLLM 0.10.2, FP16,
+XFORMERS_VLLM_V1, xgrammar with fallback disabled, eager execution, context 4096,
+one sequence and prefix caching disabled. Logs explicitly report the V1 engine,
+XFormers backend, `trust_remote_code=False`, local snapshot path and completed API
+startup. The V100's expected FlashAttention2 capability warning is retained; XFormers
+was selected successfully. No silent guided-decoding fallback appears.
+
+Exactly three HTTP requests were made, all GETs: `/version` returned vLLM 0.10.2;
+authenticated `/v1/models` returned exactly the pinned Qwen alias; unauthenticated
+`/v1/models` returned 401. No POST or `/v1/chat/completions` request occurred. The
+separate offline structured-output probe passed against the pinned tokenizer and
+exact saved historical F request, with sockets blocked and zero model calls.
+
+The new immutable manifest is
+`/mnt/workspace/BinfoCheck-data/t04-local-runtime-v2-20260920-attempt2/runtime-manifest.json`,
+SHA-256 `9d3b58c2caa263806cee5f52b70cdcc8e30abba0182123db74b7e9fd1734e5e4`.
+It records the actual command, selected environment, process session, GPU/driver,
+NVML hash, package versions, GET results and model-file hashes. A
+`LocalGenerationConfig` v2 bound to that hash passes `require_structured_runtime`.
+The isolated new Hugging Face cache contains no files, establishing that startup did
+not download model content. New Jev calls, Qwen generations, T04 gates and T05 runs:
+zero. This resolves the runtime blocker only; a genuine accepted Claim still requires
+separate live-call authorization.
+
+### Fresh D v3 / local v2 gate — 21 September 2026
+
+The user authorized the proposed first-target gate with at most five Jev calls and
+one local generation; the previous USD 0.05 ceiling, concurrency one, 60-second
+timeouts and zero retries were retained. A fresh process/model-hash and GET preflight
+passed against the accepted manifest. All stage resources remained unchanged.
+
+Run `t04-local-qwen-v3-v1-first-gate-f55aab1f6f9a526da3974560a410f012dd87ae51092c3c704086be2ff0a6a4b3`
+targets only the retained `[0,63)` sentence. Each exact request and single-use
+authorization was saved before dispatch. B returned factual (0.97), D v3 returned
+clear (1.0), then the only F request returned complete HTTP 500,
+`provider_unavailable`. Dispatch was known, not uncertain. No retries or H calls
+occurred; G was not reached. The pipeline persisted zero Claims and one
+`F.model_failed` issue.
+
+The server traceback identifies `NotImplementedError` in XFormers
+`memory_efficient_attention_forward` with
+`PagedBlockDiagonalCausalWithOffsetPaddedKeysMask`: FA2 and Triton candidates reject
+compute capability 7.0 (Triton also rejects page-size 16 against block-size 64), and
+the CUTLASS candidate rejects the mask type. The V1 engine and API server exited.
+This reveals inference incompatibility that successful startup, GETs and offline
+grammar tests did not exercise. No corrective settings or model changes were made.
+
+Evidence is in `/mnt/workspace/BinfoCheck-data/t04-qwen-v3-v1-first-20260921/`:
+prepared requests, authorizations, raw bodies/responses, receipts, exact server log,
+bound manifest, final audit and replay/usage reports. Final audit:
+`extraction-final-8aa83fafba83795286962fcb29e4f1774ee4eafcaf914ddb1e0d3b15bc8d2be7`.
+F record: `model-generation-3c89d6764cbc0994b069473f765a813c37d7a323b8b7b6ecdbbd5bc3741f9d37`.
+Same-run T02 index:
+`text-index-6f6b8149eb96db6a181395a6241d32808e9fcef3c2ffe5ccae17fc8a689bd1d1`.
+
+Two Jev calls reported 2,043 input and 98 output tokens: estimated USD 0.000085806
+at the verified input-only rate. Local request usage and infrastructure cost are
+unknown; external generation cost is zero. Session totals are eight Jev calls,
+two local generation requests, 7,007 Jev input / 398 output tokens and estimated
+Jev USD 0.000294294; billed cost remains unknown.
+
+Network/model-disabled replay passed twice after close/reopen, reproducing all three
+records and identical terminal output; links and target accounting passed. Both
+historical v1 stores and the entire previous v3 failed-gate directory retain their
+fingerprints. T05 was not run because no genuine accepted Claim exists. The initial
+automatic approval rejection made zero calls; read-only inspection established the
+generic retained payload and its authorized destination, after which review allowed
+the same bounded dispatch. This gate is terminal and cannot be resumed or retried
+under its consumed authorization.
+
+Post-gate verification passed: 257 focused model/Claim tests and `scripts/verify.sh`
+with all 1,036 tests, lint, formatting, types, schema and whitespace checks.
+
+### V3 runtime implementation — 21 September 2026
+
+The post-reboot F-only diagnostic again returned HTTP 500 on the V100 under
+vLLM 0.10.2 V1/XFormers, now with matching NVIDIA 580.178.04 libraries. It used
+direct HTTP and supplies terminal runtime evidence, not manifest-bound T03
+adapter acceptance. Historical gate stores and failed output remain unchanged.
+
+The authorized correction adds local configuration v3 for vLLM 0.19.0 V1,
+explicit `--attention-backend TRITON_ATTN` and explicit xgrammar. The old attention
+environment variable is not a supported 0.19 selector. A separate lock provisions
+`/mnt/workspace/BinfoCheck-data/t04-runtime-v3-env`; shared runtime environments
+were not changed. The dependency consistency check passed. Legacy configurations
+and saved replay remain supported; only v3 may make new calls.
+
+The installed-runtime verifier passed for both 0.10.2 and the durable 0.19.0
+runtime using the exact saved F request and local tokenizer with sockets blocked.
+The new path verifies CLI parsing, schema preservation, V1 grammar attachment,
+invalid-token masking, malformed-shape rejection, and unsupported-schema/compiler
+failure without fallback. xgrammar retains its non-ASCII negative-character-class
+warning; strict adapter schema validation remains mandatory. These checks do not
+prove exhaustive schema fidelity or GPU decoding compatibility.
+
+Implementation evidence is separate at
+`/mnt/workspace/BinfoCheck-data/t04-runtime-v3-implementation-20260921/`.
+This assignment makes zero generation/Jev calls and performs no gate/T05 run.
+A new actual-process manifest and bounded F-only test through T03, followed by
+close/reopen offline replay, remain prerequisites to a fresh authorized Jev gate.
+T04 has no accepted Claim; T05 remains blocked.
+
+
+### V3 runtime F-only diagnostic — 21 September 2026
+
+The user authorized one local F call to test the implemented runtime fix, with
+USD 0 external provider cost, a 60-second timeout, concurrency one, zero retries
+and zero Jev calls. No extraction gate or T05 was executed. The first startup
+passed GET-only checks but a private diagnostic helper supplied a string instead
+of the required `ProcessingStatus` enum when constructing its run. That local
+preflight failure dispatched nothing. The helper was corrected and its complete
+preparation checked offline before a fresh startup used the still-unused call.
+Both startup inventories remain separate; neither replaces historical evidence.
+
+The fresh actual-process manifest is
+`/mnt/workspace/BinfoCheck-data/t04-f-runtime-v3-20260921T090626Z/runtime-manifest.json`,
+SHA-256 `77c1ad4f8a03f8c0676dd9db9487d63d8c2735da66a9e8948389c2e4cab85b95`.
+PID 39676 served the pinned Qwen revision on V100 with NVIDIA 580.178.04,
+vLLM 0.19.0 V1, FP16, TRITON_ATTN and explicit xgrammar. Actual process arguments,
+selected environment, mapped NVML identity/hash, package inventory, verified
+snapshot hashes, logs and authenticated/unauthenticated GET checks are retained.
+The manifest passed the unmodified v3 live guard. No model downloads or remote
+code loading were used. The task-local server was stopped afterward; both shared
+BinfoNet services were restored and passed GET `/v1/models`. Ollama remained
+running with the same service and GPU process identities; port 8004 is free.
+
+New diagnostic run: `t04-f-runtime-v3-20260921T090626Z`.
+F record: `model-generation-8eb1b49a1ec765d48793ab86717df125eb321bea15fc9fe798f8534701b19b9c`.
+The adapter-prepared outbound bytes match the historical F body exactly:
+SHA-256 `5d37cc8f80521929036d17ce165aa154644c86f8f5e92ebfbdbe855cebfb5590`.
+The new request links the immutable historical unit through its original run and
+unchanged state artifact; its unit is not reassigned to the diagnostic run.
+T03 preserved authorization, intent, exact outbound/raw bytes, receipt, runtime,
+usage and result in a new SQLiteStore. Close/reopen replay with socket connections
+and model transport blocked reproduced the identical adapter result.
+
+The single call returned HTTP 200 in 10.46684 seconds, with `finish_reason=stop`,
+576 prompt tokens and 240 completion tokens (816 total). External provider cost
+is USD 0; infrastructure cost remains unknown. GPU decoding and adapter JSON-schema
+validation passed, but the unchanged T04 `Decomposed` contract rejects the actual
+output with `invalid_unresolved_output`: it combines `status=unresolved`,
+`reason_code=none` and a nonempty candidate list. The generated claim is `S` and
+quote is `J`, with offsets `[0,18)`. No output was repaired, no G/H/I ran and no
+Claim was accepted. T05 remains blocked.
+
+Additional **synthetic offline** controls used the exact F schema and installed
+vLLM/xgrammar path with sockets blocked and no engine/weights/generation. All four
+controls pass independent JSON Schema validation. The grammar accepts single
+characters (`S` / `J`) but rejects a multi-character claim (`Rot.`), a
+multi-character quote (`Ja`), and a complete sentence. This demonstrates a grammar
+compatibility defect for the schema's nonblank-string patterns; the prior
+unresolved-only positive control did not test useful claim/quote strings.
+It supports a grammar explanation for the short generated strings, without
+claiming to explain the model's inconsistent status choice. Preserve the exact
+schema and investigate its compilation before another live call; do not loosen
+validation, repair this output or treat runtime success as T04 acceptance.
+
+All new private evidence is in the directory above; the zero-dispatch preflight
+inventory is in `/mnt/workspace/BinfoCheck-data/t04-f-runtime-v3-20260921T090302Z/`.
+Original gate fingerprints are unchanged. The one generation allowance is now
+consumed. The remaining blocker is usable, contract-valid F output; no further
+live generation or Jev call is authorized by this diagnostic.
+
+### Offline xgrammar compatibility fix — 21 September 2026
+
+No generation, Jev, server startup, gate or T05 call was authorized or performed.
+The saved F evidence remains unchanged. Direct compiler controls in the pinned
+vLLM 0.19.0 / xgrammar 0.2.3 environment reproduce the defect: canonical
+`pattern: "\\S"` accepts an empty string, accepts a one-character string, and
+rejects realistic multi-character text. This is xgrammar behavior; independent
+Draft 2020-12 validation applies the intended unanchored non-whitespace rule.
+
+Local configuration v4 applies the smallest deterministic provider-only fix. After
+the canonical schema has passed the repository's conservative schema validation,
+the adapter deep-copies it for guidance and replaces only exact string
+`pattern: "\\S"` constraints with `minLength: 1`. The response-format schema sent
+to xgrammar is therefore structurally constraining and permits normal text. The
+canonical schema bytes remain stored in `PreparedRequest.resource_bytes_base64`
+and normalization uses those exact bytes for mandatory post-generation validation.
+Whitespace-only values that the weaker guidance may admit consequently remain
+invalid, with no repair or coercion.
+
+The installed-runtime verifier, with sockets blocked and without engine/model
+initialization, now proves that the actual vLLM protocol carries the compatibility
+schema into explicit xgrammar; the grammar accepts a single-character control,
+multi-character German claims/quotes and a complete German sentence. It rejects an
+empty constrained string and a structurally malformed object. Separate canonical
+checks accept the realistic values and reject empty/whitespace-only strings.
+Repository adapter tests also prove that a whitespace-only guided value fails
+canonical normalization. V1–v3 request construction/replay remains versioned and
+unchanged; only v4 can dispatch after a future fresh manifest binding. T04 retains
+zero accepted Claims and T05 remains blocked until a separately authorized live
+gate succeeds.
+
+### Fresh v4 gate on the original first target — 21 September 2026
+
+The user authorized one fresh manifest-bound gate on retained target `[0,63)`,
+with at most five Jev calls (USD 0.05 total), one local Qwen generation,
+concurrency one, 60-second timeouts and zero retries. A new actual-process runtime
+manifest bound vLLM 0.19.0 V1, FP16, TRITON_ATTN, explicit xgrammar and the pinned
+Qwen revision to local configuration v4. The schema copy sent for guidance used
+the reviewed compatibility transformation; the exact canonical schema remained
+the mandatory post-generation contract.
+
+B returned `factual` (0.97) and D v3 returned `clear` (1.0). F then returned HTTP
+200 with realistic multi-character German text, demonstrating that the xgrammar
+`\\S` compatibility blocker is gone. The output still failed unchanged T04
+validation: it combined `status=unresolved`, `reason_code=none` and one candidate,
+which violates `Decomposed` coherence. Its candidate and required-support anchors
+also declared `[0,18)` for a much longer quote and therefore would fail exact
+location validation if the coherence check passed. Execution stopped immediately.
+No H or I ran, no Claim was accepted, no output was repaired, and T05 was not run.
+
+Actual use was two Jev calls (2,041 input and 98 output tokens; estimated USD
+0.000085722, billed cost unknown) and one local Qwen call (575 prompt and 268
+completion tokens; external provider cost USD 0). There were zero retries and no
+uncertain dispatch. Close/reopen replay with network, DNS and model operations
+blocked passed twice for all three saved decisions and complete target accounting.
+The private evidence is
+`/mnt/workspace/BinfoCheck-data/t04-qwen-v4-first-20260921T100748Z/`; its runtime
+manifest SHA-256 is
+`d519d722ab5c71082047f50e50c610c9d8e98cf8ff11f0a095d864f9028a750e`.
+Both shared BinfoNet vLLM services were restored and passed GET model checks;
+Ollama remained active and task-local port 8004 is free. T04 and T05 remain
+integration-blocked by genuine contract-valid F output, rather than xgrammar's
+former multi-character-string rejection.
+
+### Offline coherent F guidance — 21 September 2026
+
+No server, generation, Jev, gate or T05 call was authorized or performed. Local
+configuration v5 preserves the exact canonical decomposition schema and strict
+post-generation validation. Its provider-only guidance schema now exposes the
+coherence rules that were previously present only in Pydantic: `status=candidates`
+requires 1–4 candidates with `reason_code=none`; `status=unresolved` requires no
+candidates and an explicit `cannot_extract` or `candidate_limit` reason.
+
+For every F anchor, guidance restricts `source_unit_ids` to IDs supplied in the
+immutable source state and fixes `start` and `end` to null. The versioned F prompt
+requires a verbatim contiguous quote and the existing locator alone derives its
+absolute offsets. It continues to reject missing, ambiguous or altered quotes;
+the change does not repair model output or weaken location validation. Extraction
+resource bundle v4 changes only that F prompt; D remains v3 and all other resources
+remain byte-identical to bundle v3.
+
+The pinned vLLM 0.19.0/xgrammar 0.2.3 offline protocol/compiler check, with sockets
+blocked and no engine or weights, accepts realistic multi-character German values
+in the coherent candidate branch and both explicit unresolved reasons. It rejects
+the saved v4 combination of unresolved plus candidates, numeric anchor offsets,
+unknown source-unit IDs and malformed structure. Canonical validation remains
+necessary and still rejects whitespace-only strings. Historical v1–v4 preparation,
+replay and all saved live evidence remain unchanged. A fresh v5 manifest-bound gate
+requires separate authorization.
+Malformed or missing F source-unit state fails before dispatch; v5 never silently
+falls back to the weaker v4 guidance schema.
+
+### Fresh v5 acceptance gate — 21 September 2026
+
+The user authorized one fresh manifest-bound gate on retained target `[0,63)` with
+at most five Jev calls (USD 0.05 total), one local Stage F generation, concurrency
+one, 60-second timeouts, zero retries and no uncertain-dispatch retry. The new run
+used exactly `t04-vllm-generation/5`, `t04-extraction-resources/4`,
+`t04-decompose/2`, the pinned Qwen revision and a new actual-process manifest.
+
+B returned `factual` (0.98) and D v3 returned `clear` (1.0). F returned HTTP 200
+with `status=candidates`, `reason_code=none`, one candidate, valid supplied unit IDs
+and null offsets. The unchanged locator resolved its exact quote and support to the
+immutable answer span `[0,63)`. H returned `faithful` (0.90), `atomic` (0.94) and
+`self_contained` (0.85), each with a unique maximum. I persisted genuine Claim
+`claim-2370b9001cd29251fa839f0ed558b73b3594754200aae7a3b0187db5cac2ba40`,
+normalized as “Ja, grundsätzlich dürfen Sie mit Diabetes Auto fahren.”, with no
+issues and complete target accounting.
+
+Actual use was five Jev calls (4,230 input and 235 output tokens; estimated USD
+0.00017766, billed cost unknown) and one local Qwen call (684 prompt and 179
+completion tokens; external provider cost USD 0). There were zero retries and no
+uncertain dispatch. Close/reopen replay with sockets, DNS and model operations
+blocked reproduced all six decisions twice and preserved linked records, source
+fingerprints and target accounting.
+
+Private evidence is
+`/mnt/workspace/BinfoCheck-data/t04-qwen-v5-first-20260921T110920Z/`; the new runtime
+manifest SHA-256 is
+`76309bfa3d15b222ff9a00a30632bdbc142c5bcdf0f38a6db84cafc6c9eaf71c`.
+Both shared BinfoNet vLLM services were restored and passed GET model checks;
+Ollama remained active and task-local port 8004 is free. T04 is accepted. T05 was
+not run or modified and remains a separate task.
