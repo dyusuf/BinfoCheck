@@ -76,14 +76,7 @@ def render(tasks: list[dict[str, str]]) -> str:
         f"| {item['id']} | {item['component']} | {STATUS_LABELS[item['status']]} |"
         for item in tasks
     )
-    lines.extend(
-        [
-            "",
-            "Detailed acceptance criteria and evidence are maintained in the",
-            "[implementation plan](docs/implementation-plan.md).",
-            END,
-        ]
-    )
+    lines.append(END)
     return "\n".join(lines)
 
 
