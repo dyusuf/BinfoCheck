@@ -21,11 +21,11 @@ MODELS = {
 HOSTS = {"jev": "api.typesafe.ai", "openai": "api.openai.com"}
 PATHS = {"jev": "/v1/systemone", "openai": "/v1/responses"}
 CONFIG_VERSION = VersionRef(name="t03-model-adapters", version="1")
-LOCAL_CONFIG_VERSION = VersionRef(name="t04-vllm-generation", version="2")
+LOCAL_CONFIG_VERSION = VersionRef(name="t04-vllm-generation", version="3")
 
 
 class ModelAdapterConfig(Contract):
-    version: Literal["1", "2"] = "1"
+    version: Literal["1", "2", "3"] = "1"
     provider: Provider
     budget: Budget = Budget(
         request_limit=1,
@@ -60,17 +60,17 @@ class ModelAdapterConfig(Contract):
 class LocalGenerationConfig(ModelAdapterConfig):
     """Separate adapter format; legacy configuration bytes and work IDs stay unchanged."""
 
-    version: Literal["1", "2"] = "2"
+    version: Literal["1", "2", "3"] = "3"
     provider: Provider = "vllm"
     runtime_manifest_sha256: Digest
-    server_version: Literal["0.10.2"] = "0.10.2"
+    server_version: Literal["0.10.2", "0.19.0"] = "0.19.0"
     model_revision: Literal["cdbee75f17c01a7cc42f958dc650907174af0554"] = QWEN_REVISION
     endpoint: Literal["http://127.0.0.1:8004/v1/chat/completions"] = (
         "http://127.0.0.1:8004/v1/chat/completions"
     )
     dtype: Literal["float16"] = "float16"
     engine: Literal["V0", "V1"] = "V1"
-    attention_backend: Literal["XFORMERS", "XFORMERS_VLLM_V1"] = "XFORMERS_VLLM_V1"
+    attention_backend: Literal["XFORMERS", "XFORMERS_VLLM_V1", "TRITON_ATTN"] = "TRITON_ATTN"
     max_model_len: Literal[4096] = 4096
     budget: Budget = Budget(
         request_limit=1,
@@ -83,8 +83,12 @@ class LocalGenerationConfig(ModelAdapterConfig):
 
     @model_validator(mode="after")
     def local_budget(self) -> Self:
-        expected = {"1": ("V0", "XFORMERS"), "2": ("V1", "XFORMERS_VLLM_V1")}
-        if (self.engine, self.attention_backend) != expected[self.version]:
+        expected = {
+            "1": ("V0", "XFORMERS", "0.10.2"),
+            "2": ("V1", "XFORMERS_VLLM_V1", "0.10.2"),
+            "3": ("V1", "TRITON_ATTN", "0.19.0"),
+        }
+        if (self.engine, self.attention_backend, self.server_version) != expected[self.version]:
             raise ValueError("local_engine_version_mismatch")
         if self.provider != "vllm":
             raise ValueError("local_provider_required")

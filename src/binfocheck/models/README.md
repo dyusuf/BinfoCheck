@@ -152,13 +152,13 @@ Use `LocalGenerationConfig`, `LocalVllmTransport` and the same ExtractionResourc
 as T04. The selected model is `Qwen/Qwen3-4B-Instruct-2507`, revision
 `cdbee75f17c01a7cc42f958dc650907174af0554`; the served/requested/returned model ID
 is the repository name followed by `@` and that revision. Local request settings
-use `t04-vllm-generation/2`; legacy Jev/OpenAI configuration and artifact identities
+use `t04-vllm-generation/3`; legacy Jev/OpenAI configuration and artifact identities
 remain unchanged. No shared schema changed and OpenAI is not a fallback.
 
 The local configuration includes the private runtime manifest SHA-256 and fixed
 vLLM/version/device settings. Before execution, inspect and hash the actual model
 snapshot, tokenizer files, installed package inventory, launch arguments and selected
-(non-secret) environment. Verify `/version` is 0.10.2, authenticated `/v1/models`
+(non-secret) environment. Verify `/version` is 0.19.0, authenticated `/v1/models`
 returns only the selected alias and unauthenticated `/v1/models` fails. These GETs
 make no generation calls. The manifest records that a model alias alone is not proof
 of weights; retain the independently provisioned snapshot/launch evidence.
@@ -183,7 +183,65 @@ unchanged, separately from canonical validated JSON. T03 also snapshots a restri
 `runtime` artifact and verifies its configured hash during offline replay. No
 server/GPU/model import is needed for replay.
 
-### Isolated vLLM server on the V100
+### Current v3 runtime: vLLM 0.19.0 / Triton
+
+New `LocalGenerationConfig` defaults to `t04-vllm-generation/3`, vLLM 0.19.0,
+V1 and TRITON_ATTN. V1/v2 configurations remain readable for preparation and
+saved replay, but cannot dispatch new requests. The pinned Qwen revision, F prompt,
+response schema and HTTP request construction are unchanged.
+
+Provision a separate **durable** Python 3.12 environment (outside `/tmp`) with
+`uv pip sync --python <server-env>/bin/python src/binfocheck/models/vllm-runtime-v3.lock`.
+This lock inventories the installed 0.19 host environment used for the offline
+probe; it is separate from the immutable 0.10.2 lock and the repository toolchain.
+Never modify shared BinfoNet or Ollama environments. Run the optional verifier below
+with the new environment and exact saved F outbound request before server startup.
+It supports both locked versions and never initializes a model engine.
+
+The v3 launch command is:
+
+```text
+vllm serve <verified-snapshot-directory>
+  --served-model-name Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554
+  --host 127.0.0.1 --port 8004 --dtype float16 --max-model-len 4096
+  --max-num-seqs 1 --gpu-memory-utilization 0.65 --enforce-eager
+  --generation-config vllm --no-enable-prefix-caching
+  --attention-backend TRITON_ATTN
+  --structured-outputs-config.backend xgrammar
+```
+
+Inject a private `VLLM_API_KEY`. Set `HF_HUB_OFFLINE=1`, `TRANSFORMERS_OFFLINE=1`,
+`HF_HUB_DISABLE_TELEMETRY=1`, `VLLM_NO_USAGE_STATS=1`, `DO_NOT_TRACK=1`,
+`OMP_NUM_THREADS=4`, and a separate empty `HF_HOME`. Request logging is disabled
+by default; do not enable it. Do not set obsolete VLLM_USE_V1 or
+VLLM_ATTENTION_BACKEND variables: 0.19 uses the V1 engine and the attention CLI
+setting. Use the matching system NVML library after the driver repair, not the
+historical 580.173.02 override. Model loading is local and remote code is disabled.
+
+Explicit `xgrammar` in 0.19 rejects unsupported constraints without switching
+backends; `auto` permits fallback and is prohibited. Old `--guided-*` flags and
+alternate configuration overrides are rejected by the v3 guard. Retain the
+adapter's independent strict JSON/schema, identity and finish-reason validation.
+
+Capture a NEW immutable manifest from the actual running process, with `engine:
+"V1"`, `server_version: {"version":"0.19.0"}`, exact `launch_arguments`, selected
+`environment`, `model`, snapshot/package/NVML identities and hashes, and GET
+version/authentication results. Bind its SHA-256 to the configuration and each
+single-use `LocalAuthorization`. The manifest is an audited declaration, not
+independent server attestation. A process identity must never be copied from an
+old manifest. Schedule exclusive GPU capacity with restoration of shared services.
+
+Acceptance still requires a separately authorized F-only test through
+`LocalVllmGenerationModel`/`LocalVllmTransport`, durable T03 intent/raw/receipt records,
+and network-disabled close/reopen replay. Do not use direct HTTP as adapter
+acceptance. A schema-valid unresolved output remains unresolved. Only a subsequent
+fresh authorized Jev gate can produce an accepted Claim and unblock unchanged T05.
+No successful GPU inference is claimed by the offline implementation.
+
+### Historical v1/v2 vLLM 0.10.2 server on the V100
+
+The following settings describe preserved historical evidence, not a new launch.
+
 
 This serving dependency has a separate environment because vLLM 0.10.2 requires
 Torch 2.8.0, whereas T07's optional local-model environment pins Torch 2.9.1. It is
@@ -230,7 +288,7 @@ rebooting. Keep this path scoped to the task and record its hash in the runtime
 manifest. Model/runtime evidence and the repair are preserved privately; details
 and remaining integration limits are in `docs/t04-live-gate.md`.
 
-### Structured-output runtime guard
+### Historical v2 structured-output runtime guard
 
 The saved F failure exposed that vLLM 0.10.2's V0 path accepted the JSON-schema
 request but installed no guided-decoding enforcement. Configuration version 2

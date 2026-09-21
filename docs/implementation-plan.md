@@ -303,6 +303,12 @@ V1 engine: XFormers had no operator supporting the V100 and paged-attention inpu
 HTTP 500 and the failed audit are preserved; no retry/H/T05 occurred. GET-only startup
 acceptance did not establish inference compatibility. A genuine Claim remains
 outstanding; the runtime inference blocker is open.
+The authorized v3 runtime implementation selects vLLM 0.19.0 V1/TRITON_ATTN and
+explicit xgrammar, with a separate dependency lock and version-aware live guards.
+Historical v1/v2 preparation/replay are retained. Offline checks cover the exact F
+schema, grammar attachment, token masking and failure without backend fallback.
+No new live call is included in this implementation; inference acceptance requires
+a new manifest-bound F-only adapter diagnostic before a fresh authorized Jev gate.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction

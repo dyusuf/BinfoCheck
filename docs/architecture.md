@@ -362,6 +362,20 @@ implementation details need no separate approval.
 | D09 | Worker, API, frontend, deployment stack; one codebase | Affected T11B/T12/T13/T14 work |
 | D10 | Authentication, accounts, artifact handling, deployment access | T12 access checks and T14 deployment |
 
+**D04 v3 runtime correction — 21 September 2026:** authorized implementation
+versions the local configuration to v3: vLLM 0.19.0 V1, explicit
+`--attention-backend TRITON_ATTN`, FP16 and explicit xgrammar via
+`--structured-outputs-config.backend`. Unlike `auto`, the explicit backend fails
+without fallback. The 0.19 attention CLI replaces the obsolete environment switch.
+The separate `models/vllm-runtime-v3.lock` and durable Python 3.12 environment do
+not change the historical lock or shared GPU applications. Pinned Qwen revision,
+F request/schema, Jev decisions and extraction validation remain unchanged.
+V1/v2 configurations and receipts retain preparation/replay semantics; new calls
+require v3 and a newly observed, hashed runtime manifest. The prior direct-HTTP
+post-reboot diagnostic reproduced the attention failure, but was not T03 adapter
+acceptance. Offline grammar tests do not establish inference compatibility.
+A bounded F-only adapter test and later fresh Jev gate remain separate live steps.
+
 **D04 structured-output runtime correction — 20 September 2026:** the user
 requested implementation after the saved F failure review. Installed vLLM 0.10.2
 V0 accepted `response_format` but did not attach guided-decoding enforcement.

@@ -441,3 +441,32 @@ under its consumed authorization.
 
 Post-gate verification passed: 257 focused model/Claim tests and `scripts/verify.sh`
 with all 1,036 tests, lint, formatting, types, schema and whitespace checks.
+
+### V3 runtime implementation — 21 September 2026
+
+The post-reboot F-only diagnostic again returned HTTP 500 on the V100 under
+vLLM 0.10.2 V1/XFormers, now with matching NVIDIA 580.178.04 libraries. It used
+direct HTTP and supplies terminal runtime evidence, not manifest-bound T03
+adapter acceptance. Historical gate stores and failed output remain unchanged.
+
+The authorized correction adds local configuration v3 for vLLM 0.19.0 V1,
+explicit `--attention-backend TRITON_ATTN` and explicit xgrammar. The old attention
+environment variable is not a supported 0.19 selector. A separate lock provisions
+`/mnt/workspace/BinfoCheck-data/t04-runtime-v3-env`; shared runtime environments
+were not changed. The dependency consistency check passed. Legacy configurations
+and saved replay remain supported; only v3 may make new calls.
+
+The installed-runtime verifier passed for both 0.10.2 and the durable 0.19.0
+runtime using the exact saved F request and local tokenizer with sockets blocked.
+The new path verifies CLI parsing, schema preservation, V1 grammar attachment,
+invalid-token masking, malformed-shape rejection, and unsupported-schema/compiler
+failure without fallback. xgrammar retains its non-ASCII negative-character-class
+warning; strict adapter schema validation remains mandatory. These checks do not
+prove exhaustive schema fidelity or GPU decoding compatibility.
+
+Implementation evidence is separate at
+`/mnt/workspace/BinfoCheck-data/t04-runtime-v3-implementation-20260921/`.
+This assignment makes zero generation/Jev calls and performs no gate/T05 run.
+A new actual-process manifest and bounded F-only test through T03, followed by
+close/reopen offline replay, remain prerequisites to a fresh authorized Jev gate.
+T04 has no accepted Claim; T05 remains blocked.
