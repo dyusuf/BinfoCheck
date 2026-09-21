@@ -392,3 +392,52 @@ The isolated new Hugging Face cache contains no files, establishing that startup
 not download model content. New Jev calls, Qwen generations, T04 gates and T05 runs:
 zero. This resolves the runtime blocker only; a genuine accepted Claim still requires
 separate live-call authorization.
+
+### Fresh D v3 / local v2 gate — 21 September 2026
+
+The user authorized the proposed first-target gate with at most five Jev calls and
+one local generation; the previous USD 0.05 ceiling, concurrency one, 60-second
+timeouts and zero retries were retained. A fresh process/model-hash and GET preflight
+passed against the accepted manifest. All stage resources remained unchanged.
+
+Run `t04-local-qwen-v3-v1-first-gate-f55aab1f6f9a526da3974560a410f012dd87ae51092c3c704086be2ff0a6a4b3`
+targets only the retained `[0,63)` sentence. Each exact request and single-use
+authorization was saved before dispatch. B returned factual (0.97), D v3 returned
+clear (1.0), then the only F request returned complete HTTP 500,
+`provider_unavailable`. Dispatch was known, not uncertain. No retries or H calls
+occurred; G was not reached. The pipeline persisted zero Claims and one
+`F.model_failed` issue.
+
+The server traceback identifies `NotImplementedError` in XFormers
+`memory_efficient_attention_forward` with
+`PagedBlockDiagonalCausalWithOffsetPaddedKeysMask`: FA2 and Triton candidates reject
+compute capability 7.0 (Triton also rejects page-size 16 against block-size 64), and
+the CUTLASS candidate rejects the mask type. The V1 engine and API server exited.
+This reveals inference incompatibility that successful startup, GETs and offline
+grammar tests did not exercise. No corrective settings or model changes were made.
+
+Evidence is in `/mnt/workspace/BinfoCheck-data/t04-qwen-v3-v1-first-20260921/`:
+prepared requests, authorizations, raw bodies/responses, receipts, exact server log,
+bound manifest, final audit and replay/usage reports. Final audit:
+`extraction-final-8aa83fafba83795286962fcb29e4f1774ee4eafcaf914ddb1e0d3b15bc8d2be7`.
+F record: `model-generation-3c89d6764cbc0994b069473f765a813c37d7a323b8b7b6ecdbbd5bc3741f9d37`.
+Same-run T02 index:
+`text-index-6f6b8149eb96db6a181395a6241d32808e9fcef3c2ffe5ccae17fc8a689bd1d1`.
+
+Two Jev calls reported 2,043 input and 98 output tokens: estimated USD 0.000085806
+at the verified input-only rate. Local request usage and infrastructure cost are
+unknown; external generation cost is zero. Session totals are eight Jev calls,
+two local generation requests, 7,007 Jev input / 398 output tokens and estimated
+Jev USD 0.000294294; billed cost remains unknown.
+
+Network/model-disabled replay passed twice after close/reopen, reproducing all three
+records and identical terminal output; links and target accounting passed. Both
+historical v1 stores and the entire previous v3 failed-gate directory retain their
+fingerprints. T05 was not run because no genuine accepted Claim exists. The initial
+automatic approval rejection made zero calls; read-only inspection established the
+generic retained payload and its authorized destination, after which review allowed
+the same bounded dispatch. This gate is terminal and cannot be resumed or retried
+under its consumed authorization.
+
+Post-gate verification passed: 257 focused model/Claim tests and `scripts/verify.sh`
+with all 1,036 tests, lint, formatting, types, schema and whitespace checks.

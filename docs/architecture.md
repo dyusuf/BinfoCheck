@@ -375,6 +375,14 @@ The later GET-only runtime acceptance started this configuration successfully on
 the V100, verified the authenticated loopback server and captured a new v2 manifest.
 It made no generation or Jev call. No model-call authorization is implied.
 
+**D04 V1 inference status — 21 September 2026:** the separately authorized first-target
+gate passed B/D, but F returned HTTP 500 after XFormers could not dispatch a supported
+operator for the actual paged-attention inputs on the V100. The V1 engine and API
+server exited. The completed GET-only checks remain valid historical startup
+evidence, not proof of inference compatibility. No versions, settings or guards
+were changed, and no retry occurred. Further runtime correction requires a separate
+assignment; the new terminal gate evidence is in the T04 gate report.
+
 **D04 local generation selected — 20 September 2026:** the current T04 assignment
 explicitly selects `Qwen/Qwen3-4B-Instruct-2507` for MVP generation; subsequent user
 instruction selects vLLM serving. Model comparison remains Beyond MVP. The pinned

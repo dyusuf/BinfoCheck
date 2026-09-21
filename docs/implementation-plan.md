@@ -297,8 +297,12 @@ followed under that assignment. After the user authorized the identified fix, th
 exact orphaned worker was stopped and the unchanged V1 runtime passed GPU/server and
 GET-only checks. A new v2 runtime manifest passes `require_structured_runtime`; no
 generation/Jev call or T04/T05 execution occurred. See the gate report for exact
-evidence. Historical preparation/replay and evidence are preserved. A genuine Claim
-remains outstanding.
+evidence. Historical preparation/replay and evidence are preserved. A separately
+authorized 21 September gate then passed B/D but its single F request crashed the
+V1 engine: XFormers had no operator supporting the V100 and paged-attention inputs.
+HTTP 500 and the failed audit are preserved; no retry/H/T05 occurred. GET-only startup
+acceptance did not establish inference compatibility. A genuine Claim remains
+outstanding; the runtime inference blocker is open.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction

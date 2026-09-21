@@ -215,6 +215,10 @@ V1/XFORMERS_VLLM_V1 is the selected correction. The GET-only runtime acceptance
 started this exact configuration successfully on the V100 and captured a new v2
 manifest; it did not call the generation endpoint. The private manifest path and
 hash are recorded in the T04 gate report.
+The subsequent first inference request failed with HTTP 500: installed XFormers
+provided no operator for the V100 and the actual paged-attention mask. The engine
+exited. Treat the manifest as historical startup evidence; live inference compatibility
+is unresolved. The exact terminal log is retained with the 21 September T04 gate.
 Do not substitute a newer vLLM release that dropped the V100's execution path.
 See [vLLM 0.10.2 CUDA requirements](https://github.com/vllm-project/vllm/blob/v0.10.2/requirements/cuda.txt)
 and [CUDA platform implementation](https://github.com/vllm-project/vllm/blob/v0.10.2/vllm/platforms/cuda.py).
