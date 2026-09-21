@@ -64,6 +64,7 @@ Each card lists dependencies, tools, owned files, required checks and a stop bou
 All listed checks are acceptance requirements; a blocked live check permits reporting
 offline progress, not full acceptance.
 
+<a id="t00"></a>
 ### T00 — Shared contracts, examples, scaffold and CI
 
 **Build:** repository scope/design documents. **Integrate:** GitHub Actions CI. **Decisions:** D01.  
@@ -152,6 +153,7 @@ or future-only fields. Do not start T11A or downstream tasks.
   including 176 tests. The v1 wire shape
   is unchanged; generated schemas include the probability constraint description.
 
+<a id="t11a"></a>
 ### T11A — Shared record and artifact storage
 
 **Build:** T00. **Integrate:** selected persistent backend. **Decisions:** D02.  
@@ -173,6 +175,7 @@ model decisions/reviews.
 **Handoff:** [T11A implementation, checks, and limitations](t11a-handoff.md).
 Draft PR #2 is awaiting review; no downstream work started.
 
+<a id="t01"></a>
 ### T01 — Acquire a Google AI Mode observation
 
 **Build:** T00 + labeled provider fixtures. **Integrate:** T11A + DataForSEO.  
@@ -199,6 +202,7 @@ capture passed persistence, budget verification and network-blocked offline repl
 See [T01 handoff](t01-handoff.md). The one-call authorization is consumed; future
 provider requests require new explicit authorization. PR remains draft and unmerged.
 
+<a id="t02"></a>
 ### T02 — Index answers and reconstruct context
 
 **Build:** T00 + answer fixtures. **Integrate:** T01 output + T11A. **Decisions:** D06.  
@@ -221,6 +225,7 @@ never crossing observations. Do not duplicate neighbor text in records.
 Implementation and local acceptance are complete; remote review/CI status is recorded
 in the draft PR and final delivery handoff. No new provider call is authorized.
 
+<a id="t03"></a>
 ### T03 — Decision and generation adapters
 
 **Build:** T00 + request/response doubles. **Integrate:** T11A + Jev + selected GenerationModel.
@@ -251,6 +256,7 @@ The 20 September T04 assignment supersedes MVP OpenAI generation with local Qwen
 under D04; historical adapter evidence remains unchanged.
 **Handoff:** [T03 files, checks, frozen smoke payloads and limitations](t03-handoff.md).
 
+<a id="t04"></a>
 ### T04 — Claimify-inspired ClaimExtractor
 
 **Build:** T00, T02, T03 contracts/doubles. **Integrate:** T01, T03 live, T11A.  
@@ -343,6 +349,7 @@ bounds are in [the gate report](t04-live-gate.md). This continuation owns the lo
 model adapter, its configuration/runtime inventory and affected adapter/extraction
 tests; it does not change T05 logic or start T08+.
 
+<a id="t05"></a>
 ### T05 — Citation mapping and routing
 
 **Build:** T00 + provider/claim fixtures. **Integrate:** T01, T04, T11A.  
@@ -362,6 +369,7 @@ versions. Never ask a model to verify the cited page's support.
 
 **Stop:** website support checks, extraction changes or general citation-quality analysis.
 
+<a id="t06"></a>
 ### T06 — Usable five-page corpus
 
 **Build:** T00 + HTML fixtures. **Integrate:** T11A + five pilot pages. **Decisions:** D06.  
@@ -400,6 +408,7 @@ passed. No refetch, OCR, image interpretation, model calls, shared-schema change
 T07 work. See [T06 handoff](t06-handoff.md) for IDs and validation results.
 PR #7 merged as `579ad7571841394256de5e80d94775ccb3da1492`.
 
+<a id="t07"></a>
 ### T07 — Hybrid retrieval and context
 
 **Build:** T00 + claim/passage fixtures + retrieval libraries.  
@@ -432,6 +441,7 @@ results, durable private evidence and limitations are in the
 [T07 handoff](t07-handoff.md). This is integration acceptance, not a quality benchmark.
 
 
+<a id="t08"></a>
 ### T08 — Candidate verification and correspondence
 
 **Build:** T00, T03 interface, candidate fixtures. **Integrate:** T03, T07, T11A.  
@@ -452,6 +462,7 @@ correspondence. Preserve both decisions.
 
 **Stop:** citation fidelity, alternative collection, final categories or calibration.
 
+<a id="t09"></a>
 ### T09 — Captured alternative-source excerpts
 
 **Build:** T00, T03 interface, excerpt fixtures. **Integrate:** T01, T03, T08, T11A.  
@@ -472,6 +483,7 @@ correspondence decisions, coverage gaps and known duplicate relationships.
 **Stop:** extra fetching/search or category changes. Even listed-page fetching needs
 a separate task explicitly authorizing that scope change.
 
+<a id="t10"></a>
 ### T10 — Evidence classification
 
 **Build:** T00 + evidence fixtures. **Integrate:** T03, T05, T08, T09, T11A + rubric
@@ -494,6 +506,7 @@ linked to all supporting pair-level records.
 **Stop:** new categories, calibration, proven provenance or invented model reasoning.
 A real Category 4 case is not required.
 
+<a id="t11b"></a>
 ### T11B — Pipeline execution and restart handling
 
 **Build:** T00, T11A, component doubles. **Integrate:** T01–T10 + D08 pilot manifest.  
@@ -514,6 +527,7 @@ paid-call limits before execution.
 
 **Stop:** large-scale scheduling, extra services, API/UI or automatic tuning.
 
+<a id="t12"></a>
 ### T12 — API, permissions and metrics
 
 **Build:** T00, T11A, contract/run fixtures. **Integrate:** T11B + access mechanism.  
@@ -535,6 +549,7 @@ no provider/model work.
 
 **Stop:** frontend, CMS, new analytics, automatic advice or tenant management.
 
+<a id="t13"></a>
 ### T13 — Editorial dashboard
 
 **Build:** T12 contract + labeled mock server. **Integrate:** T12 + findings/accounts.  
@@ -553,6 +568,7 @@ provisional categories, unresolved states and review controls. Use only the API.
 
 **Stop:** CMS, rewriting, clinical advice, alerts or extra model calls.
 
+<a id="t14"></a>
 ### T14 — End-to-end checks and deployment
 
 **Build:** component/API contracts + container/test setup.  

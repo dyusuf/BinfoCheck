@@ -66,6 +66,17 @@ def load_status(path: Path) -> list[dict[str, str]]:
     return normalized
 
 
+def validate_plan_anchors(path: Path, tasks: list[dict[str, str]]) -> None:
+    try:
+        plan = path.read_text(encoding="utf-8")
+    except OSError as error:
+        raise ValueError(f"Cannot read {path}: {error}") from error
+    for item in tasks:
+        anchor = f'<a id="{item["id"].lower()}"></a>'
+        if plan.count(anchor) != 1:
+            raise ValueError(f"implementation plan must contain exactly one anchor: {anchor}")
+
+
 def render(tasks: list[dict[str, str]]) -> str:
     lines = [
         START,
@@ -73,7 +84,11 @@ def render(tasks: list[dict[str, str]]) -> str:
         "|---|---|---|",
     ]
     lines.extend(
-        f"| {item['id']} | {item['component']} | {STATUS_LABELS[item['status']]} |"
+        (
+            f"| {item['id']} | "
+            f"[{item['component']}](docs/implementation-plan.md#{item['id'].lower()}) | "
+            f"{STATUS_LABELS[item['status']]} |"
+        )
         for item in tasks
     )
     lines.append(END)
@@ -103,9 +118,11 @@ def main() -> int:
 
     root = args.root.resolve()
     status_path = root / "docs/task-status.json"
+    plan_path = root / "docs/implementation-plan.md"
     readme_path = root / "README.md"
     try:
         tasks = load_status(status_path)
+        validate_plan_anchors(plan_path, tasks)
         current = readme_path.read_text(encoding="utf-8")
         wanted = expected_readme(current, render(tasks))
     except (OSError, ValueError) as error:
