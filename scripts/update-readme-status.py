@@ -53,7 +53,8 @@ def load_status(path: Path) -> list[dict[str, str]]:
         if not isinstance(item, dict) or set(item) != {"id", "component", "status"}:
             raise ValueError("each task must contain exactly id, component, and status")
         task_id, component, status = item["id"], item["component"], item["status"]
-        if not all(isinstance(value, str) and value.strip() for value in (task_id, component, status)):
+        values = (task_id, component, status)
+        if not all(isinstance(value, str) and value.strip() for value in values):
             raise ValueError("task id, component, and status must be non-empty strings")
         if status not in STATUS_LABELS:
             raise ValueError(f"unsupported task status: {status}")
