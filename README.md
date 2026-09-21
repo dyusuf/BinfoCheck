@@ -36,7 +36,7 @@ AI observation
 ## Current status
 
 The MVP is under development. Task states below are a generated public summary of the
-official acceptance state maintained in the implementation plan.
+official acceptance state maintained in the [implementation plan](docs/implementation-plan.md).
 
 <!-- TASK-STATUS:START -->
 | Task | Component | Status |
@@ -57,7 +57,4 @@ official acceptance state maintained in the implementation plan.
 | T12 | API | ⚪ Not started |
 | T13 | Editorial dashboard | ⚪ Not started |
 | T14 | End-to-end/deployment | ⚪ Not started |
-
-Detailed acceptance criteria and evidence are maintained in the
-[implementation plan](docs/implementation-plan.md).
 <!-- TASK-STATUS:END -->
