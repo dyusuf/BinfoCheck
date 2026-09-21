@@ -470,3 +470,64 @@ This assignment makes zero generation/Jev calls and performs no gate/T05 run.
 A new actual-process manifest and bounded F-only test through T03, followed by
 close/reopen offline replay, remain prerequisites to a fresh authorized Jev gate.
 T04 has no accepted Claim; T05 remains blocked.
+
+
+### V3 runtime F-only diagnostic — 21 September 2026
+
+The user authorized one local F call to test the implemented runtime fix, with
+USD 0 external provider cost, a 60-second timeout, concurrency one, zero retries
+and zero Jev calls. No extraction gate or T05 was executed. The first startup
+passed GET-only checks but a private diagnostic helper supplied a string instead
+of the required `ProcessingStatus` enum when constructing its run. That local
+preflight failure dispatched nothing. The helper was corrected and its complete
+preparation checked offline before a fresh startup used the still-unused call.
+Both startup inventories remain separate; neither replaces historical evidence.
+
+The fresh actual-process manifest is
+`/mnt/workspace/BinfoCheck-data/t04-f-runtime-v3-20260921T090626Z/runtime-manifest.json`,
+SHA-256 `77c1ad4f8a03f8c0676dd9db9487d63d8c2735da66a9e8948389c2e4cab85b95`.
+PID 39676 served the pinned Qwen revision on V100 with NVIDIA 580.178.04,
+vLLM 0.19.0 V1, FP16, TRITON_ATTN and explicit xgrammar. Actual process arguments,
+selected environment, mapped NVML identity/hash, package inventory, verified
+snapshot hashes, logs and authenticated/unauthenticated GET checks are retained.
+The manifest passed the unmodified v3 live guard. No model downloads or remote
+code loading were used. The task-local server was stopped afterward; both shared
+BinfoNet services were restored and passed GET `/v1/models`. Ollama remained
+running with the same service and GPU process identities; port 8004 is free.
+
+New diagnostic run: `t04-f-runtime-v3-20260921T090626Z`.
+F record: `model-generation-8eb1b49a1ec765d48793ab86717df125eb321bea15fc9fe798f8534701b19b9c`.
+The adapter-prepared outbound bytes match the historical F body exactly:
+SHA-256 `5d37cc8f80521929036d17ce165aa154644c86f8f5e92ebfbdbe855cebfb5590`.
+The new request links the immutable historical unit through its original run and
+unchanged state artifact; its unit is not reassigned to the diagnostic run.
+T03 preserved authorization, intent, exact outbound/raw bytes, receipt, runtime,
+usage and result in a new SQLiteStore. Close/reopen replay with socket connections
+and model transport blocked reproduced the identical adapter result.
+
+The single call returned HTTP 200 in 10.46684 seconds, with `finish_reason=stop`,
+576 prompt tokens and 240 completion tokens (816 total). External provider cost
+is USD 0; infrastructure cost remains unknown. GPU decoding and adapter JSON-schema
+validation passed, but the unchanged T04 `Decomposed` contract rejects the actual
+output with `invalid_unresolved_output`: it combines `status=unresolved`,
+`reason_code=none` and a nonempty candidate list. The generated claim is `S` and
+quote is `J`, with offsets `[0,18)`. No output was repaired, no G/H/I ran and no
+Claim was accepted. T05 remains blocked.
+
+Additional **synthetic offline** controls used the exact F schema and installed
+vLLM/xgrammar path with sockets blocked and no engine/weights/generation. All four
+controls pass independent JSON Schema validation. The grammar accepts single
+characters (`S` / `J`) but rejects a multi-character claim (`Rot.`), a
+multi-character quote (`Ja`), and a complete sentence. This demonstrates a grammar
+compatibility defect for the schema's nonblank-string patterns; the prior
+unresolved-only positive control did not test useful claim/quote strings.
+It supports a grammar explanation for the short generated strings, without
+claiming to explain the model's inconsistent status choice. Preserve the exact
+schema and investigate its compilation before another live call; do not loosen
+validation, repair this output or treat runtime success as T04 acceptance.
+
+All new private evidence is in the directory above; the zero-dispatch preflight
+inventory is in `/mnt/workspace/BinfoCheck-data/t04-f-runtime-v3-20260921T090302Z/`.
+Original gate fingerprints are unchanged. The one generation allowance is now
+consumed. The remaining blocker is usable, contract-valid F output; no further
+live generation or Jev call is authorized by this diagnostic.

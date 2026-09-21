@@ -311,6 +311,15 @@ Historical v1/v2 preparation/replay are retained. Offline checks cover the exact
 schema, grammar attachment, token masking and failure without backend fallback.
 No new live call is included in this implementation; inference acceptance requires
 a new manifest-bound F-only adapter diagnostic before a fresh authorized Jev gate.
+The subsequent authorized F-only v3 diagnostic completed GPU generation with
+HTTP 200 and passed adapter schema validation, but its saved output fails the
+unchanged T04 decomposition contract (`invalid_unresolved_output`). Offline
+controls also show that the exact xgrammar path rejects multi-character claim
+and quote strings permitted by the schema. The attention-kernel blocker is
+resolved for this request; usable F output remains blocked. One local call,
+zero Jev calls and no G/H/I or T05 execution; evidence and offline replay are
+preserved in the gate report. Investigate grammar compatibility before another
+live call. T04's official status remains `integration_blocked`.
 Check 3's genuine Claim integration remains blocked; T04 is not fully accepted. Detailed evidence and
 bounds are in [the gate report](t04-live-gate.md). This continuation owns the local
 model adapter, its configuration/runtime inventory and affected adapter/extraction

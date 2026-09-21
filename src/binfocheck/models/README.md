@@ -185,6 +185,13 @@ server/GPU/model import is needed for replay.
 
 ### Current v3 runtime: vLLM 0.19.0 / Triton
 
+Live status: the 21 September F-only diagnostic passed GPU decoding and adapter
+schema validation, but the generated object fails T04's unchanged decomposition
+contract. Offline controls show the installed grammar rejects multi-character
+claim/quote strings allowed by the exact schema. Do not treat startup or grammar
+compilation success as usable F acceptance; see the
+[gate report](../../../docs/t04-live-gate.md#v3-runtime-f-only-diagnostic--21-september-2026).
+
 New `LocalGenerationConfig` defaults to `t04-vllm-generation/3`, vLLM 0.19.0,
 V1 and TRITON_ATTN. V1/v2 configurations remain readable for preparation and
 saved replay, but cannot dispatch new requests. The pinned Qwen revision, F prompt,

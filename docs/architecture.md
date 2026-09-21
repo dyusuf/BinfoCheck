@@ -376,6 +376,17 @@ post-reboot diagnostic reproduced the attention failure, but was not T03 adapter
 acceptance. Offline grammar tests do not establish inference compatibility.
 A bounded F-only adapter test and later fresh Jev gate remain separate live steps.
 
+**D04 v3 runtime diagnostic — 21 September 2026:** a newly manifest-bound,
+one-call F-only test returned HTTP 200 on V100/TRITON_ATTN and passed adapter JSON
+validation. Its actual output fails the unchanged T04 decomposition contract;
+no Claim is accepted. Offline controls demonstrate that the installed xgrammar
+path rejects multi-character claim/quote strings allowed by the exact F schema.
+GPU decoding is verified for this request, but usable F output remains blocked.
+The prompt, schema, thresholds and B/D/H/T05 behavior are unchanged. The single
+local allowance is consumed; zero Jev calls were made. See the
+[T04 gate report](t04-live-gate.md#v3-runtime-f-only-diagnostic--21-september-2026)
+for exact evidence, offline replay and restored shared services.
+
 **D04 structured-output runtime correction — 20 September 2026:** the user
 requested implementation after the saved F failure review. Installed vLLM 0.10.2
 V0 accepted `response_format` but did not attach guided-decoding enforcement.
